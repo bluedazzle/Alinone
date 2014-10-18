@@ -37,6 +37,7 @@ class Sender(models.Model):
     lat = models.FloatField(max_length=10, blank=True, null=True)
     update_time = models.DateTimeField(max_length=30, blank=True, null=True)
     private_token = models.CharField(max_length=32, unique=True, null=True, blank=True)
+    active_time = models.DateTimeField(max_length=30, blank=True, null=True)
 
     def __unicode__(self):
         return  self.phone

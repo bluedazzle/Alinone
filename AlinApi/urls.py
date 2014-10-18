@@ -8,6 +8,8 @@ urlpatterns = patterns('',
     url(r'^sender/finish_orders$', views.finishorder),
     url(r'^sender/gps_renew$', views.renewgps),
     url(r'^sender/info$', views.senderinfo),
+    url(r'^sender/login$', views.login),
+    url(r'^sender/register$', views.register),
     url(r'^$', views.testindex),
 )
 
