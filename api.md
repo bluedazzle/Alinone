@@ -139,4 +139,4 @@ POST /sender/info
 ```
 {"status":1,"body":{"merchants":[{"merchant_id":00000001,"merchant_name":"burgerking","sended":50},{"merchant_id":00000001,"merchant_name":"burgerking","sended":50}]}}
 ```
-
+test
