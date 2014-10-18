@@ -3,9 +3,10 @@
 ##**STATUS结果码对照表**
 |status结果码|状态|
 | --------------  | :---: |
-| 1 | 成功 |
+|1|成功|
 |2|未知错误|
 |3|订单状态改变|
+|4|密码错误|
 |5|超时|
 |6|已存在|
 |7|不存在|
@@ -29,6 +30,49 @@
 |01|淘点点|
 |02|饿了么|
 |03|美团外卖|
+
+##**物流人员注册**
+#####物流人员注册
+```
+POST /sender/register
+```
+###**Parameters**
+* username(_Required_|string)-用户名，必须为手机号
+* password(_Required_|string)-密码
+* reg_code(_Required_|string)-验证码，测试值：1234
+###**Request**
+```
+{"username":18215606355,"password":"132456","reg_code":"1234"}
+```
+###**Return**
+```
+{"status":1,"body":{"private_token":"qwertyuiopqwertyuiopqwertyuiopqw"}}
+or
+{"status":6,"body":null}
+or
+{"status":12,"body":null}
+```
+
+##**登录**
+#####物流人员登录
+```
+POST /sender/login
+```
+###**Parameters**
+* username(_Required_|string)-用户名，必须为手机号
+* password(_Required_|string)-密码
+###**Request**
+```
+{"username":18215606355,"password":"132456"}
+```
+###**Return**
+```
+{"status":1,"body":{"private_token":"qwertyuiopqwertyuiopqwertyuiopqw"}}
+or
+{"status":7,"body":null}
+or
+{"status":4,"body":null}
+```
 
 ##**绑定商家**
 #####物流人员绑定商家
