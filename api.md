@@ -33,7 +33,7 @@
 ##**绑定商家**
 #####物流人员绑定商家
 ```
-POST /merchant/bind_merchant
+POST /sender/bind_merchant
 ```
 ###**Parameters**
 * merchant_id(_Required_|string)-绑定商家id
@@ -53,7 +53,7 @@ POST /merchant/bind_merchant
 ##**解绑商家**
 #####物流人员解除绑定商家
 ```
-POST /merchant/unbind_merchant
+POST /sender/unbind_merchant
 ```
 ###**Parameters**
 * merchant_id(_Required_|string)-解绑定商家id
