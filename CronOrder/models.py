@@ -83,7 +83,8 @@ class DayOrder(models.Model):
     real_price = models.FloatField(max_length=10)
     status = models.IntegerField(max_length=1)
     merchant = models.ForeignKey(Merchant, blank=True, null=True)
-    bind_sender = models.ForeignKey(Sender, blank=True, null=True)
+    bind_sender = models.ForeignKey(Sender, blank=True, null=True, related_name="order")
+    finish_by = models.CharField(max_length=20, blank=True, null=True)
 
 
     def __unicode__(self):
