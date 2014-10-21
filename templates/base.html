@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Alinone</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/main.css" rel="stylesheet">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<nav class="navbar navbar-mine" role="navigation">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <a class="navbar-brand" style="margin-left: 550px;font-size: 34px;color: #ffffff;">Alinone</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a role="button" class="btn btn-primary btn-mine" href="fuwei" style="color: #ffffff">数据复位(测试用)</a></li>
+                    <li><a role="button"  id="user_name" class="btn btn-primary btn-mine" href="" style="color: #ffffff">用户名</a></li>
+                    <li><a role="button" id="login_out" class="btn btn-primary btn-mine" href="login_out" style="color: #ffffff;">登出</a></li>
+                </ul>
+
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+        </div><!-- /.container-fluid -->
+</nav>
+<div class="col-md-2" style="padding-left: 0px;">
+   <div class="btn-group-vertical" style="width: 100%;">
+      <a role="button" class="btn btn-primary btn-lg" href="operate_new">未处理订单</a>
+      <a role="button" class="btn btn-primary btn-lg" href="operate_get">已接收订单</a>
+      <a role="button" class="btn btn-primary btn-lg" href="operate_paisong">派送的订单</a>
+      <a role="button" class="btn btn-primary btn-lg" href="operate_delete">取消的订单</a>
+      <a role="button" class="btn btn-primary btn-lg" href="operate_pingtai">平台管理</a>
+       <a role="button" class="btn btn-primary btn-lg" href="operate_express_person">物流人员管理</a>
+   </div>
+</div>
+<div class="col-md-10" style="margin-left: -16px;padding-right: 0px;">
+{% block define %}
+{% endblock define %}
+</div>
+</body>
+</html>

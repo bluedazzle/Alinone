@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Allinone</title>
+{#    <link href="/css/bootstrap.min.css" rel="stylesheet">#}
+{#    <link href="/css/main.css" rel="stylesheet">#}
+</head>
+<body>
+{#<nav class="navbar navbar-default navbar-mine" role="navigation">#}
+{#        <div class="container-fluid">#}
+{#            <!-- Brand and toggle get grouped for better mobile display -->#}
+{#            <div class="navbar-header">#}
+{#                <a class="navbar-brand" href="" style="margin-left: 550px;">Alinone</a>#}
+{#            </div>#}
+{##}
+{#            <!-- Collect the nav links, forms, and other content for toggling -->#}
+{#        </div><!-- /.container-fluid -->#}
+{#</nav>#}
+{#<div class="col-md-2" style="padding-left: 0px;">#}
+{#   <div class="btn-group-vertical" style="width: 100%;">#}
+{#      <a role="button" class="btn btn-primary btn-lg btn-mine">未处理订单</a>#}
+{#      <a role="button" class="btn btn-primary btn-lg btn-mine">已接收订单</a>#}
+{#      <a role="button" class="btn btn-primary btn-lg btn-mine">派送的订单</a>#}
+{#   </div>#}
+{#</div>#}
+    {% block define %}
+    <div class="panel panel-default">
+    <div class="panel-heading">
+             <p class="text-center" style="font-size:21px;">未处理订单</p>
+         </div>
+    <div class="panel-body">
+             <table class="table table-bordered text-center">
+                 <tr>
+                     <th>订单号</th>
+                     <th>下单时间</th>
+                     <th>联系方式</th>
+                     <th>地址</th>
+                     <th>订餐平台</th>
+                     <th>付款</th>
+                     <th>订单详情</th>
+                     <th>
+                         <a href="jieshouall" role="button" class="btn btn-primary btn-sm">一键接收</a>
+                         <a href="jujueall" role="button" class="btn btn-primary btn-sm">一键拒绝</a>
+                     </th>
+                 </tr>
+                 {%for item in items%}
+                 <tr>
+                     <td>{{ item.order_id_alin }}</td>
+                     <td>{{ item.order_time|date:"Y-m-d H:i:s" }}</td>
+                     <td>{{ item.phone }}</td>
+                     <td>{{ item.address }}</td>
+                     <td>{{ item.platform }}</td>
+                     <td>{{ item.real_price }}</td>
+                     <td>
+{#                         <a role="button" class="btn btn-primary btn-sm">查看</a>#}
+                         <div class="btn-group">
+                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">查看<span class="caret"></span>
+                             </button>
+                             <ul class="dropdown-menu" role="menu">
+                                 <li><a href="#">Action</a></li>
+                                 <li><a href="#">Another action</a></li>
+                                 <li><a href="#">Something else here</a></li>
+                                 <li class="divider"></li>
+                                 <li><a href="#">Separated link</a></li>
+                             </ul>
+                         </div>
+                     </td>
+                     <td>
+                         <a href="jieshouone{{ item.order_id_alin }}" role="button" class="btn btn-primary btn-sm">接收</a>
+                         <a href="jujueone{{ item.order_id_alin }}" role="button" class="btn btn-primary btn-sm">拒绝</a>
+                     </td>
+                 </tr>
+                 {% endfor %}
+             </table>
+        </div>
+      </div>
+    {% endblock define %}
+
+</body>
+</html>

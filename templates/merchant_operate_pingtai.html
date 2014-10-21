@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+{% block define %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+             <p class="text-center" style="font-size:21px;">目前绑定的平台</p>
+         </div>
+    <div class="panel-body">
+             <table class="table table-bordered text-center">
+                 <tr>
+                     <th>名称</th>
+                     <th>账号</th>
+                     <th></th>
+                 </tr>
+                 <tr>
+                     <td>淘点点</td>
+                     <td>12143421412</td>
+                     <td>
+                         <a role="button" class="btn btn-primary btn-sm">删除</a>
+                     </td>
+                 </tr>
+                 <tr>
+                     <td>美团</td>
+                     <td>12143421412</td>
+                     <td>
+                         <a role="button" class="btn btn-primary btn-sm">删除</a>
+                     </td>
+                 </tr>
+                 <tr>
+                     <td>饿了么</td>
+                     <td>12143421412</td>
+                     <td>
+                         <a role="button" class="btn btn-primary btn-sm">删除</a>
+                     </td>
+                 </tr>
+             </table>
+        <a role="button" class="btn btn-primary btn-sm" style="margin-left: 960px;">添加</a>
+        </div>
+</div>
+{% endblock define %}
+</body>
+</html>

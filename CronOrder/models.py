@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
+import hashlib
 # Create your models here.
 
 class MerchantManager(BaseUserManager):
@@ -52,7 +53,22 @@ class Merchant(AbstractBaseUser):
     objects = MerchantManager()
 
     def __unicode__(self):
-        return  self.alin_account
+        return self.alin_account
+
+    def is_authenticated(self):
+        return True
+
+    def hashed_password(self, password=None):
+        if not password:
+            return self.password
+        else:
+            return hashlib.md5(password).hexdigest()
+
+    def check_password(self, password):
+        if self.hashed_password(password) == self.password:
+            return True
+        return False
+
     class Meta:
         app_label = 'CronOrder'
 

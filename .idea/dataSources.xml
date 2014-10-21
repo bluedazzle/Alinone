@@ -6,7 +6,7 @@
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://127.0.0.1:5433/alinone</jdbc-url>
       <user-name>postgres</user-name>
-      <user-password>df9bdf98df99df9edf9fdf9c</user-password>
+      <user-password>dfeddfeedfe8dfeedff3dfe6df92df92df9c</user-password>
       <libraries />
     </data-source>
   </component>
