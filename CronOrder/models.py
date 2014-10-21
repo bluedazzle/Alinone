@@ -32,6 +32,7 @@ class MerchantManager(BaseUserManager):
 
 class Sender(models.Model):
     phone = models.CharField(max_length=15, unique=True)
+    nick = models.CharField(max_length=20, null=True, blank=True, default="sender")
     passwd = models.CharField(max_length=50)
     lng = models.FloatField(max_length=10, blank=True, null=True)
     lat = models.FloatField(max_length=10, blank=True, null=True)
@@ -45,6 +46,7 @@ class Sender(models.Model):
 class Merchant(AbstractBaseUser):
     name = models.CharField(max_length=50)
     alin_account = models.CharField(max_length=15, unique=True)
+    address = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(max_length=254, blank=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
@@ -60,6 +62,11 @@ class Merchant(AbstractBaseUser):
     is_online = models.BooleanField(default=True)
     is_open = models.BooleanField(default=False)
     todaynum = models.IntegerField(default=0)
+
+    purchase_type = models.IntegerField(default=0)
+    deadtime = models.DateTimeField(blank=True, null=True)
+    recent_days = models.IntegerField(blank=True, null=True)
+    balance = models.FloatField(blank=True, null=True)
 
     USERNAME_FIELD = 'alin_account'
     REQUIRED_FIELDS = ['alin_account']
@@ -77,6 +84,7 @@ class DayOrder(models.Model):
     order_time = models.DateTimeField(max_length=30)
     send_time = models.DateTimeField(max_length=30)
     phone = models.CharField(max_length=13)
+    pay = models.BooleanField(default=False)
     address = models.CharField(max_length=50)
     platform = models.IntegerField(max_length=1)
     origin_price = models.FloatField(max_length=10)
@@ -95,7 +103,7 @@ class Dish(models.Model):
     dish_name = models.CharField(max_length=30)
     dish_price = models.FloatField(max_length=5)
     dish_count = models.IntegerField(max_length=5)
-    order = models.ForeignKey(DayOrder, blank=True, null=True)
+    order = models.ForeignKey(DayOrder, blank=True, null=True, related_name='dishs')
 
     def __unicode__(self):
         return  self.dish_name
