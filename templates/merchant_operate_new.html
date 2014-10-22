@@ -39,7 +39,7 @@
                      <th>地址</th>
                      <th>订餐平台</th>
                      <th>付款</th>
-                     <th>订单详情</th>
+                     <th>菜单</th>
                      <th>
                          <a href="jieshouall" role="button" class="btn btn-primary btn-sm">一键接收</a>
                          <a href="jujueall" role="button" class="btn btn-primary btn-sm">一键拒绝</a>
@@ -52,18 +52,19 @@
                      <td>{{ item.phone }}</td>
                      <td>{{ item.address }}</td>
                      <td>{{ item.platform }}</td>
+                     {% if item.pay == True %}
+                     <td>{{ item.real_price }}(已付)</td>
+                     {% else %}
                      <td>{{ item.real_price }}</td>
+                     {% endif %}
                      <td>
-{#                         <a role="button" class="btn btn-primary btn-sm">查看</a>#}
                          <div class="btn-group">
                              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">查看<span class="caret"></span>
                              </button>
-                             <ul class="dropdown-menu" role="menu">
-                                 <li><a href="#">Action</a></li>
-                                 <li><a href="#">Another action</a></li>
-                                 <li><a href="#">Something else here</a></li>
-                                 <li class="divider"></li>
-                                 <li><a href="#">Separated link</a></li>
+                             <ul class="dropdown-menu" role="menu" style="text-align: center;">
+                                 {% for dish in item.dishs.all %}
+                                     <li><p>{{ dish.dish_name }} X {{ dish.dish_count }}</p></li>
+                                 {% endfor %}
                              </ul>
                          </div>
                      </td>

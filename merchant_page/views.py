@@ -70,18 +70,11 @@ def operate_new(request):
                 merchant0 = request.session.get('username')
                 merchant = Merchant.objects.get(alin_account=merchant0)
                 order_detail = DayOrder.objects.filter(merchant=merchant, status=1)
-                for item in order_detail:
-                    if item.platform == 1:
-                        item.platform = "淘点点"
-                    elif item.platform == 2:
-                        item.platform = "美团"
-                    elif item.platform == 3:
-                        item.platform = "饿了么"
-                    else:
-                        item.platform = item.platform
+                dish_list = Dish.objects.all
+                order_detail = pingtai_name(order_detail)
             except DayOrder.DoesNotExist:
                 pass
-            return render_to_response('merchant_operate_new.html', {'items': order_detail})
+            return render_to_response('merchant_operate_new.html', {'items': order_detail, 'dishs': dish_list})
         else:
             return HttpResponseRedirect("login_in")
 
@@ -93,16 +86,7 @@ def operate_get(request):
                 merchant0 = request.session.get('username')
                 merchant = Merchant.objects.get(alin_account=merchant0)
                 order_detail = DayOrder.objects.filter(merchant=merchant, status=2)
-                for item in order_detail:
-
-                    if item.platform == 1:
-                        item.platform = "淘点点"
-                    elif item.platform == 2:
-                        item.platform = "美团"
-                    elif item.platform == 3:
-                        item.platform = "饿了么"
-                    else:
-                        item.platform = item.platform
+                order_detail = pingtai_name(order_detail)
             except DayOrder.DoesNotExist:
                 pass
             return render_to_response('merchant_operate_get.html', {'items': order_detail})
@@ -112,11 +96,32 @@ def operate_get(request):
 
 
 def operate_paisong(request):
-    return render_to_response('merchant_operate_paisong.html')
+    merchant_id = request.session['username']
+    merchant = Merchant.objects.get(alin_account=merchant_id)
+    express_people = merchant.bind_sender.all()
+    orders = DayOrder.objects.filter(merchant=merchant, status=3)
+    orders = pingtai_name(orders)
+    return render_to_response('merchant_operate_paisong.html', {'orders': orders, 'express_people': express_people})
 
 
 def operate_pingtai(request):
-    return render_to_response('merchant_operate_pingtai.html')
+    merchant_id = request.session['username']
+    merchant = Merchant.objects.get(alin_account=merchant_id)
+    items = []
+    if merchant.tao_account:
+        item = {'name': '淘宝',
+                'account': merchant.tao_account}
+        items.append(item)
+    if merchant.mei_account:
+        item = {'name': '美团',
+                'account': merchant.mei_account}
+        items.append(item)
+    if merchant.ele_account:
+        item = {'name': '饿了么',
+                'account': merchant.ele_account}
+        items.append(item)
+
+    return render_to_response('merchant_operate_pingtai.html', {'items': items})
 
 
 def operate_delete(request):
@@ -126,16 +131,7 @@ def operate_delete(request):
                 merchant0 = request.session.get('username')
                 merchant = Merchant.objects.get(alin_account=merchant0)
                 order_detail = DayOrder.objects.filter(merchant=merchant, status=5)
-                for item in order_detail:
-
-                    if item.platform == 1:
-                        item.platform = "淘点点"
-                    elif item.platform == 2:
-                        item.platform = "美团"
-                    elif item.platform == 3:
-                        item.platform = "饿了么"
-                    else:
-                        item.platform = item.platform
+                order_detail = pingtai_name(order_detail)
             except DayOrder.DoesNotExist:
                 pass
             return render_to_response('merchant_operate_delete.html', {'items': order_detail})
@@ -145,4 +141,21 @@ def operate_delete(request):
 
 
 def operate_express_person(request):
-    return render_to_response('merchant_operate_express_person.html')
+    merchant_id = request.session['username']
+    merchant = Merchant.objects.get(alin_account=merchant_id)
+    express_people = merchant.bind_sender.all()
+    return render_to_response('merchant_operate_express_person.html', {'express_people': express_people})
+
+
+def pingtai_name(orders):
+    for item in orders:
+        if item.platform == 1:
+            item.platform = "淘点点"
+        elif item.platform == 2:
+            item.platform = "美团"
+        elif item.platform == 3:
+            item.platform = "饿了么"
+        else:
+            item.platform = item.platform
+
+    return orders

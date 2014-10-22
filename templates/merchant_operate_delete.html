@@ -21,9 +21,6 @@
                      <th>订餐平台</th>
                      <th>付款</th>
                      <th>订单详情</th>
-                     <th>
-                         <a role="button" class="btn btn-primary btn-sm">一键清除</a>
-                     </th>
                  </tr>
                  {%for item in items%}
                  <tr>
@@ -33,9 +30,16 @@
                      <td>{{ item.address }}</td>
                      <td>{{ item.platform }}</td>
                      <td>{{ item.real_price }}</td>
-                     <td><a role="button" class="btn btn-primary btn-sm">查看</a></td>
                      <td>
-                         <a role="button" class="btn btn-primary btn-sm">删除</a>
+                         <div class="btn-group">
+                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">查看<span class="caret"></span>
+                             </button>
+                             <ul class="dropdown-menu" role="menu" style="text-align: center;">
+                                 {% for dish in item.dishs.all %}
+                                     <li><p>{{ dish.dish_name }} X {{ dish.dish_count }}</p></li>
+                                 {% endfor %}
+                             </ul>
+                         </div>
                      </td>
                  </tr>
                  {% endfor %}

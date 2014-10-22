@@ -45,6 +45,7 @@ class Sender(models.Model):
     def __unicode__(self):
         return  self.phone
 
+
 class Merchant(AbstractBaseUser):
     name = models.CharField(max_length=50)
     alin_account = models.CharField(max_length=15, unique=True)
