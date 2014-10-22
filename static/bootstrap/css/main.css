@@ -1,0 +1,42 @@
+th{
+    text-align: center;
+}
+.btn-mine{
+    color: #ffffff;
+    background-color: #2aabd2;
+    border-color: #2aabd2;
+    border-radius: 0;
+}
+#user_name:hover,
+#login_out:hover{
+    color: #000000;
+    background-color:#28a4c9;
+    border-color: #245269;
+}
+
+.btn-mine:hover,
+.btn-mine:focus,
+.btn-mine:active,
+.btn-mine.active {
+  color: #000000;
+  background-color:#245269;
+  border-color: #245269;
+}
+.navbar-mine{
+    color: #ffffff;
+    background-color: #2aabd2;
+    border-color: #ccc;
+    border-radius: 0;
+}
+.navbar-default
+.navbar-brand {
+color: #000000;
+    font-size: 34px;
+}
+.col-md-2{
+    width: 12%;
+}
+.col-md-10{
+    width: 88%;
+}
+

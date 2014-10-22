@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
+import hashlib
 # Create your models here.
 
 class MerchantManager(BaseUserManager):
@@ -30,6 +31,7 @@ class MerchantManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+
 class Sender(models.Model):
     phone = models.CharField(max_length=15, unique=True)
     nick = models.CharField(max_length=20, null=True, blank=True, default="sender")
@@ -42,6 +44,7 @@ class Sender(models.Model):
 
     def __unicode__(self):
         return  self.phone
+
 
 class Merchant(AbstractBaseUser):
     name = models.CharField(max_length=50)
@@ -73,7 +76,22 @@ class Merchant(AbstractBaseUser):
     objects = MerchantManager()
 
     def __unicode__(self):
-        return  self.alin_account
+        return self.alin_account
+
+    def is_authenticated(self):
+        return True
+
+    def hashed_password(self, password=None):
+        if not password:
+            return self.password
+        else:
+            return hashlib.md5(password).hexdigest()
+
+    def check_password(self, password):
+        if self.hashed_password(password) == self.password:
+            return True
+        return False
+
     class Meta:
         app_label = 'CronOrder'
 
@@ -95,7 +113,6 @@ class DayOrder(models.Model):
     bind_sender = models.ForeignKey(Sender, blank=True, null=True, related_name="order")
     finish_by = models.CharField(max_length=20, blank=True, null=True)
 
-
     def __unicode__(self):
         return self.order_id_alin
 
@@ -107,5 +124,3 @@ class Dish(models.Model):
 
     def __unicode__(self):
         return  self.dish_name
-
-

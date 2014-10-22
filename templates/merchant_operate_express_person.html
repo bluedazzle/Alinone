@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+{% block define %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+             <p class="text-center" style="font-size:21px;">现有物流人员</p>
+         </div>
+    <div class="panel-body">
+             <table class="table table-bordered text-center">
+                 <tr>
+                     <th>姓名</th>
+                     <th>联系方式</th>
+                     <th></th>
+                 </tr>
+                 {% for person in express_people %}
+                 <tr>
+                     <td>{{  person.nick }}</td>
+                     <td>{{  person.phone }}</td>
+                     <td>
+                         <a role="button" class="btn btn-primary btn-sm">操作</a>
+                     </td>
+                 </tr>
+                 {% endfor %}
+             </table>
+        <a role="button" class="btn btn-primary btn-sm" style="margin-left: 960px;">添加</a>
+        </div>
+</div>
+{% endblock define %}
+
+</body>
+</html>

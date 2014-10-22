@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for AlinSite project.
 
@@ -36,9 +37,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'AlinApi',
     'CronOrder',
-
+    'merchant_page',
+    'AlinApi',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -50,6 +51,13 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
+
+#自定义验证后台
+# AUTHENTICATION_BACKENDS = (
+#
+#     'CronOrder.auth.MyCustomBackend',
+#
+# )
 
 ROOT_URLCONF = 'AlinSite.urls'
 
@@ -64,7 +72,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'alinone',
         'USER': 'postgres',                      # Not used with sqlite3.
-        'PASSWORD': '123456',                  # Not used with sqlite3.
+        'PASSWORD': 'GDBDYL886',                  # Not used with sqlite3.
         'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '5433',
     }
@@ -90,6 +98,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 TEMPLATE_DIRS = (
-    #os.path.join(BASE_DIR,  'templates'),
-    ("/home/RaPoSpectre/PycharmProjects/AlinSite/templates"),
+    os.path.join(BASE_DIR,  'templates'),
 )
+
+CSS_DIR = './static/bootstrap/css/'
+JS_DIR = './static/bootstrap/js/'
+
