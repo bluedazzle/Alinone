@@ -25,3 +25,5 @@ def createqr(type, qrtext):
     img.save(savename)
     return savename
 
+res =createqr(2, '00000001')
+print res

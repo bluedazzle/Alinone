@@ -18,11 +18,12 @@ def bindmerchant(req):
     body = {}
     #try:
     if req.method == 'POST':
+        print str(req.body)
         reqdata = simplejson.loads(req.body)
         timestamp = reqdata['time_stamp']
         merchantid = reqdata['merchant_id']
         privatetoken = reqdata['private_token']
-        reqtime = datetime.datetime.fromtimestamp(timestamp)
+        reqtime = datetime.datetime.fromtimestamp(float(timestamp))
         now = datetime.datetime.now()
         detla = now - reqtime
         if detla <= datetime.timedelta(seconds = 300):
@@ -40,6 +41,7 @@ def bindmerchant(req):
                         body['merchant_name'] = bind_merchant.name
                         body['merchant_id'] = bind_merchant.id
                         bind_merchant.save()
+                        print body
                         return HttpResponse(encodejson(1, body))
                     else:
                         return HttpResponse(encodejson(6, body))
