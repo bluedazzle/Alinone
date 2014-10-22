@@ -154,6 +154,7 @@ def bindorders(req):
     body = {}
     status = 1
     faillist = []
+    bindlist = []
     if req.method == 'POST':
         reqdata = simplejson.loads(req.body)
         orderlist = reqdata['orders_id']
@@ -168,12 +169,28 @@ def bindorders(req):
             for itm in orderlist:
                 bindorder = DayOrder.objects.get(order_id_alin = str(itm['order_id']))
                 if bindorder is not None:
+                    order = {}
                     # print currentuser.sender.all()
                     # print bindorder.merchant
                     if bindorder.merchant in currentuser.sender.all():
+                        dishs = []
                         bindorder.bind_sender = currentuser
                         bindorder.status = 3
                         bindorder.save()
+                        order['id'] = str(bindorder.order_id_alin)
+                        order['name'] = str(bindorder.merchant.name)
+                        order['merchant_id'] = '%08i' % bindorder.merchant.id
+                        order['phone'] = str(bindorder.phone)
+                        order['address'] = str(bindorder.address)
+                        dishlist = bindorder.dishs.all()
+                        for it in dishlist:
+                            dish = {}
+                            dish['name'] = it.dish_name
+                            dish['count'] = it.dish_count
+                            dish['price'] = it.dish_price
+                            dishs.append(copy.copy(dish))
+                        order['dish_list'] = dishs
+                        bindlist.append(copy.copy(order))
                     else:
                         status = 13
                         faillist.append(copy.copy(itm['order_id']))
@@ -182,6 +199,7 @@ def bindorders(req):
                     status = 4
                     faillist.append(copy.copy(itm['order_id']))
             body['fail_list'] = faillist
+            body['bind_list'] = bindlist
             return HttpResponse(encodejson(status, body))
         else:
             return HttpResponse(encodejson(7, body))
@@ -288,9 +306,19 @@ def searchmeal(req):
                 return HttpResponse(encodejson(7, body))
             for itm in meals:
                 mealdic = {}
+                disharr = []
                 mealdic['name'] = itm.merchant.name
                 mealdic['address'] = itm.merchant.address
                 mealdic['status'] = itm.status
+                dishlist = itm.dishs.all()
+                for it in dishlist:
+
+                    dish = {}
+                    dish['name'] = it.dish_name
+                    dish['count'] = it.dish_count
+                    dish['price'] = it.dish_price
+                    disharr.append(copy.copy(dish))
+                mealdic['dishs'] = disharr
                 if itm.status == 3:
                     mealdic['sender_name'] = itm.bind_sender.nick
                     if itm.bind_sender.update_time is None:
