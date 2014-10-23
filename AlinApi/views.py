@@ -3,6 +3,7 @@ from django.http import Http404
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from AlinApi.fixlnglat import *
+from AlinApi.method import *
 import simplejson
 import datetime
 import random
@@ -31,7 +32,7 @@ def bindmerchant(req):
             if current_user is not None:
                 lasttime = current_user.active_time.replace(tzinfo = None)
                 if not isactive(lasttime):
-                    return HttpResponse(encodejson(5, body))
+                    return HttpResponse(encodejson(5, body), content_type="application/json")
                 current_user.active_time = datetime.datetime.now()
                 current_user.save()
                 bind_merchant = Merchant.objects.get(id = int(merchantid))
@@ -39,18 +40,18 @@ def bindmerchant(req):
                     if current_user not in bind_merchant.bind_sender.all():
                         bind_merchant.bind_sender.add(current_user)
                         body['merchant_name'] = bind_merchant.name
-                        body['merchant_id'] = bind_merchant.id
+                        body['merchant_id'] = str('%08i' % bind_merchant.id)
                         bind_merchant.save()
                         print body
-                        return HttpResponse(encodejson(1, body))
+                        return HttpResponse(encodejson(1, body), content_type="application/json")
                     else:
-                        return HttpResponse(encodejson(6, body))
+                        return HttpResponse(encodejson(6, body), content_type="application/json")
                 else:
-                    return HttpResponse(encodejson(7, body))
+                    return HttpResponse(encodejson(7, body), content_type="application/json")
             else:
-                return HttpResponse(encodejson(7, body))
+                return HttpResponse(encodejson(7, body), content_type="application/json")
         else:
-            return HttpResponse(encodejson(5, body))
+            return HttpResponse(encodejson(5, body), content_type="application/json")
     else:
         return HttpResponse('no get')
     #except:
@@ -69,15 +70,15 @@ def unbindmerchant(req):
         if currentuser is not None:
             lasttime = currentuser.active_time.replace(tzinfo = None)
             if not isactive(lasttime):
-                return HttpResponse(encodejson(5, body))
+                return HttpResponse(encodejson(5, body), content_type="application/json")
             currentuser.active_time = datetime.datetime.now()
             currentuser.save()
             unbindm = Merchant.objects.get(id = int(merchantid))
             unbindm.bind_sender.remove(currentuser)
             unbindm.save()
-            return HttpResponse(encodejson(1, body))
+            return HttpResponse(encodejson(1, body), content_type="application/json")
         else:
-            return HttpResponse(encodejson(7, body))
+            return HttpResponse(encodejson(7, body), content_type="application/json")
 
     else:
         raise Http404
@@ -94,7 +95,7 @@ def finishorder(req):
         if currentuser is not None:
             lasttime = currentuser.active_time.replace(tzinfo = None)
             if not isactive(lasttime):
-                return HttpResponse(encodejson(5, body))
+                return HttpResponse(encodejson(5, body), content_type="application/json")
             currentuser.active_time = datetime.datetime.now()
             currentuser.save()
             curentorders = currentuser.order.all()
@@ -113,13 +114,13 @@ def finishorder(req):
                     item.save()
             currentuser.order.clear()
             currentuser.save()
-            return HttpResponse(encodejson(1, body))
+            return HttpResponse(encodejson(1, body), content_type="application/json")
             #if
             #for itm in orderlist:
             #    newobj = DayOrder.objects.get(order_id_alin = str(itm['order_id']))
             #    if newobj is not None:
         else:
-            return HttpResponse(encodejson(7, body))
+            return HttpResponse(encodejson(7, body), content_type="application/json")
     else:
         raise Http404
 
@@ -139,15 +140,15 @@ def renewgps(req):
         if currentuser is not None:
             lasttime = currentuser.active_time.replace(tzinfo = None)
             if not isactive(lasttime):
-                return HttpResponse(encodejson(5, body))
+                return HttpResponse(encodejson(5, body), content_type="application/json")
             currentuser.lng = float(lng)
             currentuser.lat = float(lat)
             currentuser.active_time = nowtime
             currentuser.update_time = nowtime
             currentuser.save()
-            return HttpResponse(encodejson(1, body))
+            return HttpResponse(encodejson(1, body), content_type="application/json")
         else:
-            return HttpResponse(encodejson(7, body))
+            return HttpResponse(encodejson(7, body), content_type="application/json")
     else:
         raise Http404
 
@@ -165,7 +166,7 @@ def bindorders(req):
         if currentuser is not None:
             lasttime = currentuser.active_time.replace(tzinfo = None)
             if not isactive(lasttime):
-                return HttpResponse(encodejson(5, body))
+                return HttpResponse(encodejson(5, body), content_type="application/json")
             currentuser.active_time = datetime.datetime.now()
             currentuser.save()
             for itm in orderlist:
@@ -179,9 +180,9 @@ def bindorders(req):
                         bindorder.bind_sender = currentuser
                         bindorder.status = 3
                         bindorder.save()
-                        order['id'] = str(bindorder.order_id_alin)
+                        order['order_id'] = str(bindorder.order_id_alin)
                         order['name'] = str(bindorder.merchant.name)
-                        order['merchant_id'] = '%08i' % bindorder.merchant.id
+                        order['merchant_id'] = str('%08i' % bindorder.merchant.id)
                         order['phone'] = str(bindorder.phone)
                         order['address'] = str(bindorder.address)
                         dishlist = bindorder.dishs.all()
@@ -202,9 +203,9 @@ def bindorders(req):
                     faillist.append(copy.copy(itm['order_id']))
             body['fail_list'] = faillist
             body['bind_list'] = bindlist
-            return HttpResponse(encodejson(status, body))
+            return HttpResponse(encodejson(status, body), content_type="application/json")
         else:
-            return HttpResponse(encodejson(7, body))
+            return HttpResponse(encodejson(7, body), content_type="application/json")
     else:
         raise Http404
 
@@ -219,21 +220,21 @@ def senderinfo(req):
         if currentuser is not None:
             lasttime = currentuser.active_time.replace(tzinfo = None)
             if not isactive(lasttime):
-                return HttpResponse(encodejson(5, body))
+                return HttpResponse(encodejson(5, body), content_type="application/json")
             currentuser.active_time = datetime.datetime.now()
             currentuser.save()
             bindmerchants = currentuser.sender.all()
             for itm in bindmerchants:
                 finishorders = DayOrder.objects.filter(finish_by = str(currentuser.phone), merchant = itm)
                 newinfo = {}
-                newinfo['merchant_id'] = '%08i' % itm.id
+                newinfo['merchant_id'] = str('%08i' % itm.id)
                 newinfo['merchant_name'] = itm.name
                 newinfo['sended'] = int(finishorders.count())
                 merchantlist.append(copy.copy(newinfo))
             body['merchants'] = merchantlist
-            return HttpResponse(encodejson(1, body))
+            return HttpResponse(encodejson(1, body), content_type="application/json")
         else:
-            return HttpResponse(encodejson(7, body))
+            return HttpResponse(encodejson(7, body), content_type="application/json")
     else:
         raise Http404
 
@@ -252,11 +253,11 @@ def login(req):
                 sender.active_time = datetime.datetime.now()
                 sender.save()
                 body["private_token"] = mytoken
-                return HttpResponse(encodejson(1, body))
+                return HttpResponse(encodejson(1, body), content_type="application/json")
             else:
-                return HttpResponse(encodejson(4, body))
+                return HttpResponse(encodejson(4, body), content_type="application/json")
         else:
-            return HttpResponse(encodejson(7, body))
+            return HttpResponse(encodejson(7, body), content_type="application/json")
     else:
         raise Http404
 
@@ -279,11 +280,11 @@ def register(req):
                 newsender.private_token = mytoken
                 newsender.save()
                 body["private_token"] = mytoken
-                return HttpResponse(encodejson(1, body))
+                return HttpResponse(encodejson(1, body), content_type="application/json")
             else:
-                return HttpResponse(encodejson(12, body))
+                return HttpResponse(encodejson(12, body), content_type="application/json")
         else:
-            return HttpResponse(encodejson(6, body))
+            return HttpResponse(encodejson(6, body), content_type="application/json")
     else:
         raise Http404
 
@@ -295,7 +296,7 @@ def searchmeal(req):
     if req.method == 'GET':
         reqid = str(req.META['REMOTE_ADDR'])
         if reqid not in iplist:
-            return HttpResponse(encodejson(9, body))
+            return HttpResponse(encodejson(9, body), content_type="application/json")
         searchstr = req.REQUEST.get('search')
         if searchstr is not None:
             if len(searchstr) == 22:
@@ -305,7 +306,7 @@ def searchmeal(req):
             else:
                 meals = DayOrder.objects.filter(phone = str(searchstr))
             if meals.count() == 0:
-                return HttpResponse(encodejson(7, body))
+                return HttpResponse(encodejson(7, body), content_type="application/json")
             for itm in meals:
                 mealdic = {}
                 disharr = []
@@ -314,7 +315,6 @@ def searchmeal(req):
                 mealdic['status'] = itm.status
                 dishlist = itm.dishs.all()
                 for it in dishlist:
-
                     dish = {}
                     dish['name'] = it.dish_name
                     dish['count'] = it.dish_count
@@ -322,6 +322,8 @@ def searchmeal(req):
                     disharr.append(copy.copy(dish))
                 mealdic['dishs'] = disharr
                 if itm.status == 3:
+                    if itm.bind_sender is None:
+                        continue
                     mealdic['sender_name'] = itm.bind_sender.nick
                     if itm.bind_sender.update_time is None:
                         mealdic['isfirst'] = True
@@ -333,9 +335,80 @@ def searchmeal(req):
                         mealdic['lat'] = itm.bind_sender.lat
                 meallist.append(copy.copy(mealdic))
             body['meal_list'] = meallist
-            return HttpResponse(encodejson(1, body))
+            print body
+            return HttpResponse(encodejson(1, body), content_type="application/json")
+        else:
+            return HttpResponse(encodejson(7, body))
+    else:
+        raise Http404
+
+@csrf_exempt
+def changepasswd(req):
+    if req.method == 'POST':
+        body = {}
+        reqdata = simplejson.loads(req.body)
+        privatetoken = reqdata['private_token']
+        passwd = reqdata['password']
+        new_passwd = reqdata['new_password']
+        currentuserset = Sender.objects.filter(private_token = privatetoken)
+        if currentuserset.count() > 0:
+            currentuser = currentuserset[0]
+            lasttime = currentuser.active_time.replace(tzinfo = None)
+            if not isactive(lasttime):
+                return HttpResponse(encodejson(5, body), content_type="application/json")
+            if str(currentuser.passwd) == str(passwd):
+                currentuser.passwd = new_passwd
+                currentuser.save()
+                return HttpResponse(encodejson(1, body), content_type="application/json")
+            else:
+                return HttpResponse(encodejson(4, body), content_type="application/json")
+        else:
+            return HttpResponse(encodejson(7, body), content_type="application/json")
+    else:
+        raise Http404
 
 
+def forgetpasswd(req):
+    body = {}
+    if req.method == 'POST':
+        reqdata = simplejson.loads(req.body)
+        phone = reqdata['phone']
+        currentuserset = Sender.objects.filter(phone = phone)
+        if currentuserset.count() > 0:
+            currentuser = currentuserset[0]
+            verify = createverfiycode()
+            sendverifycode(verify, currentuser.phone)
+            currentuser.is_verify = True
+            currentuser.verify_code = verify
+            currentuser.save()
+            return HttpResponse(encodejson(1, body), content_type="application/json")
+        else:
+            return HttpResponse(encodejson(7, body), content_type="application/json")
+    else:
+        raise Http404
+
+def newpassword(req):
+    body={}
+    if req.method == 'POST':
+        reqdata = simplejson.loads(req.body)
+        vercode = reqdata['verify_code']
+        newpasswd = reqdata['new_password']
+        phone = reqdata['phone']
+        currentuserset = Sender.objects.filter(phone = phone)
+        if currentuserset.count() > 0:
+            currentuser = currentuserset[0]
+            if str(currentuser.verfiy_code) == str(vercode):
+                currentuser.passwd = newpasswd
+                currentuser.is_verify = False
+                currentuser.verify_code = ''
+                currentuser.save()
+                return HttpResponse(encodejson(1, body), content_type="application/json")
+            else:
+                return HttpResponse(encodejson(12, body), content_type="application/json")
+        else:
+            return HttpResponse(encodejson(7, body), content_type="application/json")
+    else:
+        raise Http404
 
 
 

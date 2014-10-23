@@ -31,6 +31,13 @@
 |02|饿了么|
 |03|美团外卖|
 
+##**二维码生成**
+|参数|平台|
+| --------------  | :---: |
+|type|生成类型：1、订单；1、绑定|
+|qrtext|订单号 & 商家ID|
+
+
 ##**物流人员注册**
 #####物流人员注册
 ```
@@ -184,3 +191,71 @@ POST /sender/info
 {"status":1,"body":{"merchants":[{"merchant_id":00000001,"merchant_name":"burgerking","sended":50},{"merchant_id":00000001,"merchant_name":"burgerking","sended":50}]}}
 ```
 
+##**查询**
+#####查询外卖信息
+```
+POST /website/search
+```
+###**Parameters**
+* search(_Required_|string)-订单号或手机号
+###**Request**
+```
+{“search”:"18215606355"}
+```
+###**Return**
+```
+{"status":1,"body":{"meal_list":[{"status":3,"update_time":"2014-10-19 20:11:11+08:00","sender_name":"sender","address":null,"lat":108.51234,"lng":25.12387,"name":"burgerking"},{"status":3,"update_time":"2014-10-19 20:11:11+08:00","sender_name":"sender","address":null,"lat":108.51234,"lng":25.12387,"name":"burgerking"}]}}
+or
+{"status":1,"body":{"meal_list":[{"status":2,"name":"burgerking","address":"test"}]}}
+or
+{"status":1,"body":{"meal_list":[{"status":1,"name":"burgerking","address":"test"}]}}
+or
+{"status"9,"body":{}}
+```
+##**更改密码**
+#####物流人员更改密码
+```
+POST /sender/change_password
+```
+###**Parameters**
+* private_token(_Required_|string)-当前用户token
+* password(_Required_|string)-当前用户密码
+* new_password(_Required_|string)-新密码
+###**Request**
+```
+{"private_token":"18215606355","password":"123456","new_password":"1234567"}
+```
+###**Return**
+```
+{"status":1,"body":{}}
+```
+
+##**忘记密码**
+#####物流人员忘记密码
+```
+POST /sender/forget_password
+POST /sender/new_password
+```
+###**Parameters**
+* phone(_Required_|string)-用户帐号
+###**Request**
+```
+{"phone":"18215606355"}
+```
+###**Return**
+```
+{"status":1,"body":{}}
+```
+
+###**Parameters**
+* verify_code(_Required_|string)-验证码
+* phone(_Required_|string)-用户帐号
+* new_password(_Required_|string)-新密码
+###**Request**
+```
+{"phone":"18215606355","verify_code":"123456","new_password":"1234567"}
+```
+###**Return**
+```
+{"status":1,"body":{}}
+```

@@ -41,6 +41,8 @@ class Sender(models.Model):
     update_time = models.DateTimeField(max_length=30, blank=True, null=True)
     private_token = models.CharField(max_length=32, unique=True, null=True, blank=True)
     active_time = models.DateTimeField(max_length=30, blank=True, null=True)
+    verify_code = models.CharField(max_length=6, blank=True, null=True)
+    is_verify = models.BooleanField(default=False)
 
     def __unicode__(self):
         return  self.phone
