@@ -310,9 +310,13 @@ def searchmeal(req):
             for itm in meals:
                 mealdic = {}
                 disharr = []
+                mealdic['order_id'] = str(itm.order_id_alin)
+                mealdic['phone'] = str(itm.phone)
                 mealdic['name'] = itm.merchant.name
                 mealdic['address'] = itm.merchant.address
                 mealdic['status'] = itm.status
+                mealdic['sender_name'] = str(itm.finish_by)
+                mealdic['update_time'] = str(timezone.localtime(itm.order_time))
                 dishlist = itm.dishs.all()
                 for it in dishlist:
                     dish = {}
