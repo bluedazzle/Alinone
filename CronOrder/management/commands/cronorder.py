@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
 from CronOrder.crontest import *
+from CronOrder.ele import *
 from QRcode.method import *
 from CronOrder.models import *
 import os, sys
@@ -10,7 +11,7 @@ i = 0
 def createnew(merid, autoid):
     no = DayOrder()
     no.order_id_alin = str(createAlinOrderNum(1, merid, autoid))
-    createqr(1, createAlinOrderNum(1, merid, autoid))
+    createqr(1, createAlinOrderNum(2, merid, autoid))
     no.address = 'kb363' + str(autoid)
     no.order_id_old = '0000' + str(autoid)
     no.order_time = datetime.datetime.now()
@@ -32,7 +33,8 @@ def tick():
     mer = Merchant.objects.filter(id = i)[0]
     if mer.is_online is True:
         print('%s is online' % mer.name)
-        res = createnew(2, int(mer.todaynum))
+        # res = createnew(2, int(mer.todaynum))
+        res = catcheleorder(2, int(mer.todaynum))
         mer.todaynum += 1
         mer.save()
         print res
