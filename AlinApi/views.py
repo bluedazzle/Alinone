@@ -288,9 +288,9 @@ def register(req):
     else:
         raise Http404
 
-# @csrf_exempt
+@csrf_exempt
 def searchmeal(req):
-    iplist = ['127.0.0.1', 'localhost', '100.64.132.200']
+    iplist = ['127.0.0.1', 'localhost', '100.64.132.200', '125.71.229.18']
     body = {}
     meallist = []
     if req.method == 'GET':
