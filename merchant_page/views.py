@@ -2,12 +2,13 @@
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from auth import *
 from CronOrder.models import *
+import json
 import hashlib
 import urllib
-
 
 
 # Create your views here.
@@ -69,7 +70,7 @@ def operate_new(request):
             try:
                 merchant0 = request.session.get('username')
                 merchant = Merchant.objects.get(alin_account=merchant0)
-                order_detail = DayOrder.objects.filter(merchant=merchant, status=1)
+                order_detail = DayOrder.objects.order_by('-order_time').filter(merchant=merchant, status=1)
                 dish_list = Dish.objects.all
                 order_detail = pingtai_name(order_detail)
             except DayOrder.DoesNotExist:
@@ -85,7 +86,7 @@ def operate_get(request):
             try:
                 merchant0 = request.session.get('username')
                 merchant = Merchant.objects.get(alin_account=merchant0)
-                order_detail = DayOrder.objects.filter(merchant=merchant, status=2)
+                order_detail = DayOrder.objects.order_by('-order_time').filter(merchant=merchant, status=2)
                 order_detail = pingtai_name(order_detail)
             except DayOrder.DoesNotExist:
                 pass
@@ -99,7 +100,7 @@ def operate_paisong(request):
     merchant_id = request.session['username']
     merchant = Merchant.objects.get(alin_account=merchant_id)
     express_people = merchant.bind_sender.all()
-    orders = DayOrder.objects.filter(merchant=merchant, status=3)
+    orders = DayOrder.objects.order_by('-order_time').filter(merchant=merchant, status=3)
     orders = pingtai_name(orders)
     return render_to_response('merchant_operate_paisong.html', {'orders': orders, 'express_people': express_people})
 
@@ -109,15 +110,15 @@ def operate_pingtai(request):
     merchant = Merchant.objects.get(alin_account=merchant_id)
     items = []
     if merchant.tao_account:
-        item = {'name': '淘宝',
+        item = {'name': '1',
                 'account': merchant.tao_account}
         items.append(item)
     if merchant.mei_account:
-        item = {'name': '美团',
+        item = {'name': '2',
                 'account': merchant.mei_account}
         items.append(item)
     if merchant.ele_account:
-        item = {'name': '饿了么',
+        item = {'name': '3',
                 'account': merchant.ele_account}
         items.append(item)
 
@@ -130,7 +131,7 @@ def operate_delete(request):
             try:
                 merchant0 = request.session.get('username')
                 merchant = Merchant.objects.get(alin_account=merchant0)
-                order_detail = DayOrder.objects.filter(merchant=merchant, status=5)
+                order_detail = DayOrder.objects.order_by('-order_time').filter(merchant=merchant, status=5)
                 order_detail = pingtai_name(order_detail)
             except DayOrder.DoesNotExist:
                 pass
@@ -147,6 +148,10 @@ def operate_express_person(request):
     return render_to_response('merchant_operate_express_person.html', {'express_people': express_people})
 
 
+def printer_setting(request):
+    return render_to_response('merchant_printer_setting.html')
+
+
 def pingtai_name(orders):
     for item in orders:
         if item.platform == 1:
@@ -157,5 +162,80 @@ def pingtai_name(orders):
             item.platform = "饿了么"
         else:
             item.platform = item.platform
-
     return orders
+
+
+def print_one(request, order):
+    try:
+        order_detail = DayOrder.objects.get(order_id_alin=order)
+        return render_to_response('print.html', {'item': order_detail})
+    except DayOrder.DoesNotExist:
+        pass
+
+
+def print_all(request):
+    try:
+        merchant_id = request.session['username']
+        merchant = Merchant.objects.get(alin_account=merchant_id)
+        order_detail = DayOrder.objects.filter(merchant=merchant, status=1)
+        return render_to_response('print_all.html', {'items': order_detail})
+    except DayOrder.DoesNotExist:
+        pass
+
+
+def platform_delete(request, name):
+    merchant_id = request.session['username']
+    merchant = Merchant.objects.get(alin_account=merchant_id)
+    if name == '1':
+        merchant.tao_account = ''
+        merchant.tao_passwd = ''
+        merchant.save()
+    elif name == '2':
+        merchant.mei_account = ''
+        merchant.mei_passwd = ''
+        merchant.save()
+    elif name == '3':
+        merchant.ele_account = ''
+        merchant.ele_passwd = ''
+        merchant.save()
+    return HttpResponseRedirect("operate_pingtai")
+
+
+def add_platform_page(request):
+    return render_to_response('merchant_add_platform.html')
+
+
+@csrf_exempt
+def add_platform(request):
+    platform = request.POST.get('platform')
+    account = request.POST.get('account')
+    password = request.POST.get('password')
+    merchant_id = request.session['username']
+    merchant = Merchant.objects.get(alin_account=merchant_id)
+    if platform == '1' and not merchant.tao_account:
+        merchant.tao_account = account
+        merchant.tao_passwd = password
+        merchant.save()
+    elif platform == '2' and not merchant.mei_account:
+        merchant.mei_account = account
+        merchant.mei_passwd = password
+        merchant.save()
+    elif platform == '3' and not merchant.ele_account:
+        merchant.ele_account = account
+        merchant.ele_passwd = password
+        merchant.save()
+    else:
+        return render_to_response('merchant_add_platform.html', {'fault': 'x'})
+    return HttpResponseRedirect('operate_pingtai')
+
+
+def delete_sender(request, phone):
+    merchant_id = request.session['username']
+    merchant = Merchant.objects.get(alin_account=merchant_id)
+    sender = Sender.objects.get(phone=phone)
+    merchant.bind_sender.remove(sender)
+    return HttpResponseRedirect("operate_express_person")
+
+
+def add_sender_page(request):
+    return render_to_response('merchant_add_sender.html')

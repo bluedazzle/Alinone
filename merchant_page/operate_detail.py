@@ -19,7 +19,6 @@ def fuwei(request):
     return HttpResponseRedirect("operate_new")
 
 
-
 def jieshouone(request, order):
     order_detail = DayOrder.objects.get(order_id_alin=order)
     order_detail.status = 2

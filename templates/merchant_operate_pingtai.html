@@ -12,6 +12,7 @@
              <p class="text-center" style="font-size:21px;">目前绑定的平台</p>
          </div>
     <div class="panel-body">
+    {% if items %}
              <table class="table table-bordered text-center">
                  <tr>
                      <th>名称</th>
@@ -20,18 +21,28 @@
                  </tr>
                  {% for item in items %}
                  <tr>
-                     <td>{{ item.name }}</td>
+                 {% if item.name == '1' %}
+                     <td>淘点点</td>
+                 {% elif item.name == '2' %}
+                     <td>美团</td>
+                 {% elif item.name == '3' %}
+                     <td>饿了么</td>
+                 {% endif %}
                      <td>{{ item.account }}</td>
                      <td>
-                         <a role="button" class="btn btn-primary btn-sm">删除</a>
+                         <a role="button" href="platform_delete{{ item.name }}" class="btn btn-primary btn-sm">删除</a>
                      </td>
                  </tr>
                  {% endfor %}
 
              </table>
-        <a role="button" class="btn btn-primary btn-sm" style="margin-left: 960px;">添加</a>
+    {% else  %}
+        <h3 style="text-align: center;">您目前还未绑定平台</h3>
+    {% endif %}
+        <a role="button" href="add_platform_page" class="btn btn-primary btn-lg" style="margin-left: 91%">添加</a>
         </div>
 </div>
+
 {% endblock define %}
 </body>
 </html>

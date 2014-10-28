@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block define %}
+<div class="panel panel-default" style="text-align: center">
+    <div class="panel-heading">
+             <p class="text-center" style="font-size:21px;">平台绑定</p>
+    </div>
+    {% if fault %}
+    <div class="alert alert-warning alert-dismissible" role="alert" style="text-align: center;margin-top:-20px;line-height: 0.1;">
+       <button type="button" class="close" data-dismiss="alert" style="margin-top: -7px;"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+       <strong>错误!</strong>该平台已绑定账号
+    </div>
+    {% endif %}
+    <div class="panel-body">
+  <div class="container" style="width: 700px;">
+    <div class="jumbotron">
+        <h2 style="text-align: center">添加平台</h2>
+        <form action ="add_platform" method="post">
+            <div class="input-group" style="margin-top:40px;margin-left:140px;width: 50%;">
+                <span class="input-group-addon" style=" font-size:17px;width: 30%;">平台</span>
+                <select class="form-control" name="platform" id="platform">
+                        <option value="1">淘点点</option>
+                        <option value="2">美团</option>
+                        <option value="3">饿了么</option>
+                </select>
+            </div>
+            <div class="input-group" style="margin-left:140px;width: 50%;">
+                <span class="input-group-addon" style=" font-size:17px;width: 30%;">用户名</span>
+                <input type="text" class="form-control" name="account">
+            </div>
+            <div class="input-group" style="margin-left:140px;width: 50%;">
+                <span class="input-group-addon" style="font-size:17px;width: 30%;">密码</span>
+                <input type="password" class="form-control" name="password">
+            </div>
+
+            <input class="btn btn-primary" style="font-size: 18px; margin-top: 30px;margin-bottom: -5px;" role="button" type="submit" value="确认">
+            <a role="button" href="operate_pingtai" class="btn btn-primary"style="font-size: 18px; margin-top: 30px;margin-bottom: -5px; margin-left: 30px;">返回</a>
+        </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

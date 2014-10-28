@@ -15,5 +15,7 @@ urlpatterns = patterns('',
     url(r'^test/$', views.addtest),
     url(r'^merchant/', include(merchant_page.urls)),
     url(r'^css/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.CSS_DIR}),
+    url(r'^img/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.IMG_DIR}),
     url(r'^js/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.JS_DIR}),
+    url(r'^dayin/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.DAYIN_DIR}),
 )
