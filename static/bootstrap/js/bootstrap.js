@@ -2278,3 +2278,21 @@
 
 
 }(window.jQuery);
+
+/* define by myself*/
+$(document).ready(function(){
+	dropdownOpen();//调用
+});
+/**
+* 鼠标划过就展开子菜单，免得需要点击才能展开
+*/
+function dropdownOpen() {
+
+	var $dropdownDiv = $('div.dropdown');
+
+	$dropdownDiv.mouseover(function() {
+		$(this).addClass('open');
+	}).mouseout(function() {
+		$(this).removeClass('open');
+	});
+}

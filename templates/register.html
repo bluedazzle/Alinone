@@ -6,12 +6,12 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/main.css" rel="stylesheet">
 </head>
-<body>
+<body style="text-align: center">
 <nav class="navbar navbar-inverse" role="navigation">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <a class="navbar-brand"  style="margin-left: 550px;font-size: 34px;">Alinone</a>
+            <div class="navbar-header" style="padding-left: 46%">
+                <a class="navbar-brand"  style="font-size: 34px;">Alinone</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -24,9 +24,9 @@
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
-<div class="container" style="width: 700px;margin-left: 290px;">
+<div class="container" style="width: 700px;text-align: center;margin-top: 10%; ">
     <div class="jumbotron">
-        <h2 style="padding-left: 175px;">加入Alinone</h2>
+        <h2>加入Alinone</h2>
         <form action = "" method="post">
         <div class="input-group" style="margin-top:40px;margin-left:120px;width: 50%;">
             <span class="input-group-addon" style=" font-size:17px;width: 30%;">手机号</span>
@@ -40,8 +40,16 @@
             <span class="input-group-addon" style="font-size:17px;width: 30%;">店名</span>
             <input type="text" class="form-control" name="merchant_name">
         </div>
+{#        <div class="input-group" style="margin-left:120px;width: 67%;">#}
+{#            <span class="input-group-addon" style="font-size:17px;width: 22.5%;">验证码</span>#}
+{#            <input type="text" class="form-control" name="merchant_name">#}
+{#            <span class="input-group-btn" style="margin-left: 5px;">#}
+{#                <button class="btn btn-default" type="button">获取验证码</button>#}
+{#            </span>#}
+{#        </div>#}
 
-        <input role="button" class="btn btn-primary" type="submit" value="注册" style="font-size: 18px; margin-top: 30px;margin-bottom: -5px; margin-left: 337px;">
+        <input role="button" class="btn btn-primary" type="submit" value="注册" style="font-size: 18px; margin-top: 30px;margin-bottom: -5px;">
+        <a role="button" href="login_in" class="btn btn-primary" style="font-size: 18px; margin-top: 30px;margin-bottom: -5px; margin-left: 5%;">返回</a>
         </form>
     </div>
 </div>

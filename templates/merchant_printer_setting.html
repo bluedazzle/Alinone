@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block define %}
+<div class="panel panel-default" style="text-align: center;">
+    <div class="panel-heading">
+             <p class="text-center" style="font-size:21px;">打印机设置</p>
+    </div>
+    <div class="panel-body">
+        <h3 id="printer">目前的打印机：</h3>
+{#        <p id="printer"></p>#}
+        <script>
+            var LODOP = getLodop();
+            function select_printer(){
+                localStorage['printer'] = LODOP.SELECT_PRINTER();
+                window.location.href='printer_setting';
+            }
+            $(document).ready(function(){
+                 if(localStorage['printer']){
+                     var num = parseInt(localStorage['printer']);
+                     var printer_name = LODOP.GET_PRINTER_NAME(num);
+                 }
+                else{
+                     var printer_name = LODOP.GET_PRINTER_NAME(-1)
+                 }
+                 $("#printer").append(printer_name);
+            });
+        </script>
+    </div>
+    <a role="button" class="btn btn-primary btn-lg" onclick="select_printer()" style="margin: 2%;">选择打印机</a>
+</div>
+{% endblock define %}

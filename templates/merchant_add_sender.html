@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block define %}
+<div class="panel panel-default" style="text-align: center;">
+    <div class="panel-heading">
+             <p class="text-center" style="font-size:21px;">添加快递人员</p>
+    </div>
+    {% if fault %}
+    <div class="alert alert-warning alert-dismissible" role="alert" style="text-align: center;margin-top:-20px;line-height: 0.1;">
+       <button type="button" class="close" data-dismiss="alert" style="margin-top: -7px;"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+       <strong>错误!</strong>该平台已绑定账号
+    </div>
+    {% endif %}
+    <h3 style="text-align: center;">扫描下方二维码添加快递人员</h3>
+    <img src="/img/20.png" style="padding: 25px">
+    <br/>
+    <a role="button" class="btn btn-primary btn-lg" href="operate_express_person" style=";margin-bottom: 20px">返回</a>
+{% endblock %}

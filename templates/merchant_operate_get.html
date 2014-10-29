@@ -12,6 +12,9 @@
              <p class="text-center" style="font-size:21px;">已接收订单</p>
          </div>
     <div class="panel-body">
+    {% if not items %}
+    <h3 style="text-align: center;">您未接收任何订单</h3>
+    {% else %}
              <table class="table table-bordered text-center">
                  <tr>
                      <th>订单号</th>
@@ -21,9 +24,9 @@
                      <th>订餐平台</th>
                      <th>付款</th>
                      <th>菜单</th>
-                     <th>
-                         <a role="button" class="btn btn-primary btn-sm">一键打印</a>
-                     </th>
+{#                     <th>#}
+{#                         <a role="button" class="btn btn-primary btn-sm">一键打印</a>#}
+{#                     </th>#}
                  </tr>
                  {%for item in items%}
                  <tr>
@@ -38,7 +41,7 @@
                      <td>{{ item.real_price }}</td>
                      {% endif %}
                      <td>
-                         <div class="btn-group">
+                         <div class="btn-group dropdown">
                              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">查看<span class="caret"></span>
                              </button>
                              <ul class="dropdown-menu" role="menu" style="text-align: center;">
@@ -48,12 +51,13 @@
                              </ul>
                          </div>
                      </td>
-                     <td>
-                         <a role="button" class="btn btn-primary btn-sm">打印</a>
-                     </td>
+{#                     <td>#}
+{#                         <a role="button" class="btn btn-primary btn-sm">打印</a>#}
+{#                     </td>#}
                  </tr>
                  {% endfor %}
              </table>
+          {% endif %}
         </div>
 </div>
  {% endblock define %}

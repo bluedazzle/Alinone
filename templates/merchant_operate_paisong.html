@@ -7,12 +7,22 @@
 </head>
 <body>
 {% block define %}
+    {% if not express_people %}
+    <div class="panel panel-default">
+        <div class="panel-body" style="text-align: center;">
+        <h1>您还未绑定任何快递人员</h1>
+        </div>
+    </div>
+    {% else %}
     {% for person in express_people %}
     <div class="panel panel-default">
     <div class="panel-heading">
              <p class="text-center" style="font-size:21px;">派送员：{{ person.nick }}(电话：{{ person.phone }})</p>
          </div>
     <div class="panel-body">
+    {% if not orders %}
+    <h3 style="text-align: center;">快递人员正在待命</h3>
+    {% else %}
              <table class="table table-bordered text-center">
                  <tr>
                      <th>订单号</th>
@@ -38,7 +48,7 @@
                      <td>{{ item.real_price }}</td>
                      {% endif %}
                      <td>
-                         <div class="btn-group">
+                         <div class="btn-group dropdown">
                              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">查看<span class="caret"></span>
                              </button>
                              <ul class="dropdown-menu" role="menu" style="text-align: center;">
@@ -52,8 +62,10 @@
                      {% endif %}
                  {% endfor %}
              </table>
+        {% endif %}
         </div>
     {% endfor %}
+    {% endif %}
     </div>
 {% endblock define %}
 

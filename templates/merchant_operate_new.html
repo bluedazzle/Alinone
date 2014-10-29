@@ -1,36 +1,13 @@
 {% extends 'base.html' %}
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>Allinone</title>
-{#    <link href="/css/bootstrap.min.css" rel="stylesheet">#}
-{#    <link href="/css/main.css" rel="stylesheet">#}
-</head>
-<body>
-{#<nav class="navbar navbar-default navbar-mine" role="navigation">#}
-{#        <div class="container-fluid">#}
-{#            <!-- Brand and toggle get grouped for better mobile display -->#}
-{#            <div class="navbar-header">#}
-{#                <a class="navbar-brand" href="" style="margin-left: 550px;">Alinone</a>#}
-{#            </div>#}
-{##}
-{#            <!-- Collect the nav links, forms, and other content for toggling -->#}
-{#        </div><!-- /.container-fluid -->#}
-{#</nav>#}
-{#<div class="col-md-2" style="padding-left: 0px;">#}
-{#   <div class="btn-group-vertical" style="width: 100%;">#}
-{#      <a role="button" class="btn btn-primary btn-lg btn-mine">未处理订单</a>#}
-{#      <a role="button" class="btn btn-primary btn-lg btn-mine">已接收订单</a>#}
-{#      <a role="button" class="btn btn-primary btn-lg btn-mine">派送的订单</a>#}
-{#   </div>#}
-{#</div>#}
     {% block define %}
     <div class="panel panel-default">
     <div class="panel-heading">
              <p class="text-center" style="font-size:21px;">未处理订单</p>
          </div>
     <div class="panel-body">
+       {% if not items  %}
+        <h3 style="text-align: center;">您未收到任何订单</h3>
+       {% else %}
              <table class="table table-bordered text-center">
                  <tr>
                      <th>订单号</th>
@@ -41,8 +18,9 @@
                      <th>付款</th>
                      <th>菜单</th>
                      <th>
-                         <a href="jieshouall" role="button" class="btn btn-primary btn-sm">一键接收</a>
-                         <a href="jujueall" role="button" class="btn btn-primary btn-sm">一键拒绝</a>
+                         <a href="jieshouall" id="all_print" role="button" class="btn btn-primary btn-sm">一键接收</a>
+{#                         <iframe id="all" name="all" src="print_all" frameborder='no' border='0' width="0" height="0"></iframe>#}
+                         <a onclick="jujueall()" role="button" class="btn btn-primary btn-sm" style="background-color: #737373">一键拒绝</a>
                      </th>
                  </tr>
                  {%for item in items%}
@@ -58,7 +36,7 @@
                      <td>{{ item.real_price }}</td>
                      {% endif %}
                      <td>
-                         <div class="btn-group">
+                         <div class="btn-group dropdown">
                              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">查看<span class="caret"></span>
                              </button>
                              <ul class="dropdown-menu" role="menu" style="text-align: center;">
@@ -69,15 +47,87 @@
                          </div>
                      </td>
                      <td>
-                         <a href="jieshouone{{ item.order_id_alin }}" role="button" class="btn btn-primary btn-sm">接收</a>
-                         <a href="jujueone{{ item.order_id_alin }}" role="button" class="btn btn-primary btn-sm">拒绝</a>
+                         <a role="button" id="i{{ item.order_id_alin }}" class="btn btn-primary btn-sm">接收</a>
+{#                         <iframe id="{{ item.order_id_alin }}" name="{{ item.order_id_alin }}" src="print_one{{ item.order_id_alin }}" frameborder='no' border='0' width="0" height="0"></iframe>#}
+                         <a role="button" onclick="jujueone({{ item.order_id_alin }})" class="btn btn-primary btn-sm" style="background-color: #737373">拒绝</a>
                      </td>
+                     <script>
+                         $('#i{{ item.order_id_alin }}').click(
+                                 function(){
+                                     var LODOP=getLodop();
+                                     if(localStorage['printer']){
+                                         var num = parseInt(localStorage['printer']);
+                                         LODOP.SET_PRINTER_INDEX(num);
+                                     }
+                                     LODOP.SET_PRINT_PAGESIZE(0,5800,2100,"A4");
+{#                                     LODOP. ADD_PRINT_HTM (0,0, 300,100,"<hr><font size=5>hello </font>");#}
+                                     LODOP.ADD_PRINT_HTM(0,0,'100%','70%',"<h1>{{ item.phone }}</h1>"
+                                     +"<h3 style=\"text-align: center;\">{{ item.merchant.name }}</h3>"
+                                     +"<p style=\"font-size: 13px;\">订单号：{{ item.order_id_alin }}<br/>"
+                                     +" 时间: {{ item.order_time|date:"Y-m-d H:i:s" }}<br/>"
+                                     +" 平台: {{ item.platform }}<br/>"
+                                     +" 菜单:<p/>"
+                                     +"--------------------------"
+                                              {% for dish in item.dishs.all %}
+                                     +" <p style=\"font-size: 10px;\">{{ dish.dish_name }} X {{ dish.dish_count }}  &nbsp;&nbsp; {{ dish.dish_price }}元/份</p>"
+                                              {% endfor %}
+                                     +"--------------------------"
+                                     +"<p style=\"font-size: 13px;\">地址: {{ item.address }}<br/>"
+                                     +" 优惠: {{ item.promotion }}<br/>"
+                                     +" 电话: {{ item.phone }}<br/>"
+                                             {% if item.pay == True %}
+                                     +"付款:{{ item.real_price }}(已付)</p>"
+                                             {% else %}
+                                     +"付款:{{ item.real_price }}</p>"
+                                             {% endif %}
+                                     +"<img src=\"/img/20.png\" style=\"height: 100px;width: 100px;\">"
+                                     +"<br/>"
+                                     +"==================<br/>");
+                                     LODOP.PREVIEW();
+                                 }
+                         )
+                     </script>
                  </tr>
                  {% endfor %}
              </table>
+            <script>
+                         $('#all_print').click(
+                                 function(){
+                                     var LODOP=getLodop();
+                                     if(localStorage['printer']){
+                                         var num = parseInt(localStorage['printer']);
+                                         LODOP.SET_PRINTER_INDEX(num);
+                                     }
+                                     LODOP.SET_PRINT_PAGESIZE(0,5800,2970,"A4");
+{#                                     LODOP. ADD_PRINT_HTM (0,0, 300,100,"<hr><font size=5>hello </font>");#}
+
+                                     LODOP.ADD_PRINT_HTM(0,0,'100%','70%', "{% for item in items %}{% for item in items %}<h1>{{ item.phone }}</h1>"
+                                     +"<h3 style=\"text-align: center;\">{{ item.merchant.name }}</h3>"
+                                     +"<p style=\"font-size: 13px;\">订单号：{{ item.order_id_alin }}<br/>"
+                                     +" 时间: {{ item.order_time|date:"Y-m-d H:i:s" }}<br/>"
+                                     +" 平台: {{ item.platform }}<br/>"
+                                     +" 菜单:</p>"
+                                     +"－－－－－－－－－"
+                                              {% for dish in item.dishs.all %}
+                                     +" <p style=\"font-size: 10px;\">{{ dish.dish_name }} X {{ dish.dish_count }}  &nbsp;&nbsp; {{ dish.dish_price }}元/份</p>"
+                                              {% endfor %}
+                                     +" －－－－－－－－－"
+                                     +"<p style=\"font-size: 13px;\">地址: {{ item.address }}<br/>"
+                                     +"优惠: {{ item.promotion }}<br/>"
+                                     +" 电话: {{ item.phone }}<br/>"
+                                             {% if item.pay == True %}
+                                     +"付款:{{ item.real_price }}(已付)</p>"
+                                             {% else %}
+                                     +"付款:{{ item.real_price }}</p>"
+                                             {% endif %}
+                                     +"<img src=\"/img/20.png\" style=\"height: 100px;width: 100px;\">"
+                                     +"<br/>"
+                                     +"==================<br/>{% endfor %}{% endfor %}");
+                                     LODOP.PREVIEW();
+                                 }
+                         )
+                     </script>
+          {% endif %}
         </div>
       </div>
     {% endblock define %}
-
-</body>
-</html>

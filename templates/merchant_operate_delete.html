@@ -12,6 +12,9 @@
              <p class="text-center" style="font-size:21px;">已取消的订单</p>
          </div>
     <div class="panel-body">
+    {% if not items %}
+    <h3 style="text-align: center;">目前还没有无效的订单</h3>
+    {% else %}
              <table class="table table-bordered text-center">
                  <tr>
                      <th>订单号</th>
@@ -20,7 +23,7 @@
                      <th>地址</th>
                      <th>订餐平台</th>
                      <th>付款</th>
-                     <th>订单详情</th>
+                     <th>菜单</th>
                  </tr>
                  {%for item in items%}
                  <tr>
@@ -31,7 +34,7 @@
                      <td>{{ item.platform }}</td>
                      <td>{{ item.real_price }}</td>
                      <td>
-                         <div class="btn-group">
+                         <div class="btn-group dropdown">
                              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">查看<span class="caret"></span>
                              </button>
                              <ul class="dropdown-menu" role="menu" style="text-align: center;">
@@ -44,6 +47,7 @@
                  </tr>
                  {% endfor %}
              </table>
+        {% endif %}
         </div>
 </div>
 {% endblock define %}
