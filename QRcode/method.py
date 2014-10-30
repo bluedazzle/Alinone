@@ -22,9 +22,10 @@ def createqr(type, qrtext):
         qr.add_data('http://www.chafanbao.com/search/result?searchtext=' + qrtext)
         filename = 'order' + str(str(time.time())[0:10]) + '.png'
         savename = BASE + '/qrimg/' + filename
-        res = DayOrder.objects.filter(order_id_alin = qrtext)
+        res = DayOrder.objects.filter(order_id_alin = str(qrtext))
         if res.count() > 0:
             res[0].qr_path = filename
+            print filename
             res[0].save()
     elif str(type) == '2':
         qrtext = '%08i' % int(qrtext)

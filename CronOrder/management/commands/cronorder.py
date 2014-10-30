@@ -3,10 +3,12 @@ from CronOrder.crontest import *
 from CronOrder.ele import *
 from QRcode.method import *
 from CronOrder.models import *
+import cookielib
 import os, sys
 from apscheduler.schedulers.blocking import BlockingScheduler
 from CronOrder.method import *
 scheduler = BlockingScheduler()
+elecookjar = cookielib.CookieJar()
 i = 0
 def createnew(merid, autoid):
     no = DayOrder()
@@ -30,15 +32,17 @@ def createnew(merid, autoid):
 def tick():
     global i
     global scheduler
+    global elecookjar
     mer = Merchant.objects.filter(id = i)[0]
     if mer.is_online is True:
         print('%s is online' % mer.name)
         # res = createnew(2, int(mer.todaynum))
-        res = catcheleorder(2, int(mer.todaynum))
-        if int(res) > 0:
-            mer.todaynum = int(res)
-            mer.save()
-            print res
+        res = catcheleorder(2, elecookjar)
+        if res is not None:
+            elecookjar = res
+        else:
+            elecookjar = None
+            # print res
     elif mer.is_online is False:
         print('%s is offline,schel will exit' % mer.name)
         scheduler.shutdown()

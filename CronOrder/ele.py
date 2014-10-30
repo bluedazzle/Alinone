@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from CronOrder.models import *
+import cookielib
 from CronOrder.method import *
 from QRcode.method import *
 from CronOrder.NetSpider import *
@@ -11,8 +12,8 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-def catcheleorder(merid, autoid):
-    auto_id = autoid
+def catcheleorder(merid, cookielist):
+    auto_id = 0
     html = ''
     # with open('abc.txt', 'r') as f1:
     #     line = f1.readline()
@@ -29,21 +30,25 @@ def catcheleorder(merid, autoid):
     a.Proxy = dip
     curmet = Merchant.objects.filter(id = merid)
     if curmet.count() == 0:
-        return -1
-    user = str(curmet[0].ele_account)
-    passwd = str(curmet[0].ele_passwd)
-    postdic = {'username': user, 'password': passwd}
-    html = a.GetResFromRequest('POST', 'http://napos.ele.me/auth/doLogin', 'utf-8', postdic, use_proxy=True)
-    print html
+        return None
+    auto_id = curmet[0].todaynum
+    if cookielist is None:
+        user = str(curmet[0].ele_account)
+        passwd = str(curmet[0].ele_passwd)
+        postdic = {'username': user, 'password': passwd}
+        html = a.GetResFromRequest('POST', 'http://napos.ele.me/auth/doLogin', 'utf-8', postdic, use_proxy=True)
+        print html
     # if 'success' not in html:
-    time.sleep(2)
+        time.sleep(2)
+    else:
+        a.CookieList = cookielist
     print a.CookieList
     html = a.GetResFromRequest('GET', 'http://napos.ele.me/dashboard/index/list/unprocessed_waimai', 'utf-8', use_proxy=True)
     soup = BeautifulSoup(html)
     intro = soup.find('ul', attrs={'id': 'list_items'})
     # print intro
     if intro is None:
-        return -2
+        return None
     res = intro.findAll('li')
     for item in res:
         neworder = DayOrder()
@@ -66,6 +71,8 @@ def catcheleorder(merid, autoid):
         newid = createAlinOrderNum(2, merid, auto_id)
         createqr(1, newid)
         auto_id += 1
+        curmet[0].todaynum = auto_id
+        curmet[0].save()
         address = detail.string
         neworder.address = address
         neworder.order_id_alin = newid
@@ -96,4 +103,4 @@ def catcheleorder(merid, autoid):
             newdish.dish_price = float(dishprice[i].string)
             newdish.order = DayOrder.objects.get(order_id_alin = newid)
             newdish.save()
-    return auto_id
+    return a.CookieList
