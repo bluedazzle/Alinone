@@ -4,11 +4,11 @@ from CronOrder.ele import *
 from QRcode.method import *
 from CronOrder.models import *
 import cookielib
-import os, sys
+import os,sys
 from apscheduler.schedulers.blocking import BlockingScheduler
 from CronOrder.method import *
 scheduler = BlockingScheduler()
-elecookjar = cookielib.CookieJar()
+elecookjar = None
 i = 0
 def createnew(merid, autoid):
     no = DayOrder()
@@ -42,7 +42,7 @@ def tick():
             elecookjar = res
         else:
             elecookjar = None
-            # print res
+        # print res
     elif mer.is_online is False:
         print('%s is offline,schel will exit' % mer.name)
         scheduler.shutdown()

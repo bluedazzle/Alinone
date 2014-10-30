@@ -12,7 +12,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-def catcheleorder(merid, cookielist):
+def catcheleorder(merid, cookielist=None):
     auto_id = 0
     html = ''
     # with open('abc.txt', 'r') as f1:
@@ -38,15 +38,14 @@ def catcheleorder(merid, cookielist):
         postdic = {'username': user, 'password': passwd}
         html = a.GetResFromRequest('POST', 'http://napos.ele.me/auth/doLogin', 'utf-8', postdic, use_proxy=True)
         print html
-    # if 'success' not in html:
-        time.sleep(2)
     else:
         a.CookieList = cookielist
     print a.CookieList
     html = a.GetResFromRequest('GET', 'http://napos.ele.me/dashboard/index/list/unprocessed_waimai', 'utf-8', use_proxy=True)
+    # print html
     soup = BeautifulSoup(html)
     intro = soup.find('ul', attrs={'id': 'list_items'})
-    # print intro
+    print intro
     if intro is None:
         return None
     res = intro.findAll('li')
@@ -69,7 +68,7 @@ def catcheleorder(merid, cookielist):
         datetimee = datetime.datetime(*formattime[:6])
         timee = time.strftime('%Y-%m-%d %H:%M:%S', formattime)
         newid = createAlinOrderNum(2, merid, auto_id)
-        createqr(1, newid)
+        qrres = createqr(1, newid)
         auto_id += 1
         curmet[0].todaynum = auto_id
         curmet[0].save()
@@ -86,6 +85,7 @@ def catcheleorder(merid, cookielist):
         neworder.promotion = 'nothing'
         neworder.pay = onpay
         neworder.platform = 2
+        neworder.qr_path = qrres
         neworder.merchant = Merchant.objects.get(id = merid)
         neworder.save()
         print timee
