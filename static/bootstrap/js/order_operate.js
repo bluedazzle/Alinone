@@ -1,20 +1,3 @@
-function order_print(order_alin_account){
-//     document.getElementById(order_alin_account).focus();
-//     var page = document.getElementById(order_alin_account);
-//     page.contentWindow.print();
-//     page.contentWindow.close();
-    var LODOP=getLodop();
-	 LODOP.PRINT_INIT("");
-//	 LODOP.SET_PRINT_STYLE("FontSize",13);
-//	 LODOP.SET_PRINT_STYLE("Bold",1);
-//	 LODOP.ADD_PRINT_TEXT(50,231,260,39,"打印页面部分内容");
-	 LODOP.ADD_PRINT_HTM(0,0,'100%','100%',document.getElementById(order_alin_account).innerHTML);
-//     LODOP.SET_PRINT_PAGESIZE(1,580,2760,order_alin_account);
-    LODOP.ADD_PRINT_TEXT(0,0,58,27,"新加文本");
-    LODOP.SET_PRINT_PAGESIZE(0,5800,270,"A4");
-    LODOP.PREVIEW();
-//  LODOP.PRINT();
-}
 
 function order_print_all(){
     document.getElementById('all').focus();
@@ -40,3 +23,28 @@ function jujueall(){
 function platform_name(name){
     $('#platform_name').value(name);
 }
+
+
+//function yanzheng_limit(){
+//    if(localStorage['time_count']){
+//        var count = parseInt(localStorage['time_count']);
+//        var countdwon = setInterval(CountDown(),1000);
+//    }
+//    else{
+//        $('#yanzheng').click(function(){
+//             var count = 30;
+//             var countdown = setInterval(CountDown, 1000);
+//        })
+//    }
+//    function CountDown() {
+//        localStorage['time_count'] = count;
+//        $("#yanzheng").attr("disabled", true);
+//        $("#yanzheng").val("请等待 " + count + "秒");
+//        if (count == 0) {
+//            $("#yanzheng").val("获取验证码").removeAttr("disabled");
+//            clearInterval(countdown);
+//            localStorage['time_count'].clear();
+//        }
+//        count--;
+//    }
+//}

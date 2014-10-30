@@ -6,7 +6,7 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/main.css" rel="stylesheet">
 </head>
-<body style="text-align: center;">
+<body style="text-align: center;font-family: mine">
 <nav class="navbar navbar-inverse" role="navigation">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -24,20 +24,29 @@
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
+{% if flag %}
+    <div class="alert alert-warning alert-dismissible" role="alert" style="text-align: center;margin-top:-20px;line-height: 1.1;">
+       <button type="button" class="close" data-dismiss="alert" style="margin-top: -7px;"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+       <strong style="font-size: 15px;">用户名或密码错误!请重新输入</strong>
+    </div>
+{% endif %}
 <div class="container" style="width: 700px;margin-top:10%;">
     <div class="jumbotron" style="text-align: center;">
         <h2>登录Alinone</h2>
         <form action = "" method="post">
-        <div class="input-group" style="margin-top:40px;margin-left:120px;width: 50%;">
+        <div class="input-group" style="margin-top:40px;margin-left:25%;width: 50%;">
             <span class="input-group-addon" style=" font-size:17px;width: 30%;">用户名</span>
             <input type="text" class="form-control" name="user_name">
         </div>
-        <div class="input-group" style="margin-left:120px;width: 50%;">
-            <span class="input-group-addon" style="font-size:17px;width: 30%;">密码</span>
-            <input type="password" class="form-control" name="password">
+        <div class="input-group" style="margin-left:25%;width: 62%;margin-bottom: 0">
+            <span class="input-group-addon" style="font-size:17px;width: 24.2%;">密码</span>
+            <input type="password" class="form-control" style="width: 92%;" name="password">
+            <span class="input-group-btn" style="margin-left: -50px;font-size: 5px;">
+              <a href="forget_password">忘记密码</a>
+            </span>
         </div>
 
-        <input class="btn btn-primary" style="font-size: 18px; margin-top: 30px;margin-bottom: -5px; margin-left: 30%;" role="button" type="submit" value="确认">
+        <input class="btn btn-primary" style="font-size: 18px; margin-top: 30px;margin-bottom: -5px; margin-left: 40%;" role="button" type="submit" value="确认">
         </form>
     </div>
 </div>
