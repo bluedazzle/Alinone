@@ -35,9 +35,10 @@ def tick():
         print('%s is online' % mer.name)
         # res = createnew(2, int(mer.todaynum))
         res = catcheleorder(2, int(mer.todaynum))
-        mer.todaynum += 1
-        mer.save()
-        print res
+        if int(res) > 0:
+            mer.todaynum = int(res)
+            mer.save()
+            print res
     elif mer.is_online is False:
         print('%s is offline,schel will exit' % mer.name)
         scheduler.shutdown()
@@ -47,7 +48,7 @@ class Command(BaseCommand):
         global i
         global scheduler
         i = int(args[0])
-        scheduler.add_job(tick, 'interval', seconds=5)
+        scheduler.add_job(tick, 'interval', seconds=10)
         print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'))
         try:
             scheduler.start()

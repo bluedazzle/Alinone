@@ -8,6 +8,8 @@ class NetSpider(object):
 		self.__mainurl = ""
 		self.__host = ""
 		self.__referer = ""
+		self.__proxy = ""
+		self.__proxymethod = "http"
 		self.__accept = "text/html, application/xhtml+xml, */*"
 		self.__origin = ""
 		self.__contenttype = "application/x-www-form-urlencoded"
@@ -25,9 +27,19 @@ class NetSpider(object):
 							'User-Agent':self.__useragent}
 
 	"""property"""
-	def getMainUrl(self): return self.__mainurl 
+	def getMainUrl(self): return self.__mainurl
 	def setMainUrl(self, value):self.__mainurl = value
-	MainUrl = property(getMainUrl, setMainUrl, "Property MainUrl") 
+	MainUrl = property(getMainUrl, setMainUrl, "Property MainUrl")
+
+	def getProxyMethod(self): return self.__proxymethod
+	def setProxyMethod(self, value):
+		self.__proxymethod = value
+	ProxyMethod = property(getProxyMethod, setProxyMethod, "Property ProxyMethod")
+
+	def getProxy(self): return self.__proxy
+	def setProxy(self, value):
+		self.__proxy = value
+	Proxy = property(getProxy, setProxy, "Property Proxy")
 
 	def getOrigin(self): return self.__origin 
 	def setOrigin(self, value):
@@ -79,11 +91,16 @@ class NetSpider(object):
 
 
 	"""method"""
-	def GetResFromRequest(self,method,requrl,encodemethod = 'gbk',postDict = {''},reqdata = ''):
-		# try:
-			opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(self.__cookielist))
-			#urllib.request.install_opener(opener)
-			req = urllib.urlopen(requrl)
+	def GetResFromRequest(self,method,requrl,encodemethod = 'gbk',postDict = {''},reqdata = '',use_proxy = False):
+		try:
+			if use_proxy:
+				proxy = {self.__proxymethod: self.__proxy}
+				proxy_support = urllib2.ProxyHandler(proxy)
+				opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(self.__cookielist), proxy_support)
+			else:
+				opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(self.__cookielist))
+			urllib2.install_opener(opener)
+			# req = urllib2.urlopen(requrl)
 			if method == 'POST':
 				if reqdata != '':
 					req = urllib2.Request(requrl, reqdata)
@@ -91,18 +108,18 @@ class NetSpider(object):
 					postData = urllib.urlencode(postDict).encode()
 					req = urllib2.Request(requrl, postData)
 			elif method == "GET":
-				print requrl
+				# print requrl
 				req = urllib2.Request(requrl)
 			for key,itm in self.__postHeaders.items():
 				req.add_header(key,itm)
-			res = urllib2.urlopen(req)
+			res = urllib2.urlopen(req, timeout=6)
 			return res.read().decode(encodemethod)
-		# except Exception as e:
-		# 	self.__ErrorHandle(e)
-		# else:
-		# 	pass
-		# finally:
-		# 	pass
+		except Exception, e:
+			self.__ErrorHandle(e)
+		else:
+			pass
+		finally:
+			pass
 		
 
 	def SearchCookie(self,searchkey):
@@ -120,10 +137,3 @@ class NetSpider(object):
 			print str(cookie.name) + ' : ' + str(cookie.value)
 
 
-a = NetSpider()
-# http://napos.ele.me/auth/doLogin
-a.Host = 'napos.ele.me'
-a.Referer = 'http://napos.ele.me/login'
-postdic = {'username':'guaishushuliansuo','password':'123456abc'}
-res = a.GetResFromRequest('POST', 'http://napos.ele.me/auth/doLogin', 'utf-8', postdic)
-print res
