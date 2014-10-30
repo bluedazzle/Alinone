@@ -10,6 +10,8 @@ urlpatterns = patterns('',
     url(r'^login_in$',  login_in),
     url(r'^login_out$', login_out),
     url(r'^register$', register),
+    url(r'^forget_password', forget_password),
+    url(r'^change_password', change_password),
     # url(r'^login_ver', login_ver),
     # only for test
     url(r'^fuwei$', fuwei),

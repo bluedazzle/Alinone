@@ -12,6 +12,7 @@ import urllib
 
 
 # Create your views here.
+# 登录验证函数
 @csrf_exempt
 def login_in(request):
     if 'user_name' in request.POST and request.POST['user_name'] and 'password' in request.POST and request.POST['password']:
@@ -23,18 +24,26 @@ def login_in(request):
                 request.session['username'] = user_name
                 return HttpResponseRedirect("operate_new")
             else:
-                return render_to_response('login_fault.html')
+                return render_to_response('login_page.html', {'flag': 1})
         except Merchant.DoesNotExist:
-            return render_to_response('login_fault.html')
+            return render_to_response('login_page.html', {'flag': 1})
     else:
         return render_to_response('login_page.html')
 
 
+#登出函数
 def login_out(request):
     del request.session['username']
     return HttpResponseRedirect("login_in")
 
 
+#忘记密码操作
+def forget_password(request):
+    if request.method == 'GET':
+        return render_to_response('forget_password.html')
+
+
+#注册
 @csrf_exempt
 def register(request):
     if request.method == 'POST':
@@ -55,15 +64,39 @@ def register(request):
         return render_to_response('register.html')
 
 
-# def login_ver(request):
-#     if 'user_name' in request.GET and request.GET['user_name'] and 'password' in request.GET and request.GET['password']:
-#         user_name = request.GET['user_name']
-#         password = request.GET['password']
-#         return render_to_response('merchant_operate_new.html')
-#     else:
-#         return None
+#修改密码
+@csrf_exempt
+def change_password(request):
+    if request.method == 'GET':
+        if request.session.get('username'):
+            return render_to_response('change_password.html')
+        else:
+            return HttpResponseRedirect('login_in')
+    if request.method == 'POST':
+        phone = request.POST.get('phone')
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password')
+        new_password_again = request.POST.get('new_password_again')
+        if phone and old_password and new_password and new_password_again:
+            if not new_password == new_password_again:
+                return render_to_response('change_password.html', {'fault2': 'T'})
+            if new_password == old_password:
+                return render_to_response('change_password.html', {'fault4': 'T'})
+            if not phone == request.session.get('username'):
+                return render_to_response('change_password.html', {'fault3': 'T'})
+            merchant = Merchant.objects.get(alin_account=phone)
+            if not merchant.check_password(old_password):
+                return render_to_response('change_password.html', {'fault1': 'T'})
+            password = hashlib.md5(new_password).hexdigest()
+            merchant.password = password
+            merchant.save()
+            request.session
+            return render_to_response('change_password.html', {'success': 'T'})
+        else:
+            return render_to_response('change_password.html')
 
 
+#进入未处理订单界面
 def operate_new(request):
     if request.method == 'GET':
         if request.session.get('username'):
@@ -80,6 +113,7 @@ def operate_new(request):
             return HttpResponseRedirect("login_in")
 
 
+#进入已接受订单界面
 def operate_get(request):
     if request.method == 'GET':
         if request.session.get('username'):
@@ -96,7 +130,10 @@ def operate_get(request):
     return render_to_response('merchant_operate_get.html')
 
 
+#进入派送订单管理页面
 def operate_paisong(request):
+    if not request.session.get('username'):
+        return HttpResponseRedirect('login_in')
     merchant_id = request.session['username']
     merchant = Merchant.objects.get(alin_account=merchant_id)
     express_people = merchant.bind_sender.all()
@@ -105,7 +142,10 @@ def operate_paisong(request):
     return render_to_response('merchant_operate_paisong.html', {'orders': orders, 'express_people': express_people})
 
 
+#进入平台管理页面
 def operate_pingtai(request):
+    if not request.session.get('username'):
+        return HttpResponseRedirect('login_in')
     merchant_id = request.session['username']
     merchant = Merchant.objects.get(alin_account=merchant_id)
     items = []
@@ -125,6 +165,7 @@ def operate_pingtai(request):
     return render_to_response('merchant_operate_pingtai.html', {'items': items})
 
 
+#进入删除订单页面
 def operate_delete(request):
     if request.method == 'GET':
         if request.session.get('username'):
@@ -141,17 +182,24 @@ def operate_delete(request):
     return render_to_response('merchant_operate_delete.html')
 
 
+#物流人员管理页面
 def operate_express_person(request):
+    if not request.session.get('username'):
+        return HttpResponseRedirect('login_in')
     merchant_id = request.session['username']
     merchant = Merchant.objects.get(alin_account=merchant_id)
     express_people = merchant.bind_sender.all()
     return render_to_response('merchant_operate_express_person.html', {'express_people': express_people})
 
 
+#打印机设置页面
 def printer_setting(request):
+    if not request.session.get('username'):
+        return HttpResponseRedirect('login_in')
     return render_to_response('merchant_printer_setting.html')
 
 
+#加载平台名称
 def pingtai_name(orders):
     for item in orders:
         if item.platform == 1:
@@ -165,6 +213,7 @@ def pingtai_name(orders):
     return orders
 
 
+#打印一个订单
 def print_one(request, order):
     try:
         order_detail = DayOrder.objects.get(order_id_alin=order)
@@ -173,6 +222,7 @@ def print_one(request, order):
         pass
 
 
+#打印所有订单
 def print_all(request):
     try:
         merchant_id = request.session['username']
@@ -183,6 +233,7 @@ def print_all(request):
         pass
 
 
+#删除平台
 def platform_delete(request, name):
     merchant_id = request.session['username']
     merchant = Merchant.objects.get(alin_account=merchant_id)
@@ -201,12 +252,16 @@ def platform_delete(request, name):
     return HttpResponseRedirect("operate_pingtai")
 
 
+#进入添加平台页面
 def add_platform_page(request):
     return render_to_response('merchant_add_platform.html')
 
 
+#添加平台
 @csrf_exempt
 def add_platform(request):
+    if not request.session.get('username'):
+        return HttpResponseRedirect('login_in')
     platform = request.POST.get('platform')
     account = request.POST.get('account')
     password = request.POST.get('password')
@@ -229,6 +284,7 @@ def add_platform(request):
     return HttpResponseRedirect('operate_pingtai')
 
 
+#删除物流人员
 def delete_sender(request, phone):
     merchant_id = request.session['username']
     merchant = Merchant.objects.get(alin_account=merchant_id)
@@ -237,5 +293,8 @@ def delete_sender(request, phone):
     return HttpResponseRedirect("operate_express_person")
 
 
+#进入添加物流人员页面
 def add_sender_page(request):
+    if not request.session.get('username'):
+        return HttpResponseRedirect('login_in')
     return render_to_response('merchant_add_sender.html')
