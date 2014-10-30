@@ -56,13 +56,15 @@ class Merchant(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
-    tao_account = models.CharField(max_length=15, blank=True)
+    tao_account = models.CharField(max_length=100, blank=True)
     tao_passwd = models.CharField(max_length=50, blank=True)
-    mei_account = models.CharField(max_length=15, blank=True)
+    mei_account = models.CharField(max_length=100, blank=True)
     mei_passwd = models.CharField(max_length=50, blank=True)
-    ele_account = models.CharField(max_length=15, blank=True)
+    ele_account = models.CharField(max_length=100, blank=True)
     ele_passwd = models.CharField(max_length=50, blank=True)
     bind_sender = models.ManyToManyField(Sender, null=True, blank=True, related_name="sender")
+    reg_time = models.DateTimeField(blank=True, null=True)
+    bind_pic = models.CharField(max_length=30, null=True, blank=True)
 
     is_online = models.BooleanField(default=True)
     is_open = models.BooleanField(default=False)
@@ -114,6 +116,7 @@ class DayOrder(models.Model):
     merchant = models.ForeignKey(Merchant, blank=True, null=True)
     bind_sender = models.ForeignKey(Sender, blank=True, null=True, related_name="order")
     finish_by = models.CharField(max_length=20, blank=True, null=True)
+    qr_path = models.CharField(max_length=20, null=True, blank=True)
 
     def __unicode__(self):
         return self.order_id_alin

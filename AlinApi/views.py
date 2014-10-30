@@ -9,9 +9,11 @@ import datetime
 import random
 import string
 import copy
+import sys
 from CronOrder.models import *
 # Create your views here.
-
+reload(sys)
+sys.setdefaultencoding("utf-8")
 gpsc = GpsCorrect()
 
 @csrf_exempt
@@ -28,15 +30,17 @@ def bindmerchant(req):
         now = datetime.datetime.now()
         detla = now - reqtime
         if detla <= datetime.timedelta(seconds = 300):
-            current_user = Sender.objects.get(private_token = str(privatetoken))
-            if current_user is not None:
+            current_user_list = Sender.objects.filter(private_token = str(privatetoken))
+            if current_user_list.count() > 0:
+                current_user = current_user_list[0]
                 lasttime = current_user.active_time.replace(tzinfo = None)
                 if not isactive(lasttime):
                     return HttpResponse(encodejson(5, body), content_type="application/json")
                 current_user.active_time = datetime.datetime.now()
                 current_user.save()
-                bind_merchant = Merchant.objects.get(id = int(merchantid))
-                if bind_merchant is not None:
+                bind_merchant_list = Merchant.objects.filter(id = int(merchantid))
+                if bind_merchant_list.count() > 0:
+                    bind_merchant = bind_merchant_list[0]
                     if current_user not in bind_merchant.bind_sender.all():
                         bind_merchant.bind_sender.add(current_user)
                         body['merchant_name'] = bind_merchant.name
@@ -53,7 +57,7 @@ def bindmerchant(req):
         else:
             return HttpResponse(encodejson(5, body), content_type="application/json")
     else:
-        return HttpResponse('no get')
+        raise Http404
     #except:
      #   return HttpResponse('error')
     #finally:
@@ -66,8 +70,9 @@ def unbindmerchant(req):
         reqdata = simplejson.loads(req.body)
         merchantid = reqdata['merchant_id']
         privatetoken = reqdata['private_token']
-        currentuser = Sender.objects.get(private_token = str(privatetoken))
-        if currentuser is not None:
+        currentuser_list = Sender.objects.filter(private_token = str(privatetoken))
+        if currentuser_list.count() > 0:
+            currentuser = currentuser_list[0]
             lasttime = currentuser.active_time.replace(tzinfo = None)
             if not isactive(lasttime):
                 return HttpResponse(encodejson(5, body), content_type="application/json")
@@ -91,8 +96,9 @@ def finishorder(req):
         reqdata = simplejson.loads(req.body)
         privatetoken = reqdata['private_token']
         orderlist = reqdata['orders_id']
-        currentuser = Sender.objects.get(private_token = str(privatetoken))
-        if currentuser is not None:
+        currentuser_list = Sender.objects.filter(private_token = str(privatetoken))
+        if currentuser_list.count() > 0:
+            currentuser = currentuser_list[0]
             lasttime = currentuser.active_time.replace(tzinfo = None)
             if not isactive(lasttime):
                 return HttpResponse(encodejson(5, body), content_type="application/json")
@@ -136,8 +142,9 @@ def renewgps(req):
         lat = gcres[0]
         privatetoken = reqdata['private_token']
         nowtime = datetime.datetime.now()
-        currentuser = Sender.objects.get(private_token = str(privatetoken))
-        if currentuser is not None:
+        currentuser_list = Sender.objects.filter(private_token = str(privatetoken))
+        if currentuser_list.count() > 0:
+            currentuser = currentuser_list[0]
             lasttime = currentuser.active_time.replace(tzinfo = None)
             if not isactive(lasttime):
                 return HttpResponse(encodejson(5, body), content_type="application/json")
@@ -162,16 +169,18 @@ def bindorders(req):
         reqdata = simplejson.loads(req.body)
         orderlist = reqdata['orders_id']
         privatetoken = reqdata['private_token']
-        currentuser = Sender.objects.get(private_token = str(privatetoken))
-        if currentuser is not None:
+        currentuser_list = Sender.objects.filter(private_token = str(privatetoken))
+        if currentuser_list.count() > 0:
+            currentuser = currentuser_list[0]
             lasttime = currentuser.active_time.replace(tzinfo = None)
             if not isactive(lasttime):
                 return HttpResponse(encodejson(5, body), content_type="application/json")
             currentuser.active_time = datetime.datetime.now()
             currentuser.save()
             for itm in orderlist:
-                bindorder = DayOrder.objects.get(order_id_alin = str(itm['order_id']))
-                if bindorder is not None:
+                bindorder_list = DayOrder.objects.filter(order_id_alin = str(itm['order_id']))
+                if bindorder_list.count() > 0:
+                    bindorder = bindorder_list[0]
                     order = {}
                     # print currentuser.sender.all()
                     # print bindorder.merchant
@@ -216,8 +225,9 @@ def senderinfo(req):
     if req.method == 'POST':
         reqdata = simplejson.loads(req.body)
         privatetoken = reqdata['private_token']
-        currentuser = Sender.objects.get(private_token = str(privatetoken))
-        if currentuser is not None:
+        currentuser_list = Sender.objects.filter(private_token = str(privatetoken))
+        if currentuser_list.count() > 0:
+            currentuser = currentuser_list[0]
             lasttime = currentuser.active_time.replace(tzinfo = None)
             if not isactive(lasttime):
                 return HttpResponse(encodejson(5, body), content_type="application/json")
@@ -245,8 +255,9 @@ def login(req):
         reqdata = simplejson.loads(req.body)
         username = reqdata['username']
         passwd = reqdata['password']
-        sender = Sender.objects.get(phone = str(username))
-        if sender is not None:
+        sender_list = Sender.objects.filter(phone = str(username))
+        if sender_list.count() > 0:
+            sender = sender_list[0]
             if sender.passwd == passwd:
                 mytoken = createtoken()
                 sender.private_token = mytoken
@@ -439,4 +450,5 @@ def createtoken(count = 32):
 
 def testindex(req):
     t = 'It works!'
+    print t
     return HttpResponse(t)

@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'merchant_page',
     'CronOrder',
     'AlinApi',
+    'ProxyWork',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -72,7 +73,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'alinone',
         'USER': 'postgres',                      # Not used with sqlite3.
-        'PASSWORD': 'GDBDYL886',                  # Not used with sqlite3.
+        'PASSWORD': '123456',                  # Not used with sqlite3.
         'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '5433',
     }
