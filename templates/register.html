@@ -41,6 +41,7 @@
             <span class="input-group-addon" style="font-size:17px;width: 30%;">店名</span>
             <input type="text" class="form-control" name="merchant_name" id="merchant_name">
         </div>
+<<<<<<< HEAD
         <div class="input-group" style="margin-left:120px;width: 85%;">
             <span class="input-group-addon" style="font-size:17px;width: 17.7%;">验证码</span>
             <input type="text" class="form-control" name="verify" id="verify" style="width: 127.5%;">
@@ -80,6 +81,45 @@
                 })
             </script>
         </div>
+=======
+{#        <div class="input-group" style="margin-left:120px;width: 85%;">#}
+{#            <span class="input-group-addon" style="font-size:17px;width: 17.7%;">验证码</span>#}
+{#            <input type="text" class="form-control" name="merchant_name" style="width: 127.5%;">#}
+{#            <span class="input-group-btn" style="margin-left: 20px;width: 50%">#}
+{#                <input id="yanzheng" class="btn btn-default" type="button" value="获取验证码" onclick="yanzheng_limit()">#}
+{#            </span>#}
+{#            <script>#}
+{#                $(document).ready(function() {#}
+{#                    if (localStorage['r_time_count']) {#}
+{#                        var count = localStorage['r_time_count'];#}
+{#                        $("#yanzheng").attr("disabled", true);#}
+{#                        var countdown = setInterval(CountDown, 1000);#}
+{#                    }#}
+{##}
+{#                    else {#}
+{#                        var count = 30;#}
+{#                    }#}
+{#                    $('#yanzheng').click(function () {#}
+{#                            var countdown = setInterval(CountDown, 1000);#}
+{#                    });#}
+{##}
+{#                        function CountDown() {#}
+{#                            localStorage['r_time_count'] = count;#}
+{#                            $("#yanzheng").attr("disabled", true);#}
+{#                            $("#yanzheng").val("请等待 " + count + "秒");#}
+{#                            if (count == 0) {#}
+{#                                $("#yanzheng").val("获取验证码").removeAttr("disabled");#}
+{#                                clearInterval(countdown);#}
+{#                                localStorage.removeItem("r_time_count");#}
+{#                            }#}
+{#                            count--;#}
+{#                        }#}
+{#                })#}
+{#            </script>#}
+{#        </div>#}
+        <input role="button" class="btn btn-primary" type="submit" value="注册" style="font-size: 18px; margin-top: 30px;margin-bottom: -5px;">
+        <a role="button" href="login_in" class="btn btn-primary" style="font-size: 18px; margin-top: 30px;margin-bottom: -5px; margin-left: 5%;">返回</a>
+>>>>>>> caad6b22e16adb1df38d4e4ab15abd10516296fa
         </form>
         <button class="btn btn-primary" onclick="submit_mes()" style="font-size: 18px; margin-top: 30px;margin-bottom: -5px;">确定</button>
             <script>

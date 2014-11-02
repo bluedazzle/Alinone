@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from CronOrder.models import *
+import cookielib
 from CronOrder.method import *
 from QRcode.method import *
 from CronOrder.NetSpider import *
@@ -11,8 +12,8 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-def catcheleorder(merid, autoid):
-    auto_id = autoid
+def catcheleorder(merid, cookielist=None):
+    auto_id = 0
     html = ''
     # with open('abc.txt', 'r') as f1:
     #     line = f1.readline()
@@ -27,23 +28,33 @@ def catcheleorder(merid, autoid):
     dip = distriproxy(merid)
     print dip
     a.Proxy = dip
-    curmet = Merchant.objects.filter(id = merid)
-    if curmet.count() == 0:
-        return -1
-    user = str(curmet[0].ele_account)
-    passwd = str(curmet[0].ele_passwd)
-    postdic = {'username': user, 'password': passwd}
-    html = a.GetResFromRequest('POST', 'http://napos.ele.me/auth/doLogin', 'utf-8', postdic, use_proxy=True)
-    print html
-    # if 'success' not in html:
-    time.sleep(2)
+    curmet_list = Merchant.objects.filter(id = merid)
+    if curmet_list.count() == 0:
+        return None
+    curmet = curmet_list[0]
+    auto_id = curmet.todaynum
+    if cookielist is None:
+        user = str(curmet.ele_account)
+        passwd = str(curmet.ele_passwd)
+        postdic = {'username': user, 'password': passwd}
+        html = a.GetResFromRequest('POST', 'http://napos.ele.me/auth/doLogin', 'utf-8', postdic, use_proxy=True)
+        if html is None:
+            delofflineproxy(a.Proxy)
+            renewres = catcheleorder(merid)
+            if renewres is not None:
+                return renewres
+            else:
+                return None
+        print html
+    else:
+        a.CookieList = cookielist
     print a.CookieList
     html = a.GetResFromRequest('GET', 'http://napos.ele.me/dashboard/index/list/unprocessed_waimai', 'utf-8', use_proxy=True)
+    # print html
     soup = BeautifulSoup(html)
     intro = soup.find('ul', attrs={'id': 'list_items'})
-    # print intro
     if intro is None:
-        return -2
+        return None
     res = intro.findAll('li')
     for item in res:
         neworder = DayOrder()
@@ -54,6 +65,8 @@ def catcheleorder(merid, autoid):
         orderid = item['orderid']
         ifhave = DayOrder.objects.filter(order_id_old = str(orderid))
         if ifhave.count() > 0:
+            # print 'break'
+            # print auto_id + 1
             continue
         timestamp = item['createdat']
         online = item['online-pay']
@@ -64,9 +77,11 @@ def catcheleorder(merid, autoid):
         datetimee = datetime.datetime(*formattime[:6])
         timee = time.strftime('%Y-%m-%d %H:%M:%S', formattime)
         newid = createAlinOrderNum(2, merid, auto_id)
-        createqr(1, newid)
-        auto_id += 1
-        address = detail.string
+        qrres = createqr(1, newid)
+        curmet.todaynum += 1
+        print curmet.todaynum
+        curmet.save()
+        address = detail.string[3:]
         neworder.address = address
         neworder.order_id_alin = newid
         neworder.order_id_old = orderid
@@ -79,6 +94,7 @@ def catcheleorder(merid, autoid):
         neworder.promotion = 'nothing'
         neworder.pay = onpay
         neworder.platform = 2
+        neworder.qr_path = qrres
         neworder.merchant = Merchant.objects.get(id = merid)
         neworder.save()
         print timee
@@ -96,4 +112,4 @@ def catcheleorder(merid, autoid):
             newdish.dish_price = float(dishprice[i].string)
             newdish.order = DayOrder.objects.get(order_id_alin = newid)
             newdish.save()
-    return auto_id
+    return a.CookieList

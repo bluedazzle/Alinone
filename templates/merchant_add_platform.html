@@ -14,7 +14,7 @@
   <div class="container" style="width: 700px;">
     <div class="jumbotron">
         <h2 style="text-align: center">添加平台</h2>
-        <form action ="add_platform" method="post">
+        <form action ="add_platform" method="post" id="form_mes">
             <div class="input-group" style="margin-top:40px;margin-left:140px;width: 50%;">
                 <span class="input-group-addon" style=" font-size:17px;width: 30%;">平台</span>
                 <select class="form-control" name="platform" id="platform">
@@ -25,16 +25,25 @@
             </div>
             <div class="input-group" style="margin-left:140px;width: 50%;">
                 <span class="input-group-addon" style=" font-size:17px;width: 30%;">用户名</span>
-                <input type="text" class="form-control" name="account">
+                <input type="text" class="form-control" name="account" id="account">
             </div>
             <div class="input-group" style="margin-left:140px;width: 50%;">
                 <span class="input-group-addon" style="font-size:17px;width: 30%;">密码</span>
-                <input type="password" class="form-control" name="password">
+                <input type="password" class="form-control" name="password" id="password">
             </div>
-
-            <input class="btn btn-primary" style="font-size: 18px; margin-top: 30px;margin-bottom: -5px;" role="button" type="submit" value="确认">
-            <a role="button" href="operate_pingtai" class="btn btn-primary"style="font-size: 18px; margin-top: 30px;margin-bottom: -5px; margin-left: 30px;">返回</a>
         </form>
+            <button class="btn btn-primary" style="font-size: 18px; margin-top: 30px;margin-bottom: -5px;" role="button" id="submit">确认</button>
+            <a role="button" href="operate_pingtai" class="btn btn-primary"style="font-size: 18px; margin-top: 30px;margin-bottom: -5px; margin-left: 30px;">返回</a>
+        <script>
+            $('#submit').click(function(){
+                if($('#account').val() && $('password').val()){
+                    $('#form_mes').submit();
+                }
+                else{
+                    alert("请完善信息");
+                }
+            })
+        </script>
     </div>
   </div>
 </div>

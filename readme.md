@@ -8,7 +8,7 @@ Alinone外卖物流管理系统（以下简称Alinone）为商家提供了良好
 
 # API version
 
-**host: https://alinone.cn**
+**host: http://www.alinone.cn**
 
 **api_version: v1**
 

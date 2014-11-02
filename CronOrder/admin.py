@@ -18,7 +18,7 @@ class DishAdmin(admin.ModelAdmin):
     ordering = ('-dish_name',)
 
 class SenderAdmin(admin.ModelAdmin):
-    list_display = ('phone', 'nick', 'update_time', 'order')
+    list_display = ('phone', 'nick', 'update_time')
     list_filter = ('active_time',)
     ordering = ('-active_time',)
 

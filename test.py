@@ -1,2 +1,2 @@
 import subprocess
-subprocess.Popen('python manage.py cronorder 1',shell = True)
+subprocess.Popen('python manage.py cronorder 2', shell = True)
