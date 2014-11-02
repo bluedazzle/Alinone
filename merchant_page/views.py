@@ -50,13 +50,15 @@ def register(request):
         password = request.POST.get('password')
         merchant_name = request.POST.get('merchant_name')
         phone = request.POST.get('phone')
-        if password and merchant_name and phone:
+        verify = request.POST.get('verify')
+        if password and merchant_name and phone and verify:
             newmerchant = Merchant()
             newmerchant.alin_account = phone
             password = hashlib.md5(password).hexdigest()
             newmerchant.password = password
             newmerchant.name = merchant_name
             newmerchant.save()
+            request.session['username'] = phone
             return HttpResponseRedirect("operate_new")
         else:
             return render_to_response('register.html')

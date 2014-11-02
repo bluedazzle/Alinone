@@ -28,24 +28,24 @@
 <div class="container" style="width: 700px;text-align: center;margin-top: 10%; ">
     <div class="jumbotron">
         <h2>加入Alinone</h2>
-        <form action = "" method="post">
+        <form action = "" method="post" id="form_mes">
         <div class="input-group" style="margin-top:40px;margin-left:120px;width: 50%;">
             <span class="input-group-addon" style=" font-size:17px;width: 30%;">手机号</span>
-            <input type="text" class="form-control" name="phone">
+            <input type="text" class="form-control" name="phone" id="phone">
         </div>
         <div class="input-group" style="margin-left:120px;width: 50%;">
             <span class="input-group-addon" style="font-size:17px;width: 30%;">密码</span>
-            <input type="text" class="form-control" name="password">
+            <input type="password" class="form-control" name="password" id="password">
         </div>
         <div class="input-group" style="margin-left:120px;width: 50%;">
             <span class="input-group-addon" style="font-size:17px;width: 30%;">店名</span>
-            <input type="text" class="form-control" name="merchant_name">
+            <input type="text" class="form-control" name="merchant_name" id="merchant_name">
         </div>
         <div class="input-group" style="margin-left:120px;width: 85%;">
             <span class="input-group-addon" style="font-size:17px;width: 17.7%;">验证码</span>
-            <input type="text" class="form-control" name="merchant_name" style="width: 127.5%;">
+            <input type="text" class="form-control" name="verify" id="verify" style="width: 127.5%;">
             <span class="input-group-btn" style="margin-left: 20px;width: 50%">
-                <input id="yanzheng" class="btn btn-default" type="button" value="获取验证码" onclick="yanzheng_limit()">
+                <input id="yanzheng" class="btn btn-default" type="button" value="获取验证码">
             </span>
             <script>
                 $(document).ready(function() {
@@ -59,6 +59,10 @@
                         var count = 30;
                     }
                     $('#yanzheng').click(function () {
+                        if(!$('#phone').val() || $('#phone').val().length<11){
+                            alert("请输入有效的电话号码");
+                        }
+                        else
                             var countdown = setInterval(CountDown, 1000);
                     });
 
@@ -66,7 +70,7 @@
                             localStorage['r_time_count'] = count;
                             $("#yanzheng").attr("disabled", true);
                             $("#yanzheng").val("请等待 " + count + "秒");
-                            if (count == 0) {
+                            if (count <= 0) {
                                 $("#yanzheng").val("获取验证码").removeAttr("disabled");
                                 clearInterval(countdown);
                                 localStorage.removeItem("r_time_count");
@@ -76,9 +80,23 @@
                 })
             </script>
         </div>
-        <input role="button" class="btn btn-primary" type="submit" value="注册" style="font-size: 18px; margin-top: 30px;margin-bottom: -5px;">
-        <a role="button" href="login_in" class="btn btn-primary" style="font-size: 18px; margin-top: 30px;margin-bottom: -5px; margin-left: 5%;">返回</a>
         </form>
+        <button class="btn btn-primary" onclick="submit_mes()" style="font-size: 18px; margin-top: 30px;margin-bottom: -5px;">确定</button>
+            <script>
+                function submit_mes(){
+                    if(!$('#phone').val()||!$('#password').val()||!$('#merchant_name').val()||!$('#verify').val()){
+                        alert("请完善注册信息")
+                    }
+                    else if($('#password').val().length<6||$('#password'.val().length>20)){
+                        alert("密码需为6～20位")
+                    }
+                    if($('#phone').val() && $('#password').val() && $('#merchant_name').val() && $('#verify').val() &&
+                            $('#password').val().length>=6 && $('#password'.val().length<=20)){
+                        $('#form_mes').submit();
+                    }
+                }
+            </script>
+        <a role="button" href="login_in" class="btn btn-primary" style="font-size: 18px; margin-top: 30px;margin-bottom: -5px; margin-left: 5%;">返回</a>
     </div>
 </div>
 </body>
