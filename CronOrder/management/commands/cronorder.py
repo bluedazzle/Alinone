@@ -52,7 +52,7 @@ class Command(BaseCommand):
         global i
         global scheduler
         i = int(args[0])
-        scheduler.add_job(tick, 'interval', seconds=10)
+        scheduler.add_job(tick, 'interval', seconds=5)
         print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'))
         try:
             scheduler.start()

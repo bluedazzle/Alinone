@@ -58,3 +58,18 @@ def delofflineproxy(ipstr):
     if offline.count() > 0:
         offline.delete()
     return True
+
+def checkproxy():
+    a = NetSpider()
+    a.Host = 'www.baidu.com'
+    off = Proxy.objects.filter(is_online = False).delete()
+    oters = Proxy.objects.all()
+    print oters.count()
+    for item in oters:
+        a.Proxy = item.ip
+        res = a.GetResFromRequest('GET', "http://www.baidu.com/", 'utf-8', use_proxy=True)
+        if res is None:
+            print 'del ' + item.ip
+            item.delete()
+        else:
+            print item.ip + ' connect success'

@@ -28,15 +28,23 @@ def catcheleorder(merid, cookielist=None):
     dip = distriproxy(merid)
     print dip
     a.Proxy = dip
-    curmet = Merchant.objects.filter(id = merid)
-    if curmet.count() == 0:
+    curmet_list = Merchant.objects.filter(id = merid)
+    if curmet_list.count() == 0:
         return None
-    auto_id = curmet[0].todaynum
+    curmet = curmet_list[0]
+    auto_id = curmet.todaynum
     if cookielist is None:
-        user = str(curmet[0].ele_account)
-        passwd = str(curmet[0].ele_passwd)
+        user = str(curmet.ele_account)
+        passwd = str(curmet.ele_passwd)
         postdic = {'username': user, 'password': passwd}
         html = a.GetResFromRequest('POST', 'http://napos.ele.me/auth/doLogin', 'utf-8', postdic, use_proxy=True)
+        if html is None:
+            delofflineproxy(a.Proxy)
+            renewres = catcheleorder(merid)
+            if renewres is not None:
+                return renewres
+            else:
+                return None
         print html
     else:
         a.CookieList = cookielist
@@ -45,7 +53,6 @@ def catcheleorder(merid, cookielist=None):
     # print html
     soup = BeautifulSoup(html)
     intro = soup.find('ul', attrs={'id': 'list_items'})
-    print intro
     if intro is None:
         return None
     res = intro.findAll('li')
@@ -58,6 +65,8 @@ def catcheleorder(merid, cookielist=None):
         orderid = item['orderid']
         ifhave = DayOrder.objects.filter(order_id_old = str(orderid))
         if ifhave.count() > 0:
+            # print 'break'
+            # print auto_id + 1
             continue
         timestamp = item['createdat']
         online = item['online-pay']
@@ -69,10 +78,10 @@ def catcheleorder(merid, cookielist=None):
         timee = time.strftime('%Y-%m-%d %H:%M:%S', formattime)
         newid = createAlinOrderNum(2, merid, auto_id)
         qrres = createqr(1, newid)
-        auto_id += 1
-        curmet[0].todaynum = auto_id
-        curmet[0].save()
-        address = detail.string
+        curmet.todaynum += 1
+        print curmet.todaynum
+        curmet.save()
+        address = detail.string[3:]
         neworder.address = address
         neworder.order_id_alin = newid
         neworder.order_id_old = orderid

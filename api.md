@@ -32,10 +32,28 @@
 |03|美团外卖|
 
 ##**二维码生成**
+```
+QRcode/method createqr(type, qrtext)
+```
 |参数|平台|
 | --------------  | :---: |
 |type|生成类型：1、订单；1、绑定|
 |qrtext|订单号 & 商家ID|
+
+##**验证码调用**
+```
+AlinApi/method createverfiycode(phone, count)
+```
+|参数|平台|
+| --------------  | :---: |
+|phone|手机号|
+|count|验证码位数，选填，默认6位|
+###**Return**
+```
+{"success":True,"verify_code":"423561"}
+or
+{"success":False,"body":null}
+```
 
 
 ##**物流人员注册**

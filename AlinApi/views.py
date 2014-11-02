@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.http import Http404
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
+from AlinApi.models import *
 from AlinApi.fixlnglat import *
 from AlinApi.method import *
 import simplejson
@@ -271,6 +272,22 @@ def login(req):
             return HttpResponse(encodejson(7, body), content_type="application/json")
     else:
         raise Http404
+
+@csrf_exempt
+def reg_ver(req):
+    body = {}
+    if req.method == 'POST':
+        reqdata = simplejson.loads(req.body)
+        phone = reqdata['phone']
+        res_phone_list = PhoneVerify.objects.filter(phone = phone)
+        verreq = createverfiycode(phone)
+        verjson = simplejson.loads(verreq)
+        if verjson['success'] is True:
+            vercode = verjson['verify_code']
+        if res_phone_list.count() > 0:
+            res_phone = res_phone_list[0]
+
+
 
 @csrf_exempt
 def register(req):
