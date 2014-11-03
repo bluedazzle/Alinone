@@ -1,6 +1,7 @@
 import random
 import simplejson
 from CronOrder.NetSpider import *
+import string
 
 def createverfiycode(phone, count=6):
     result = {}

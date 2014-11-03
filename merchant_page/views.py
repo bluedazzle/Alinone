@@ -2,6 +2,7 @@
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseRedirect
+import AlinApi.method
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from auth import *
@@ -22,7 +23,7 @@ def login_in(request):
             user = Merchant.objects.get(alin_account=user_name)
             if user.check_password(password):
                 request.session['username'] = user_name
-                return HttpResponseRedirect("operate_new")
+                return HttpResponseRedirect("/merchant/operate_new")
             else:
                 return render_to_response('login_page.html', {'flag': 1})
         except Merchant.DoesNotExist:
@@ -51,7 +52,7 @@ def register(request):
         merchant_name = request.POST.get('merchant_name')
         phone = request.POST.get('phone')
         verify = request.POST.get('verify')
-        if password and merchant_name and phone and verify:
+        if password and merchant_name and phone and verify and len(phone) == 11:
             newmerchant = Merchant()
             newmerchant.alin_account = phone
             password = hashlib.md5(password).hexdigest()
@@ -59,11 +60,20 @@ def register(request):
             newmerchant.name = merchant_name
             newmerchant.save()
             request.session['username'] = phone
-            return HttpResponseRedirect("operate_new")
+            return HttpResponseRedirect("/merchant/operate_new")
         else:
             return render_to_response('register.html')
     else:
         return render_to_response('register.html')
+
+
+@csrf_exempt
+def register_verify(request):
+    if request.method == 'POST':
+        phone = request.POST.get('phone')
+        req = AlinApi.method.createverfiycode(phone)
+        return HttpResponse(json.dumps(phone), content_type="application/json")
+    return None
 
 
 #修改密码
