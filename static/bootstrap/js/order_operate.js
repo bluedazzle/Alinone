@@ -25,26 +25,3 @@ function platform_name(name){
 }
 
 
-//function yanzheng_limit(){
-//    if(localStorage['time_count']){
-//        var count = parseInt(localStorage['time_count']);
-//        var countdwon = setInterval(CountDown(),1000);
-//    }
-//    else{
-//        $('#yanzheng').click(function(){
-//             var count = 30;
-//             var countdown = setInterval(CountDown, 1000);
-//        })
-//    }
-//    function CountDown() {
-//        localStorage['time_count'] = count;
-//        $("#yanzheng").attr("disabled", true);
-//        $("#yanzheng").val("请等待 " + count + "秒");
-//        if (count == 0) {
-//            $("#yanzheng").val("获取验证码").removeAttr("disabled");
-//            clearInterval(countdown);
-//            localStorage['time_count'].clear();
-//        }
-//        count--;
-//    }
-//}
