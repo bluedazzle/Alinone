@@ -11,7 +11,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/v1/', include('AlinApi.urls')),
-    url(r'^$', include('AlinApi.urls')),
+    url(r'^$', include('merchant_page.urls')),
     url(r'^test/$', views.addtest),
     url(r'^merchant/', include(merchant_page.urls)),
     url(r'^css/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.CSS_DIR}),
