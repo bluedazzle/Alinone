@@ -19,12 +19,17 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
+                    <li><p id='merchant_user_name' type="text" style="margin: 15px;"></p></li>
                     <li><a role="button" class="btn btn-primary btn-mine" href="fuwei" style="color: #ffffff">数据复位(测试用)</a></li>
                     <li><a role="button"  id="user_name" class="btn btn-primary btn-mine" href="change_password" style="color: #ffffff">修改密码</a></li>
                     <li><a role="button" id="login_out" class="btn btn-primary btn-mine" href="login_out" style="color: #ffffff;">登出</a></li>
                 </ul>
-
             </div>
+            <script>
+                if(localStorage['user_name']){
+                    $('#merchant_user_name').text("欢迎！" + localStorage['user_name']);
+                }
+            </script>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
         </div><!-- /.container-fluid -->
@@ -52,5 +57,12 @@
 <object  id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0>
        <embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0></embed>
 </object>
+{% if user_name %}
+    <script>
+    $(document).ready(function() {
+        localStorage['user_name'] = '{{ user_name }}';
+    })
+    </script>
+{% endif %}
 </body>
 </html>

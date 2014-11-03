@@ -4,12 +4,14 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseRedirect
 import AlinApi.method
 from django.http import HttpResponse
+from AlinApi.models import *
 from django.contrib.auth.decorators import login_required
 from auth import *
 from CronOrder.models import *
 import json
 import hashlib
-import urllib
+import datetime
+import time
 
 
 # Create your views here.
@@ -42,6 +44,39 @@ def login_out(request):
 def forget_password(request):
     if request.method == 'GET':
         return render_to_response('forget_password.html')
+    if request.method == 'POST':
+        phone = request.POST.get('phone')
+        password = request.POST.get('password')
+        verify = request.POST.get('verify')
+        if phone and verify and password and len(phone) == 11:
+            phone_verify = PhoneVerify.objects.get(phone=phone, verify_code=verify)
+            if phone_verify:
+                update_time = phone_verify.update_time
+                if (update_time.replace(tzinfo=None) + datetime.timedelta(minutes=30)) < \
+                        datetime.datetime.utcnow():
+                    return render_to_response('register.html', {'phone': phone,
+                                                                'fault1': 'T'})
+                else:
+                    merchant = Merchant.objects.get(alin_account=phone)
+                    merchant.password = password
+                    merchant.save()
+                    request.session['username'] = phone
+                    phone_verify.delete()
+                    return HttpResponseRedirect("/merchant/operate_new")
+            else:
+                return render_to_response('register.html', {'phone': phone,
+                                                            'fault3': '2'})
+
+
+#忘记密码获取验证码
+def forget_password_verify(request):
+    if request.method == 'POST':
+        phone = request.POST.get('phone')
+        merchant_have = Merchant.objects.get(alin_account=phone)
+        if merchant_have:
+            req = AlinApi.method.createverfiycode(phone)
+            return HttpResponse(json.dumps("OK"), content_type="application/json")
+    return HttpResponse(json.dumps("False"), content_type="application/json")
 
 
 #注册
@@ -53,27 +88,48 @@ def register(request):
         phone = request.POST.get('phone')
         verify = request.POST.get('verify')
         if password and merchant_name and phone and verify and len(phone) == 11:
-            newmerchant = Merchant()
-            newmerchant.alin_account = phone
-            password = hashlib.md5(password).hexdigest()
-            newmerchant.password = password
-            newmerchant.name = merchant_name
-            newmerchant.save()
-            request.session['username'] = phone
-            return HttpResponseRedirect("/merchant/operate_new")
+            user_test = Merchant.objects.get(alin_account=phone)
+            if user_test:
+                return render_to_response('register.html', {'phone': phone, 'merchant_name': merchant_name,
+                                                            'fault2': 'T'})
+            phone_verify = PhoneVerify.objects.get(phone=phone, verify_code=verify)
+            if phone_verify:
+                update_time = phone_verify.update_time
+                if (update_time.replace(tzinfo=None) + datetime.timedelta(minutes=30)) < \
+                        datetime.datetime.utcnow():
+                    return render_to_response('register.html', {'phone': phone, 'merchant_name': merchant_name,
+                                                                'fault1': 'T'})
+                else:
+                    newmerchant = Merchant()
+                    newmerchant.alin_account = phone
+                    password = hashlib.md5(password).hexdigest()
+                    newmerchant.password = password
+                    newmerchant.name = merchant_name
+                    newmerchant.save()
+                    request.session['username'] = phone
+                    phone_verify.delete()
+                    return HttpResponseRedirect("/merchant/operate_new")
+            else:
+                return render_to_response('register.html', {'phone': phone, 'merchant_name': merchant_name,
+                                                            'fault3': 'T'})
         else:
             return render_to_response('register.html')
     else:
         return render_to_response('register.html')
 
 
+#注册获取验证码
 @csrf_exempt
 def register_verify(request):
     if request.method == 'POST':
         phone = request.POST.get('phone')
+        merchant_have = Merchant.objects.get(alin_account=phone)
+        if merchant_have:
+            return render_to_response('register.html', {'fault2': 'T'})
         req = AlinApi.method.createverfiycode(phone)
         return HttpResponse(json.dumps(phone), content_type="application/json")
     return None
+
 
 
 #修改密码
@@ -120,7 +176,8 @@ def operate_new(request):
                 order_detail = pingtai_name(order_detail)
             except DayOrder.DoesNotExist:
                 pass
-            return render_to_response('merchant_operate_new.html', {'items': order_detail, 'dishs': dish_list})
+            return render_to_response('merchant_operate_new.html', {'items': order_detail, 'dishs': dish_list,
+                                                                    'user_name': merchant.name})
         else:
             return HttpResponseRedirect("login_in")
 
@@ -166,11 +223,11 @@ def operate_pingtai(request):
                 'account': merchant.tao_account}
         items.append(item)
     if merchant.mei_account:
-        item = {'name': '2',
+        item = {'name': '3',
                 'account': merchant.mei_account}
         items.append(item)
     if merchant.ele_account:
-        item = {'name': '3',
+        item = {'name': '2',
                 'account': merchant.ele_account}
         items.append(item)
 
@@ -216,9 +273,9 @@ def pingtai_name(orders):
     for item in orders:
         if item.platform == 1:
             item.platform = "淘点点"
-        elif item.platform == 2:
-            item.platform = "美团"
         elif item.platform == 3:
+            item.platform = "美团"
+        elif item.platform == 2:
             item.platform = "饿了么"
         else:
             item.platform = item.platform
@@ -253,11 +310,11 @@ def platform_delete(request, name):
         merchant.tao_account = ''
         merchant.tao_passwd = ''
         merchant.save()
-    elif name == '2':
+    elif name == '3':
         merchant.mei_account = ''
         merchant.mei_passwd = ''
         merchant.save()
-    elif name == '3':
+    elif name == '2':
         merchant.ele_account = ''
         merchant.ele_passwd = ''
         merchant.save()
@@ -283,11 +340,11 @@ def add_platform(request):
         merchant.tao_account = account
         merchant.tao_passwd = password
         merchant.save()
-    elif platform == '2' and not merchant.mei_account:
+    elif platform == '3' and not merchant.mei_account:
         merchant.mei_account = account
         merchant.mei_passwd = password
         merchant.save()
-    elif platform == '3' and not merchant.ele_account:
+    elif platform == '2' and not merchant.ele_account:
         merchant.ele_account = account
         merchant.ele_passwd = password
         merchant.save()
@@ -309,4 +366,8 @@ def delete_sender(request, phone):
 def add_sender_page(request):
     if not request.session.get('username'):
         return HttpResponseRedirect('login_in')
-    return render_to_response('merchant_add_sender.html')
+    else:
+        merchant_id = request.session['username']
+        merchant = Merchant.objects.get(alin_account=merchant_id)
+        express_people = merchant.bind_sender.all()
+        return render_to_response('merchant_add_sender.html', {'express_people': express_people})
