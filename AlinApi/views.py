@@ -275,6 +275,7 @@ def login(req):
 
 @csrf_exempt
 def reg_ver(req):
+    vercode = ''
     body = {}
     if req.method == 'POST':
         reqdata = simplejson.loads(req.body)
@@ -284,8 +285,23 @@ def reg_ver(req):
         verjson = simplejson.loads(verreq)
         if verjson['success'] is True:
             vercode = verjson['verify_code']
+        else:
+            return HttpResponse(encodejson(2, body), content_type="application/json")
         if res_phone_list.count() > 0:
             res_phone = res_phone_list[0]
+            res_phone.verify_code = vercode
+            res_phone.update_time = datetime.datetime.now()
+            res_phone.save()
+        else:
+            new_phone_ver = PhoneVerify()
+            new_phone_ver.phone = phone
+            new_phone_ver.verify_code = vercode
+            new_phone_ver.update_time = datetime.datetime.now()
+            new_phone_ver.save()
+        body['verify_code'] = vercode
+        return HttpResponse(encodejson(1, body), content_type="application/json")
+    else:
+        raise Http404
 
 
 
@@ -299,7 +315,11 @@ def register(req):
         code = reqdata['reg_code']
         ishave = Sender.objects.filter(phone = str(username))
         if ishave.count() == 0:
-            if code == '1234':
+            is_send_list = PhoneVerify.objects.filter(phone = str(username))
+            if is_send_list.count() == 0:
+                return encodejson(11, body)
+            is_send = is_send_list[0]
+            if str(is_send.verify_code) == str(code):
                 mytoken = createtoken()
                 newsender = Sender()
                 newsender.phone = username
@@ -308,6 +328,7 @@ def register(req):
                 newsender.private_token = mytoken
                 newsender.save()
                 body["private_token"] = mytoken
+                is_send.delete()
                 return HttpResponse(encodejson(1, body), content_type="application/json")
             else:
                 return HttpResponse(encodejson(12, body), content_type="application/json")
@@ -408,10 +429,12 @@ def forgetpasswd(req):
         currentuserset = Sender.objects.filter(phone = phone)
         if currentuserset.count() > 0:
             currentuser = currentuserset[0]
-            verify = createverfiycode()
-            sendverifycode(verify, currentuser.phone)
+            res = createverfiycode(currentuser.phone)
+            jres = simplejson.loads(res)
+            if jres['success'] is False:
+                return HttpResponse(encodejson(2, body))
             currentuser.is_verify = True
-            currentuser.verify_code = verify
+            currentuser.verify_code = str(jres['verify_code'])
             currentuser.save()
             return HttpResponse(encodejson(1, body), content_type="application/json")
         else:
@@ -420,7 +443,7 @@ def forgetpasswd(req):
         raise Http404
 
 def newpassword(req):
-    body={}
+    body = {}
     if req.method == 'POST':
         reqdata = simplejson.loads(req.body)
         vercode = reqdata['verify_code']

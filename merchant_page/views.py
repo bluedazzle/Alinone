@@ -22,7 +22,7 @@ def login_in(request):
             user = Merchant.objects.get(alin_account=user_name)
             if user.check_password(password):
                 request.session['username'] = user_name
-                return HttpResponseRedirect("operate_new")
+                return HttpResponseRedirect("/merchant/operate_new")
             else:
                 return render_to_response('login_page.html', {'flag': 1})
         except Merchant.DoesNotExist:
