@@ -76,14 +76,22 @@
                     $('#yanzheng').click(function () {
                             if($('#phone').val().length==11){
                                count = 30;
-                               countdown = setInterval(CountDown, 1000);
                                var message = $('#phone').serialize();
                                $.ajax({
                                    url:'register_verify', //后台处理程序
                                    type:'post',         //数据发送方式
                                    dataType:'json',     //接受数据格式
-                                   data:message         //要传递的数据
+                                   data:message,        //要传递的数据
+                                   success:function(data){
+                                       if(data == "false"){
+                                           alert("手机已被注册")
+                                       }
+                                       else{
+                                           countdown = setInterval(CountDown, 1000);
+                                       }
+                                   }
                                });
+{#                               countdown = setInterval(CountDown, 1000);#}
 
                             }
                             else{

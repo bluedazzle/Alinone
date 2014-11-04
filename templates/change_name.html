@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block define %}
+<div class="panel panel-default" style="text-align: center">
+    <div class="panel-heading">
+             <p class="text-center" style="font-size:21px;">修改店名</p>
+    </div>
+    {% if fault1 %}
+    <div class="alert alert-warning alert-dismissible" role="alert" style="text-align: center;margin-top:-20px;line-height: 0.1;">
+       <button type="button" class="close" data-dismiss="alert" style="margin-top: -7px;"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+       <strong>手机号或密码错误!</strong>
+    </div>
+    {% endif %}
+<div class="panel-body">
+  <div class="container" style="width: 700px;">
+    <div class="jumbotron">
+        {% if success %}
+            <h3 style="text-align: center;">用户名修改成功</h3>
+            <a role="button" href="operate_new" class="btn btn-primary" style="font-size: 18px; margin-top: 30px;margin-bottom: -5px; margin-left: 30px;">返回</a>
+        {% else %}
+        <form action ="change_name" method="post" id="change_name_mes">
+            <div class="input-group" style="margin-top:40px;margin-left:120px;width: 68%;">
+                <span class="input-group-addon" style=" font-size:17px;width: 30%;">手机号</span>
+                 <input type="text" class="form-control" name="phone" style="width: 70%" id='phone' value="{{ phone }}">
+            </div>
+            <div class="input-group" style="margin-left:120px;width: 68%;">
+                <span class="input-group-addon" style="font-size:17px;width: 30%;">用户密码</span>
+                <input type="password" class="form-control" name="password" id='password' style="width: 70%">
+            </div>
+            <div class="input-group" style="margin-left:120px;width: 68%;">
+                <span class="input-group-addon" style="font-size:17px;width: 30%;">新店名</span>
+                <input type="text" class="form-control" name="new_name" id='new_name' style="width: 70%" value="{{ new_name }}">
+            </div>
+        </form>
+            <button class="btn btn-primary" style="font-size: 18px; margin-top: 30px;margin-bottom: -5px;width: 12%;" role="button" onclick="change_name()">确认</button>
+            <a role="button" href="operate_new" class="btn btn-primary"style="font-size: 18px; margin-top: 30px;margin-bottom: -5px; margin-left: 30px;">返回</a>
+            <script>
+               function change_name(){
+                   if(!$('#phone').val() || !$('#password').val() || !$('#new_name').val()){
+                       alert('请完善信息')
+                   }
+                   else if($('#phone').val().length>1 && $('#password').val().length>1 && $('#new_name').val().length>1){
+                       $('#change_name_mes').submit();
+                   }
+               }
+            </script>
+        {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

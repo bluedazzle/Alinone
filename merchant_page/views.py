@@ -123,11 +123,11 @@ def register(request):
 def register_verify(request):
     if request.method == 'POST':
         phone = request.POST.get('phone')
-        merchant_have = Merchant.objects.get(alin_account=phone)
-        if merchant_have:
-            return render_to_response('register.html', {'fault2': 'T'})
+        merchant_have = Merchant.objects.filter(alin_account=phone)
+        if merchant_have.count() > 0:
+            return HttpResponse(json.dumps("false"), content_type="application/json")
         req = AlinApi.method.createverfiycode(phone)
-        return HttpResponse(json.dumps(phone), content_type="application/json")
+        return HttpResponse(json.dumps("true"), content_type="application/json")
     return None
 
 
@@ -147,22 +147,47 @@ def change_password(request):
         new_password_again = request.POST.get('new_password_again')
         if phone and old_password and new_password and new_password_again:
             if not new_password == new_password_again:
-                return render_to_response('change_password.html', {'fault2': 'T'})
+                return render_to_response('change_password.html', {'fault2': 'T', 'phone': phone})
             if new_password == old_password:
-                return render_to_response('change_password.html', {'fault4': 'T'})
+                return render_to_response('change_password.html', {'fault4': 'T', 'phone': phone})
             if not phone == request.session.get('username'):
-                return render_to_response('change_password.html', {'fault3': 'T'})
+                return render_to_response('change_password.html', {'fault3': 'T', 'phone': phone})
             merchant = Merchant.objects.get(alin_account=phone)
             if not merchant.check_password(old_password):
-                return render_to_response('change_password.html', {'fault1': 'T'})
+                return render_to_response('change_password.html', {'fault1': 'T', 'phone': phone})
             password = hashlib.md5(new_password).hexdigest()
             merchant.password = password
             merchant.save()
-            request.session
             return render_to_response('change_password.html', {'success': 'T'})
         else:
             return render_to_response('change_password.html')
 
+
+@csrf_exempt
+def change_name(request):
+    if request.method == 'GET':
+        return render_to_response('change_name.html')
+    if request.method == 'POST':
+        phone = request.POST.get('phone')
+        password = request.POST.get('password')
+        new_name = request.POST.get('new_name')
+        merchant_phone = request.session['username']
+        if phone and password and new_name:
+            if not phone == merchant_phone:
+                return render_to_response('change_name.html', {'fault1': 'T',
+                                                               'phone': phone,
+                                                               'new_name': new_name})
+            merchant = Merchant.objects.get(alin_account=phone)
+            req = merchant.check_password(password)
+            if not req:
+                return render_to_response('change_name.html', {'fault1': 'T',
+                                                               'phone': phone,
+                                                               'new_name': new_name})
+            merchant.name = new_name
+            merchant.save()
+            return render_to_response('change_name.html', {'success': 'T', 'new_user_name': new_name})
+        else:
+            return render_to_response('change_name.html', {'phone': phone, 'new_name': new_name})
 
 #进入未处理订单界面
 def operate_new(request):
