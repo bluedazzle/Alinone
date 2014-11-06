@@ -75,7 +75,7 @@ DATABASES = {
         'USER': 'postgres',                      # Not used with sqlite3.
         'PASSWORD': '123456',                  # Not used with sqlite3.
         'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '5433',
+        'PORT': '5432',
     }
 }
 
