@@ -47,7 +47,7 @@
                          </div>
                      </td>
                      <td>
-                         <a role="button" id="i{{ item.order_id_alin }}" class="btn btn-primary btn-sm">接收</a>
+                         <a role="button" id="i{{ item.order_id_alin }}" href="jieshouone{{ item.order_id_alin }}" class="btn btn-primary btn-sm">接收</a>
 {#                         <iframe id="{{ item.order_id_alin }}" name="{{ item.order_id_alin }}" src="print_one{{ item.order_id_alin }}" frameborder='no' border='0' width="0" height="0"></iframe>#}
                          <a role="button" onclick="jujueone({{ item.order_id_alin }})" class="btn btn-primary btn-sm" style="background-color: #737373">拒绝</a>
                      </td>
@@ -80,10 +80,10 @@
                                              {% else %}
                                      +"付款:{{ item.real_price }}</p>"
                                              {% endif %}
-                                     +"<img src=\"/img/20.png\" style=\"height: 100px;width: 100px;\">"
+                                     +"<img src=\"/qrimg/{{ item.qr_path }}\" style=\"height: 100px;width: 100px;\">"
                                      +"<br/>"
                                      +"==================<br/>");
-                                     LODOP.PREVIEW();
+                                     LODOP.PRINT();
                                  }
                          )
                      </script>
@@ -123,7 +123,7 @@
                                      +"<img src=\"/img/20.png\" style=\"height: 100px;width: 100px;\">"
                                      +"<br/>"
                                      +"==================<br/>{% endfor %}{% endfor %}");
-                                     LODOP.PREVIEW();
+                                     LODOP.PRINT();
                                  }
                          )
                      </script>

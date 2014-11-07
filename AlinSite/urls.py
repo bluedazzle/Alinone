@@ -18,4 +18,5 @@ urlpatterns = patterns('',
     url(r'^img/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.IMG_DIR}),
     url(r'^js/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.JS_DIR}),
     url(r'^dayin/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.DAYIN_DIR}),
+    url(r'^qrimg/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.QR_DIR}),
 )
