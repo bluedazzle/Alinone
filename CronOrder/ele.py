@@ -50,7 +50,8 @@ def catcheleorder(merid, cookielist=None):
         a.CookieList = cookielist
     print a.CookieList
     html = a.GetResFromRequest('GET', 'http://napos.ele.me/dashboard/index/list/unprocessed_waimai', 'utf-8', use_proxy=True)
-    # print html
+    if html is None:
+        return None
     soup = BeautifulSoup(html)
     intro = soup.find('ul', attrs={'id': 'list_items'})
     if intro is None:

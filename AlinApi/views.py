@@ -287,17 +287,6 @@ def reg_ver(req):
             vercode = verjson['verify_code']
         else:
             return HttpResponse(encodejson(2, body), content_type="application/json")
-        if res_phone_list.count() > 0:
-            res_phone = res_phone_list[0]
-            res_phone.verify_code = vercode
-            res_phone.update_time = datetime.datetime.now()
-            res_phone.save()
-        else:
-            new_phone_ver = PhoneVerify()
-            new_phone_ver.phone = phone
-            new_phone_ver.verify_code = vercode
-            new_phone_ver.update_time = datetime.datetime.now()
-            new_phone_ver.save()
         body['verify_code'] = vercode
         return HttpResponse(encodejson(1, body), content_type="application/json")
     else:

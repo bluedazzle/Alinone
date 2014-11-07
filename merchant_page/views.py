@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseRedirect
 import AlinApi.method
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from AlinApi.models import *
 from QRcode.method import *
 from django.contrib.auth.decorators import login_required
@@ -92,11 +92,11 @@ def register(request):
         phone = request.POST.get('phone')
         verify = request.POST.get('verify')
         if password and merchant_name and phone and verify and len(phone) == 11:
-            user_test = Merchant.objects.get(alin_account=phone)
-            if user_test:
+            user_test_list = Merchant.objects.filter(alin_account=phone)
+            if user_test_list.count() > 0:
                 return render_to_response('register.html', {'phone': phone, 'merchant_name': merchant_name,
                                                             'fault2': 'T'})
-            phone_verify = PhoneVerify.objects.get(phone=phone, verify_code=verify)
+            phone_verify = PhoneVerify.objects.get(phone=str(phone), verify_code=str(verify))
             if phone_verify:
                 update_time = phone_verify.update_time
                 if (update_time.replace(tzinfo=None) + datetime.timedelta(minutes=30)) < \
@@ -132,9 +132,10 @@ def register_verify(request):
         merchant_have = Merchant.objects.filter(alin_account=phone)
         if merchant_have.count() > 0:
             return HttpResponse(json.dumps("false"), content_type="application/json")
-        req = AlinApi.method.createverfiycode(phone)
+        req = createverfiycode(phone)
+        print req
         return HttpResponse(json.dumps("true"), content_type="application/json")
-    return None
+    raise Http404
 
 
 
