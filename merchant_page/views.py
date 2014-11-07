@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 import AlinApi.method
 from django.http import HttpResponse
 from AlinApi.models import *
+from QRcode.method import *
 from django.contrib.auth.decorators import login_required
 from auth import *
 from CronOrder.models import *
@@ -25,6 +26,9 @@ def login_in(request):
             user = Merchant.objects.get(alin_account=user_name)
             if user.check_password(password):
                 request.session['username'] = user_name
+                merchant = Merchant.objects.get(alin_account=user_name)
+                qr_bind = createqr(2, merchant.id)
+                request.session['qr_bind'] = qr_bind
                 return HttpResponseRedirect("/merchant/operate_new")
             else:
                 return render_to_response('login_page.html', {'flag': 1})
@@ -107,6 +111,8 @@ def register(request):
                     newmerchant.name = merchant_name
                     newmerchant.save()
                     request.session['username'] = phone
+                    qr_bind = createqr(2, newmerchant.id)
+                    request.session['qr_bind'] = qr_bind
                     phone_verify.delete()
                     return HttpResponseRedirect("/merchant/operate_new")
             else:
@@ -395,4 +401,5 @@ def add_sender_page(request):
         merchant_id = request.session['username']
         merchant = Merchant.objects.get(alin_account=merchant_id)
         express_people = merchant.bind_sender.all()
-        return render_to_response('merchant_add_sender.html', {'express_people': express_people})
+        filename = request.session['qr_bind']
+        return render_to_response('merchant_add_sender.html', {'express_people': express_people, 'filename': filename})

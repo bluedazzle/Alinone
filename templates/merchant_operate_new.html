@@ -80,7 +80,7 @@
                                              {% else %}
                                      +"付款:{{ item.real_price }}</p>"
                                              {% endif %}
-                                     +"<img src=\"/qrimg/{{ item.qr_path }}\" style=\"height: 100px;width: 100px;\">"
+                                     +"<img src=\"/qrimg/{{ item.qr_path }}\" style=\"height: 130px;width: 130px;\">"
                                      +"<br/>"
                                      +"==================<br/>");
                                      LODOP.PRINT();
@@ -120,10 +120,10 @@
                                              {% else %}
                                      +"付款:{{ item.real_price }}</p>"
                                              {% endif %}
-                                     +"<img src=\"/img/20.png\" style=\"height: 100px;width: 100px;\">"
+                                     +"<img src=\"/qrimg/{{ item.qr_path }}\" style=\"height: 130px;width: 130px;\">"
                                      +"<br/>"
                                      +"==================<br/>{% endfor %}{% endfor %}");
-                                     LODOP.PRINT();
+                                     LODOP.PREVIEW();
                                  }
                          )
                      </script>
