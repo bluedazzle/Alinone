@@ -8,4 +8,4 @@ from CronOrder.method import *
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        catcheleorder(2)
+        catcheleorder(1)

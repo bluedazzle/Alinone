@@ -107,12 +107,14 @@ class NetSpider(object):
 				else:
 					postData = urllib.urlencode(postDict).encode()
 					req = urllib2.Request(requrl, postData)
+					# print req
 			elif method == "GET":
 				# print requrl
 				req = urllib2.Request(requrl)
 			for key,itm in self.__postHeaders.items():
 				req.add_header(key,itm)
 			res = urllib2.urlopen(req, timeout=6)
+			print res
 			return res.read().decode(encodemethod)
 		except Exception, e:
 			self.__ErrorHandle(e)

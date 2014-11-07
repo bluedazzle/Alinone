@@ -25,13 +25,31 @@
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
+{% if fault1 %}
+    <div class="alert alert-warning alert-dismissible" role="alert" style="text-align: center;margin-top:-20px;line-height: 1.1;">
+       <button type="button" class="close" data-dismiss="alert" style="margin-top: -7px;"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+       <strong style="font-size: 15px;">验证码过期!请重新获取</strong>
+    </div>
+{% endif %}
+{% if fault2 %}
+    <div class="alert alert-warning alert-dismissible" role="alert" style="text-align: center;margin-top:-20px;line-height: 1.1;">
+       <button type="button" class="close" data-dismiss="alert" style="margin-top: -7px;"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+       <strong style="font-size: 15px;">手机号已经被注册!请重新输入</strong>
+    </div>
+{% endif %}
+{% if fault3 %}
+    <div class="alert alert-warning alert-dismissible" role="alert" style="text-align: center;margin-top:-20px;line-height: 1.1;">
+       <button type="button" class="close" data-dismiss="alert" style="margin-top: -7px;"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+       <strong style="font-size: 15px;">验证码错误!请重新输入</strong>
+    </div>
+{% endif %}
 <div class="container" style="width: 700px;text-align: center;margin-top: 10%; ">
     <div class="jumbotron">
         <h2>加入Alinone</h2>
         <form action = "" method="post" id="form_mes">
         <div class="input-group" style="margin-top:40px;margin-left:120px;width: 50%;">
             <span class="input-group-addon" style=" font-size:17px;width: 30%;">手机号</span>
-            <input type="text" class="form-control" name="phone" id="phone">
+            <input type="text" class="form-control" name="phone" id="phone" value="{{ phone }}">
         </div>
         <div class="input-group" style="margin-left:120px;width: 50%;">
             <span class="input-group-addon" style="font-size:17px;width: 30%;">密码</span>
@@ -39,40 +57,55 @@
         </div>
         <div class="input-group" style="margin-left:120px;width: 50%;">
             <span class="input-group-addon" style="font-size:17px;width: 30%;">店名</span>
-            <input type="text" class="form-control" name="merchant_name" id="merchant_name">
+            <input type="text" class="form-control" name="merchant_name" id="merchant_name" value="{{ merchant_name }}">
         </div>
-<<<<<<< HEAD
         <div class="input-group" style="margin-left:120px;width: 85%;">
             <span class="input-group-addon" style="font-size:17px;width: 17.7%;">验证码</span>
             <input type="text" class="form-control" name="verify" id="verify" style="width: 127.5%;">
             <span class="input-group-btn" style="margin-left: 20px;width: 50%">
-                <input id="yanzheng" class="btn btn-default" type="button" value="获取验证码">
+                    <input id="yanzheng" class="btn btn-default" type="button" value="获取验证码">
             </span>
             <script>
                 $(document).ready(function() {
+                    var count, countdown;
                     if (localStorage['r_time_count']) {
-                        var count = localStorage['r_time_count'];
+                        count = localStorage['r_time_count'];
                         $("#yanzheng").attr("disabled", true);
-                        var countdown = setInterval(CountDown, 1000);
-                    }
-
-                    else {
-                        var count = 30;
+                        countdown = setInterval(CountDown, 1000);
                     }
                     $('#yanzheng').click(function () {
-                        if(!$('#phone').val() || $('#phone').val().length<11){
-                            alert("请输入有效的电话号码");
-                        }
-                        else
-                            var countdown = setInterval(CountDown, 1000);
+                            if($('#phone').val().length==11){
+                               count = 30;
+                               var message = $('#phone').serialize();
+                               $.ajax({
+                                   url:'register_verify', //后台处理程序
+                                   type:'post',         //数据发送方式
+                                   dataType:'json',     //接受数据格式
+                                   data:message,        //要传递的数据
+                                   success:function(data){
+                                       if(data == "false"){
+                                           alert("手机已被注册")
+                                       }
+                                       else{
+                                           countdown = setInterval(CountDown, 1000);
+                                       }
+                                   }
+                               });
+{#                               countdown = setInterval(CountDown, 1000);#}
+
+                            }
+                            else{
+                                alert("请输入有效的电话号码！")
+                            }
+
                     });
 
                         function CountDown() {
                             localStorage['r_time_count'] = count;
-                            $("#yanzheng").attr("disabled", true);
+                            $("#yanzheng").addClass('disabled');
                             $("#yanzheng").val("请等待 " + count + "秒");
                             if (count <= 0) {
-                                $("#yanzheng").val("获取验证码").removeAttr("disabled");
+                                $("#yanzheng").val("获取验证码").removeClass("disabled");
                                 clearInterval(countdown);
                                 localStorage.removeItem("r_time_count");
                             }
@@ -81,45 +114,6 @@
                 })
             </script>
         </div>
-=======
-{#        <div class="input-group" style="margin-left:120px;width: 85%;">#}
-{#            <span class="input-group-addon" style="font-size:17px;width: 17.7%;">验证码</span>#}
-{#            <input type="text" class="form-control" name="merchant_name" style="width: 127.5%;">#}
-{#            <span class="input-group-btn" style="margin-left: 20px;width: 50%">#}
-{#                <input id="yanzheng" class="btn btn-default" type="button" value="获取验证码" onclick="yanzheng_limit()">#}
-{#            </span>#}
-{#            <script>#}
-{#                $(document).ready(function() {#}
-{#                    if (localStorage['r_time_count']) {#}
-{#                        var count = localStorage['r_time_count'];#}
-{#                        $("#yanzheng").attr("disabled", true);#}
-{#                        var countdown = setInterval(CountDown, 1000);#}
-{#                    }#}
-{##}
-{#                    else {#}
-{#                        var count = 30;#}
-{#                    }#}
-{#                    $('#yanzheng').click(function () {#}
-{#                            var countdown = setInterval(CountDown, 1000);#}
-{#                    });#}
-{##}
-{#                        function CountDown() {#}
-{#                            localStorage['r_time_count'] = count;#}
-{#                            $("#yanzheng").attr("disabled", true);#}
-{#                            $("#yanzheng").val("请等待 " + count + "秒");#}
-{#                            if (count == 0) {#}
-{#                                $("#yanzheng").val("获取验证码").removeAttr("disabled");#}
-{#                                clearInterval(countdown);#}
-{#                                localStorage.removeItem("r_time_count");#}
-{#                            }#}
-{#                            count--;#}
-{#                        }#}
-{#                })#}
-{#            </script>#}
-{#        </div>#}
-        <input role="button" class="btn btn-primary" type="submit" value="注册" style="font-size: 18px; margin-top: 30px;margin-bottom: -5px;">
-        <a role="button" href="login_in" class="btn btn-primary" style="font-size: 18px; margin-top: 30px;margin-bottom: -5px; margin-left: 5%;">返回</a>
->>>>>>> caad6b22e16adb1df38d4e4ab15abd10516296fa
         </form>
         <button class="btn btn-primary" onclick="submit_mes()" style="font-size: 18px; margin-top: 30px;margin-bottom: -5px;">确定</button>
             <script>
@@ -127,11 +121,11 @@
                     if(!$('#phone').val()||!$('#password').val()||!$('#merchant_name').val()||!$('#verify').val()){
                         alert("请完善注册信息")
                     }
-                    else if($('#password').val().length<6||$('#password'.val().length>20)){
+                    else if($('#password').val().length<6||$('#password').val().length>20){
                         alert("密码需为6～20位")
                     }
                     if($('#phone').val() && $('#password').val() && $('#merchant_name').val() && $('#verify').val() &&
-                            $('#password').val().length>=6 && $('#password'.val().length<=20)){
+                            $('#password').val().length>=6 && $('#password').val().length<=20){
                         $('#form_mes').submit();
                     }
                 }

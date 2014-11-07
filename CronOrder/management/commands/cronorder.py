@@ -37,7 +37,7 @@ def tick():
     if mer.is_online is True:
         print('%s is online' % mer.name)
         # res = createnew(2, int(mer.todaynum))
-        res = catcheleorder(2, elecookjar)
+        res = catcheleorder(1, elecookjar)
         if res is not None:
             elecookjar = res
         else:

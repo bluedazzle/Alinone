@@ -108,4 +108,5 @@ CSS_DIR = './static/bootstrap/css/'
 IMG_DIR = './static/bootstrap/img/'
 JS_DIR = './static/bootstrap/js/'
 DAYIN_DIR = './static/dayin'
+STATIC_ROOT = '/home/rapospectre/PycharmProjects/AlinSite/static'
 

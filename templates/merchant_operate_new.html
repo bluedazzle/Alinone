@@ -129,5 +129,13 @@
                      </script>
           {% endif %}
         </div>
+        <script>
+            $(document).ready(function(){
+                function fresh(){
+                     window.location.href = 'operate_new';
+                }
+                var countdown = setInterval(fresh, 10000);
+            })
+        </script>
       </div>
     {% endblock define %}
