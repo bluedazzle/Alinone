@@ -20,6 +20,8 @@ def fuwei(request):
 
 
 def jieshouone(request, order):
+    if not request.session.get('username'):
+        return HttpResponseRedirect('login_in')
     order_detail = DayOrder.objects.get(order_id_alin=order)
     order_detail.status = 2
     order_detail.save()
@@ -27,6 +29,8 @@ def jieshouone(request, order):
 
 
 def jujueone(request, order):
+    if not request.session.get('username'):
+        return HttpResponseRedirect('login_in')
     order_detail = DayOrder.objects.get(order_id_alin=order)
     order_detail.status = 5
     order_detail.save()
