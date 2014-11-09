@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from CronOrder.models import *
+from CronOrder.endecy import *
 import cookielib
 from CronOrder.method import *
 from QRcode.method import *
@@ -11,6 +12,61 @@ import simplejson
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
+# http://napos.ele.me/order/processOrder/id/12259070287130497/category/1
+# ttp://napos.ele.me/order/setInvalid/id/12459171300411697/category/1?type=6&remark=
+def ensureleeorder(merid, orderlist):
+    faillist = ''
+    e = NetSpider()
+    e.Host = 'napos.ele.me'
+    e.Referer = 'http://napos.ele.me/login'
+    dip = distriproxy(merid)
+    if dip is None:
+        return None
+    e.Proxy = dip
+    curmet_list = Merchant.objects.filter(id = merid)
+    if curmet_list.count() == 0:
+        return None
+    curmet = curmet_list[0]
+    user = str(curmet.ele_account)
+    passwd = str(curmet.ele_passwd)
+    de_pass = Decrypt(passwd)
+    postdic = {'username': user, 'password': de_pass}
+    html = e.GetResFromRequest('POST', 'http://napos.ele.me/auth/doLogin', 'utf-8', postdic, use_proxy=True)
+    if html is None:
+        delofflineproxy(e.Proxy)
+        renewres = ensureleeorder(merid)
+        if renewres is not None:
+            return renewres
+        else:
+            return None
+    else:
+        res_json = simplejson.loads(html)
+        if res_json['success'] == 'false':
+            errmsg = str(res_json['message']).decode('unicode_escape')
+            curmet.ele_message = errmsg
+            curmet.ele_status = False
+            curmet.save()
+            return None
+        elif res_json['success'] == 'true':
+            curmet.ele_status = True
+            curmet.save()
+    for itm in orderlist:
+        requrl = 'http://napos.ele.me/order/processOrder/id/' + str(itm) + '/category/1'
+        html = e.GetResFromRequest('GET', requrl, 'utf-8', use_proxy=True)
+        print html
+        if str(html) == '0':
+            faillist += str(itm)
+            faillist += ','
+    if faillist != '':
+        if curmet.faillist is None:
+            curmet.faillist = faillist
+        else:
+            curmet.faillist += faillist
+        curmet.save()
+
+
+
+
 
 def catcheleorder(merid, cookielist=None):
     auto_id = 0
@@ -26,6 +82,8 @@ def catcheleorder(merid, cookielist=None):
     a.Host = 'napos.ele.me'
     a.Referer = 'http://napos.ele.me/login'
     dip = distriproxy(merid)
+    if dip is None:
+        return None
     print dip
     a.Proxy = dip
     curmet_list = Merchant.objects.filter(id = merid)
@@ -36,7 +94,8 @@ def catcheleorder(merid, cookielist=None):
     if cookielist is None:
         user = str(curmet.ele_account)
         passwd = str(curmet.ele_passwd)
-        postdic = {'username': user, 'password': passwd}
+        de_pass = Decrypt(passwd)
+        postdic = {'username': user, 'password': de_pass}
         html = a.GetResFromRequest('POST', 'http://napos.ele.me/auth/doLogin', 'utf-8', postdic, use_proxy=True)
         if html is None:
             delofflineproxy(a.Proxy)
@@ -45,7 +104,17 @@ def catcheleorder(merid, cookielist=None):
                 return renewres
             else:
                 return None
-        print html
+        else:
+            res_json = simplejson.loads(html)
+            if res_json['success'] == 'false':
+                errmsg = str(res_json['message']).decode('unicode_escape')
+                curmet.ele_message = errmsg
+                curmet.ele_status = False
+                curmet.save()
+                return None
+            elif res_json['success'] == 'true':
+                curmet.ele_status = True
+                curmet.save()
     else:
         a.CookieList = cookielist
     print a.CookieList
@@ -61,6 +130,7 @@ def catcheleorder(merid, cookielist=None):
         neworder = DayOrder()
         onpay = False
         detail = item.find('p', attrs={'class': 'list_addr'})
+        note = item.find('p', attrs={'class': 'list_description'})
         price = item.find('p', attrs={'class': 'list_price'})
         menu = item.find('div', attrs={'class': 'menu_content'})
         orderid = item['orderid']
@@ -94,6 +164,7 @@ def catcheleorder(merid, cookielist=None):
         neworder.status = 1
         neworder.promotion = 'nothing'
         neworder.pay = onpay
+        neworder.note = note
         neworder.platform = 2
         neworder.qr_path = qrres
         neworder.merchant = Merchant.objects.get(id = merid)

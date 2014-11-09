@@ -46,6 +46,9 @@ def distriproxy(merid):
         return ifbind[0].ip
     can_proxy_list = Proxy.objects.filter(is_used = False, is_online = True)
     pronum = can_proxy_list.count()
+    if pronum == 0:
+        print 'no proxy ip availble'
+        return None
     proxid = random.randint(1, pronum)
     proxy = can_proxy_list[(proxid-1)]
     proxy.bind_merchant = Merchant.objects.get(id = merid)

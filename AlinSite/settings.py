@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'CronOrder',
     'AlinApi',
     'ProxyWork',
+    'top',
 )
 
 MIDDLEWARE_CLASSES = (

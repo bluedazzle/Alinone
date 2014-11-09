@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseRedirect
 import AlinApi.method
+from CronOrder.endecy import *
 from django.http import HttpResponse, Http404
 from AlinApi.models import *
 from AlinApi.method import *
@@ -360,7 +361,8 @@ def add_platform(request):
         return HttpResponseRedirect('login_in')
     platform = request.POST.get('platform')
     account = request.POST.get('account')
-    password = request.POST.get('password')
+    password = str(request.POST.get('password'))
+    password = Encrypt(password)
     merchant_id = request.session['username']
     merchant = Merchant.objects.get(alin_account=merchant_id)
     if platform == '1' and not merchant.tao_account:

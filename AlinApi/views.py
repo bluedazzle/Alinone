@@ -5,6 +5,7 @@ from django.utils import timezone
 from AlinApi.models import *
 from AlinApi.fixlnglat import *
 from AlinApi.method import *
+import hashlib
 import simplejson
 import datetime
 import random
@@ -259,7 +260,7 @@ def login(req):
         sender_list = Sender.objects.filter(phone = str(username))
         if sender_list.count() > 0:
             sender = sender_list[0]
-            if sender.passwd == passwd:
+            if sender.check_password(passwd):
                 mytoken = createtoken()
                 sender.private_token = mytoken
                 sender.active_time = datetime.datetime.now()
@@ -312,7 +313,7 @@ def register(req):
                 mytoken = createtoken()
                 newsender = Sender()
                 newsender.phone = username
-                newsender.passwd = passwd
+                newsender.password = hashlib.md5(passwd).hexdigest()
                 newsender.active_time = datetime.datetime.now()
                 newsender.private_token = mytoken
                 newsender.save()
@@ -398,8 +399,8 @@ def changepasswd(req):
             lasttime = currentuser.active_time.replace(tzinfo = None)
             if not isactive(lasttime):
                 return HttpResponse(encodejson(5, body), content_type="application/json")
-            if str(currentuser.passwd) == str(passwd):
-                currentuser.passwd = new_passwd
+            if currentuser.check_password(passwd):
+                currentuser.password = hashlib.md5(new_passwd).hexdigest()
                 currentuser.save()
                 return HttpResponse(encodejson(1, body), content_type="application/json")
             else:
@@ -442,7 +443,7 @@ def newpassword(req):
         if currentuserset.count() > 0:
             currentuser = currentuserset[0]
             if str(currentuser.verfiy_code) == str(vercode):
-                currentuser.passwd = newpasswd
+                currentuser.password = hashlib.md5(newpasswd).hexdigest()
                 currentuser.is_verify = False
                 currentuser.verify_code = ''
                 currentuser.save()

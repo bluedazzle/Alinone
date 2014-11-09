@@ -3,6 +3,33 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 import hashlib
 # Create your models here.
 
+class SenderManager(BaseUserManager):
+    def create_user(self, email, phone, passwd=None):
+        if not email:
+            raise ValueError('Users must have an email address')
+
+        user = self.model(
+            email = MerchantManager.normalize_email(email),
+            username = phone,
+        )
+
+        user.set_password(passwd)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, phone, passwd):
+
+        user = self.create_user(email,
+            username = phone,
+            password = passwd,
+
+        )
+        user.is_staff = True
+        user.is_active = True
+        user.is_admin = False
+        user.save(using=self._db)
+        return user
+
 class MerchantManager(BaseUserManager):
 
     def create_user(self, email, alin_account, password=None):
@@ -27,15 +54,14 @@ class MerchantManager(BaseUserManager):
         )
         user.is_staff = True
         user.is_active = True
-        user.is_admin = True
+        user.is_admin = False
         user.save(using=self._db)
         return user
 
 
-class Sender(models.Model):
+class Sender(AbstractBaseUser):
     phone = models.CharField(max_length=15, unique=True)
     nick = models.CharField(max_length=20, null=True, blank=True, default="sender")
-    passwd = models.CharField(max_length=50)
     lng = models.FloatField(max_length=10, blank=True, null=True)
     lat = models.FloatField(max_length=10, blank=True, null=True)
     update_time = models.DateTimeField(max_length=30, blank=True, null=True)
@@ -44,8 +70,29 @@ class Sender(models.Model):
     verify_code = models.CharField(max_length=6, blank=True, null=True)
     is_verify = models.BooleanField(default=False)
 
+    USERNAME_FIELD = 'phone'
+    REQUIRED_FIELDS = ['phone']
+    objects = SenderManager()
+
     def __unicode__(self):
-        return  self.phone
+        return self.phone
+
+    def is_authenticated(self):
+        return True
+
+    def hashed_password(self, password=None):
+        if not password:
+            return self.passwd
+        else:
+            return hashlib.md5(password).hexdigest()
+
+    def check_password(self, password):
+        if self.hashed_password(password) == self.password:
+            return True
+        return False
+
+    class Meta:
+        app_label = 'CronOrder'
 
 
 class Merchant(AbstractBaseUser):
@@ -57,14 +104,24 @@ class Merchant(AbstractBaseUser):
     is_active = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
     tao_account = models.CharField(max_length=100, blank=True)
-    tao_passwd = models.CharField(max_length=50, blank=True)
+    tao_passwd = models.CharField(max_length=500, blank=True)
+    tao_sessionkey = models.CharField(max_length=100, blank=True, null=True)
+    tao_refreshkey = models.CharField(max_length=100, blank=True, null=True)
+    tao_shopid = models.CharField(max_length=30, blank=True, null=True)
+    tao_message = models.CharField(max_length=100, blank=True, null=True)
+    tao_status = models.BooleanField(default=False)
     mei_account = models.CharField(max_length=100, blank=True)
-    mei_passwd = models.CharField(max_length=50, blank=True)
+    mei_passwd = models.CharField(max_length=500, blank=True, null=True)
+    mei_message = models.CharField(max_length=100, blank=True)
+    mei_status = models.BooleanField(default=False)
     ele_account = models.CharField(max_length=100, blank=True)
-    ele_passwd = models.CharField(max_length=50, blank=True)
+    ele_passwd = models.CharField(max_length=500, blank=True)
+    ele_message = models.CharField(max_length=100, blank=True, null=True)
+    ele_status = models.BooleanField(default=False)
     bind_sender = models.ManyToManyField(Sender, null=True, blank=True, related_name="sender")
     reg_time = models.DateTimeField(blank=True, null=True)
     bind_pic = models.CharField(max_length=30, null=True, blank=True)
+    faillist = models.CharField(max_length=1000, null=True, blank=True)
 
     is_online = models.BooleanField(default=True)
     is_open = models.BooleanField(default=False)
@@ -110,7 +167,8 @@ class DayOrder(models.Model):
     address = models.CharField(max_length=50)
     platform = models.IntegerField(max_length=1)
     origin_price = models.FloatField(max_length=10)
-    promotion = models.CharField(max_length=50)
+    note = models.CharField(max_length=100, null=True, blank=True)
+    promotion = models.CharField(max_length=50, null=True, blank=True)
     real_price = models.FloatField(max_length=10)
     status = models.IntegerField(max_length=1)
     merchant = models.ForeignKey(Merchant, blank=True, null=True)

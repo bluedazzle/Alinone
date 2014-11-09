@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 from CronOrder.crontest import *
 from CronOrder.ele import *
+from CronOrder.tdd import *
 from QRcode.method import *
 from CronOrder.models import *
 import cookielib
@@ -8,6 +9,7 @@ import os,sys
 from apscheduler.schedulers.blocking import BlockingScheduler
 from CronOrder.method import *
 scheduler = BlockingScheduler()
+tddcat = None
 elecookjar = None
 i = 0
 def createnew(merid, autoid):
@@ -30,6 +32,7 @@ def createnew(merid, autoid):
     return 'success'
 
 def tick():
+    global tddcat
     global i
     global scheduler
     global elecookjar
@@ -37,12 +40,14 @@ def tick():
     if mer.is_online is True:
         print('%s is online' % mer.name)
         # res = createnew(2, int(mer.todaynum))
-        res = catcheleorder(1, elecookjar)
+        res = catcheleorder(i, elecookjar)
         if res is not None:
             elecookjar = res
         else:
             elecookjar = None
         # print res
+        tres = tddcat.getpaddingorder()
+        print tres
     elif mer.is_online is False:
         print('%s is offline,schel will exit' % mer.name)
         scheduler.shutdown()
@@ -50,8 +55,10 @@ def tick():
 class Command(BaseCommand):
     def handle(self, *args, **options):
         global i
+        global tddcat
         global scheduler
         i = int(args[0])
+        tddcat = Tao(merchantid=i)
         scheduler.add_job(tick, 'interval', seconds=5)
         print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'))
         try:
