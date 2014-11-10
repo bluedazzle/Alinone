@@ -2,7 +2,7 @@
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseRedirect
-import AlinApi.method
+from AlinApi.method import *
 from CronOrder.endecy import *
 from django.http import HttpResponse, Http404
 from AlinApi.models import *
