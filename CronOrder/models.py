@@ -122,6 +122,7 @@ class Merchant(AbstractBaseUser):
     reg_time = models.DateTimeField(blank=True, null=True)
     bind_pic = models.CharField(max_length=30, null=True, blank=True)
     faillist = models.CharField(max_length=1000, null=True, blank=True)
+    update_time = models.DateField(blank=True, null=True)
 
     is_online = models.BooleanField(default=True)
     is_open = models.BooleanField(default=False)

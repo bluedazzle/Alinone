@@ -12,24 +12,24 @@ scheduler = BlockingScheduler()
 tddcat = None
 elecookjar = None
 i = 0
-def createnew(merid, autoid):
-    no = DayOrder()
-    no.order_id_alin = str(createAlinOrderNum(1, merid, autoid))
-    createqr(1, createAlinOrderNum(2, merid, autoid))
-    no.address = 'kb363' + str(autoid)
-    no.order_id_old = '0000' + str(autoid)
-    no.order_time = datetime.datetime.now()
-    no.phone = '18215606355'
-    no.origin_price = 13.0
-    no.real_price = 10.0
-    no.order_id_old = '0000000' + str(autoid)
-    no.platform = 1
-    no.status = 1
-    no.promotion = 'nothing'
-    no.merchant = Merchant.objects.filter(id = merid)[0]
-    no.send_time = datetime.datetime.now()
-    no.save()
-    return 'success'
+# def createnew(merid, autoid):
+#     no = DayOrder()
+#     no.order_id_alin = str(createAlinOrderNum(1, merid, autoid))
+#     createqr(1, createAlinOrderNum(2, merid, autoid))
+#     no.address = 'kb363' + str(autoid)
+#     no.order_id_old = '0000' + str(autoid)
+#     no.order_time = datetime.datetime.now()
+#     no.phone = '18215606355'
+#     no.origin_price = 13.0
+#     no.real_price = 10.0
+#     no.order_id_old = '0000000' + str(autoid)
+#     no.platform = 1
+#     no.status = 1
+#     no.promotion = 'nothing'
+#     no.merchant = Merchant.objects.filter(id = merid)[0]
+#     no.send_time = datetime.datetime.now()
+#     no.save()
+#     return 'success'
 
 def tick():
     global tddcat
