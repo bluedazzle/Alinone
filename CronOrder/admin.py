@@ -22,6 +22,9 @@ class SenderAdmin(admin.ModelAdmin):
     list_filter = ('active_time',)
     ordering = ('-active_time',)
 
+
+admin.site.register(Tdish, DishAdmin)
+admin.site.register(TotalOrder, DayOrderAdmin)
 admin.site.register(Merchant, MerchantAdmin)
 admin.site.register(Dish, DishAdmin)
 admin.site.register(DayOrder, DayOrderAdmin)

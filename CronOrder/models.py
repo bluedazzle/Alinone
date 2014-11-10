@@ -186,4 +186,35 @@ class Dish(models.Model):
     order = models.ForeignKey(DayOrder, blank=True, null=True, related_name='dishs')
 
     def __unicode__(self):
-        return  self.dish_name
+        return self.dish_name
+
+class TotalOrder(models.Model):
+    order_id_alin = models.CharField(max_length=22, unique=True)
+    order_id_old = models.CharField(max_length=20)
+    order_time = models.DateTimeField(max_length=30)
+    send_time = models.DateTimeField(max_length=30)
+    phone = models.CharField(max_length=13)
+    pay = models.BooleanField(default=False)
+    address = models.CharField(max_length=50)
+    platform = models.IntegerField(max_length=1)
+    origin_price = models.FloatField(max_length=10)
+    note = models.CharField(max_length=100, null=True, blank=True)
+    promotion = models.CharField(max_length=50, null=True, blank=True)
+    real_price = models.FloatField(max_length=10)
+    status = models.IntegerField(max_length=1)
+    merchant = models.ForeignKey(Merchant, blank=True, null=True)
+    bind_sender = models.ForeignKey(Sender, blank=True, null=True, related_name="torder")
+    finish_by = models.CharField(max_length=20, blank=True, null=True)
+    qr_path = models.CharField(max_length=20, null=True, blank=True)
+
+    def __unicode__(self):
+        return self.order_id_alin
+
+class Tdish(models.Model):
+    dish_name = models.CharField(max_length=30)
+    dish_price = models.FloatField(max_length=5)
+    dish_count = models.IntegerField(max_length=5)
+    order = models.ForeignKey(TotalOrder, blank=True, null=True, related_name='tdishs')
+
+    def __unicode__(self):
+        return self.dish_name
