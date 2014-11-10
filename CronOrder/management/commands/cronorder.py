@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
 from CronOrder.crontest import *
+from AlinApi.views import *
 from CronOrder.ele import *
 from CronOrder.tdd import *
 from QRcode.method import *
@@ -37,6 +38,11 @@ def tick():
     global scheduler
     global elecookjar
     mer = Merchant.objects.filter(id = i)[0]
+    acttime = mer.update_time.replace(tzinfo = None)
+    is_act = isactive(acttime, 60)
+    if not is_act:
+        mer.is_online = False
+        mer.save()
     if mer.is_online is True:
         print('%s is online' % mer.name)
         # res = createnew(2, int(mer.todaynum))

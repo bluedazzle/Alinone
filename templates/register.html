@@ -47,6 +47,7 @@
     <div class="jumbotron">
         <h2>加入Alinone</h2>
         <form action = "" method="post" id="form_mes">
+             {% csrf_token %}
         <div class="input-group" style="margin-top:40px;margin-left:120px;width: 50%;">
             <span class="input-group-addon" style=" font-size:17px;width: 30%;">手机号</span>
             <input type="text" class="form-control" name="phone" id="phone" value="{{ phone }}">
