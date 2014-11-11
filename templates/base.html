@@ -7,7 +7,7 @@
     <link href="/css/main.css" rel="stylesheet">
     <script src="/js/jquery.min.js"></script>
     <script src="/js/bootstrap.js"></script>
-    <script src="/js/order_operate.js"></script>
+    <script language="javaScript" src="/js/operate.js"></script>
     <script language="javascript" src="/js/LodopFuncs.js"></script>
 </head>
 <body  style="font-family: Microsoft Yahei;">
@@ -40,8 +40,10 @@
   <strong>公告!</strong>这是一个公告！！！这是一个公告！！！
 </div>
 <div class="col-md-2 col-lg-2" style="padding-left: 0;padding-top:5%;position: fixed;">
-   <div class="btn-group-vertical" style="width: 100%;">
-      <a role="button" class="btn btn-primary btn-lg" href="operate_new">未处理订单</a>
+   <div class="btn-group-vertical" style="width: 110%;">
+      <a role="button" class="btn btn-primary btn-lg" href="operate_new">
+          未处理订单<span class="badge" id="new_orders_count" style="margin-left: 10px;"></span>
+      </a>
       <a role="button" class="btn btn-primary btn-lg" href="operate_get">已接收订单</a>
       <a role="button" class="btn btn-primary btn-lg" href="operate_paisong">派送的订单</a>
       <a role="button" class="btn btn-primary btn-lg" href="operate_delete">取消的订单</a>
@@ -73,5 +75,51 @@
     })
     </script>
 {% endif %}
+    <script>
+            function get_new_count(){
+                $.ajax({
+                        type: 'GET',
+                        url: 'get_orders_count',
+                        data: '',
+                        success: function(data){
+                            if(data != 'N') {
+                                $('#new_orders_count').text(data)
+                            }
+                        },
+                        dataType: 'json'
+                    });}
+    $(document).ready(function() {
+        $.ajax({
+            type: 'GET',
+            url: 'get_orders_count',
+            data: '',
+            success: function (data) {
+                if (data != 'N') {
+                    $('#new_orders_count').text(data)
+                }
+            },
+            dataType: 'json'
+        });
+        var count_flag = setInterval(get_new_count, 5000);
+    });
+
+    </script>
+    <script>
+        function getCookie(name) {
+                    var cookieValue = null;
+                    if (document.cookie && document.cookie != '') {
+                        var cookies = document.cookie.split(';');
+                        for (var i = 0; i < cookies.length; i++) {
+                            var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                         }
+                     }
+                     return cookieValue;
+                }
+    </script>
 </body>
 </html>

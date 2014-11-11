@@ -34,9 +34,19 @@
     $(document).ready(function(){
         var countdown;
         function fresh(){
-            window.location.href = 'add_sender_page'
+            $.ajax({
+                        type: 'GET',
+                        url: 'get_sender_change',
+                        data: '',
+                        success: function(data){
+                            if(data == 'T') {
+                                window.location.href = 'add_sender_page'
+                            }
+                        },
+                        dataType: 'json'
+                    });
         }
-        countdown = setInterval(fresh, 10000);
+        countdown = setInterval(fresh, 5000);
     })
     </script>
 {% endblock %}
