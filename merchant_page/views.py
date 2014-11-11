@@ -8,6 +8,7 @@ from CronOrder.endecy import *
 from django.http import HttpResponse, Http404
 from AlinApi.models import *
 from QRcode.method import *
+from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from auth import *
 from CronOrder.models import *
@@ -33,11 +34,11 @@ def login_in(request):
                 request.session['qr_bind'] = qr_bind
                 return HttpResponseRedirect("/merchant/operate_new")
             else:
-                return render_to_response('login_page.html', {'flag': 1})
+                return render_to_response('login_page.html', {'flag': 1}, context_instance=RequestContext(request))
         except Merchant.DoesNotExist:
-            return render_to_response('login_page.html', {'flag': 1})
+            return render_to_response('login_page.html', {'flag': 1}, context_instance=RequestContext(request))
     else:
-        return render_to_response('login_page.html')
+        return render_to_response('login_page.html', context_instance=RequestContext(request))
 
 
 #登出函数
@@ -71,7 +72,7 @@ def forget_password(request):
                     return HttpResponseRedirect("/merchant/operate_new")
             else:
                 return render_to_response('register.html', {'phone': phone,
-                                                            'fault3': '2'})
+                                                            'fault3': '2'}, context_instance=RequestContext(request))
 
 
 #忘记密码获取验证码
@@ -97,14 +98,14 @@ def register(request):
             user_test_list = Merchant.objects.filter(alin_account=phone)
             if user_test_list.count() > 0:
                 return render_to_response('register.html', {'phone': phone, 'merchant_name': merchant_name,
-                                                            'fault2': 'T'})
+                                                            'fault2': 'T'}, context_instance=RequestContext(request))
             phone_verify = PhoneVerify.objects.get(phone=str(phone), verify_code=str(verify))
             if phone_verify:
                 update_time = phone_verify.update_time
                 if (update_time.replace(tzinfo=None) + datetime.timedelta(minutes=30)) < \
                         datetime.datetime.utcnow():
                     return render_to_response('register.html', {'phone': phone, 'merchant_name': merchant_name,
-                                                                'fault1': 'T'})
+                                                                'fault1': 'T'}, context_instance=RequestContext(request))
                 else:
                     newmerchant = Merchant()
                     newmerchant.alin_account = phone
@@ -119,11 +120,11 @@ def register(request):
                     return HttpResponseRedirect("/merchant/operate_new")
             else:
                 return render_to_response('register.html', {'phone': phone, 'merchant_name': merchant_name,
-                                                            'fault3': 'T'})
+                                                            'fault3': 'T'}, context_instance=RequestContext(request))
         else:
-            return render_to_response('register.html')
+            return render_to_response('register.html', context_instance=RequestContext(request))
     else:
-        return render_to_response('register.html')
+        return render_to_response('register.html', context_instance=RequestContext(request))
 
 
 #注册获取验证码
@@ -144,7 +145,7 @@ def register_verify(request):
 def change_password(request):
     if request.method == 'GET':
         if request.session.get('username'):
-            return render_to_response('change_password.html')
+            return render_to_response('change_password.html', context_instance=RequestContext(request))
         else:
             return HttpResponseRedirect('login_in')
     if request.method == 'POST':
@@ -154,25 +155,25 @@ def change_password(request):
         new_password_again = request.POST.get('new_password_again')
         if phone and old_password and new_password and new_password_again:
             if not new_password == new_password_again:
-                return render_to_response('change_password.html', {'fault2': 'T', 'phone': phone})
+                return render_to_response('change_password.html', {'fault2': 'T', 'phone': phone}, context_instance=RequestContext(request))
             if new_password == old_password:
-                return render_to_response('change_password.html', {'fault4': 'T', 'phone': phone})
+                return render_to_response('change_password.html', {'fault4': 'T', 'phone': phone}, context_instance=RequestContext(request))
             if not phone == request.session.get('username'):
-                return render_to_response('change_password.html', {'fault3': 'T', 'phone': phone})
+                return render_to_response('change_password.html', {'fault3': 'T', 'phone': phone}, context_instance=RequestContext(request))
             merchant = Merchant.objects.get(alin_account=phone)
             if not merchant.check_password(old_password):
-                return render_to_response('change_password.html', {'fault1': 'T', 'phone': phone})
+                return render_to_response('change_password.html', {'fault1': 'T', 'phone': phone}, context_instance=RequestContext(request))
             password = hashlib.md5(new_password).hexdigest()
             merchant.password = password
             merchant.save()
-            return render_to_response('change_password.html', {'success': 'T'})
+            return render_to_response('change_password.html', {'success': 'T'}, context_instance=RequestContext(request))
         else:
-            return render_to_response('change_password.html')
+            return render_to_response('change_password.html', context_instance=RequestContext(request))
 
 
 def change_name(request):
     if request.method == 'GET':
-        return render_to_response('change_name.html')
+        return render_to_response('change_name.html', context_instance=RequestContext(request))
     if request.method == 'POST':
         phone = request.POST.get('phone')
         password = request.POST.get('password')
@@ -182,18 +183,18 @@ def change_name(request):
             if not phone == merchant_phone:
                 return render_to_response('change_name.html', {'fault1': 'T',
                                                                'phone': phone,
-                                                               'new_name': new_name})
+                                                               'new_name': new_name}, context_instance=RequestContext(request))
             merchant = Merchant.objects.get(alin_account=phone)
             req = merchant.check_password(password)
             if not req:
                 return render_to_response('change_name.html', {'fault1': 'T',
                                                                'phone': phone,
-                                                               'new_name': new_name})
+                                                               'new_name': new_name}, context_instance=RequestContext(request))
             merchant.name = new_name
             merchant.save()
-            return render_to_response('change_name.html', {'success': 'T', 'new_user_name': new_name})
+            return render_to_response('change_name.html', {'success': 'T', 'new_user_name': new_name}, context_instance=RequestContext(request))
         else:
-            return render_to_response('change_name.html', {'phone': phone, 'new_name': new_name})
+            return render_to_response('change_name.html', {'phone': phone, 'new_name': new_name}, context_instance=RequestContext(request))
 
 #进入未处理订单界面
 def operate_new(request):
@@ -207,10 +208,11 @@ def operate_new(request):
                 order_detail = pingtai_name(order_detail)
             except DayOrder.DoesNotExist:
                 pass
-            return render_to_response('merchant_operate_new.html', {'items': order_detail, 'dishs': dish_list,
-                                                                    'user_name': merchant.name})
+            return render_to_response('merchant_operate_new.html', {'items': order_detail, 'dishs': dish_list, 'user_name': merchant.name}, context_instance=RequestContext(request))
         else:
             return HttpResponseRedirect("login_in")
+    else:
+        raise Http404
 
 
 #进入已接受订单界面
@@ -224,10 +226,10 @@ def operate_get(request):
                 order_detail = pingtai_name(order_detail)
             except DayOrder.DoesNotExist:
                 pass
-            return render_to_response('merchant_operate_get.html', {'items': order_detail})
+            return render_to_response('merchant_operate_get.html', {'items': order_detail}, context_instance=RequestContext(request))
         else:
             return HttpResponseRedirect("login_in")
-    return render_to_response('merchant_operate_get.html')
+    return render_to_response('merchant_operate_get.html', context_instance=RequestContext(request))
 
 
 #进入派送订单管理页面
@@ -239,7 +241,7 @@ def operate_paisong(request):
     express_people = merchant.bind_sender.all()
     orders = DayOrder.objects.order_by('-order_time').filter(merchant=merchant, status=3)
     orders = pingtai_name(orders)
-    return render_to_response('merchant_operate_paisong.html', {'orders': orders, 'express_people': express_people})
+    return render_to_response('merchant_operate_paisong.html', {'orders': orders, 'express_people': express_people}, context_instance=RequestContext(request))
 
 
 #进入平台管理页面
@@ -262,7 +264,7 @@ def operate_pingtai(request):
                 'account': merchant.ele_account}
         items.append(item)
 
-    return render_to_response('merchant_operate_pingtai.html', {'items': items})
+    return render_to_response('merchant_operate_pingtai.html', {'items': items}, context_instance=RequestContext(request))
 
 
 #进入删除订单页面
@@ -276,10 +278,10 @@ def operate_delete(request):
                 order_detail = pingtai_name(order_detail)
             except DayOrder.DoesNotExist:
                 pass
-            return render_to_response('merchant_operate_delete.html', {'items': order_detail})
+            return render_to_response('merchant_operate_delete.html', {'items': order_detail}, context_instance=RequestContext(request))
         else:
             return HttpResponseRedirect("login_in")
-    return render_to_response('merchant_operate_delete.html')
+    return render_to_response('merchant_operate_delete.html', context_instance=RequestContext(request))
 
 
 #物流人员管理页面
@@ -289,14 +291,14 @@ def operate_express_person(request):
     merchant_id = request.session['username']
     merchant = Merchant.objects.get(alin_account=merchant_id)
     express_people = merchant.bind_sender.all()
-    return render_to_response('merchant_operate_express_person.html', {'express_people': express_people})
+    return render_to_response('merchant_operate_express_person.html', {'express_people': express_people}, context_instance=RequestContext(request))
 
 
 #打印机设置页面
 def printer_setting(request):
     if not request.session.get('username'):
         return HttpResponseRedirect('login_in')
-    return render_to_response('merchant_printer_setting.html')
+    return render_to_response('merchant_printer_setting.html', context_instance=RequestContext(request))
 
 
 #加载平台名称
@@ -317,7 +319,7 @@ def pingtai_name(orders):
 def print_one(request, order):
     try:
         order_detail = DayOrder.objects.get(order_id_alin=order)
-        return render_to_response('print.html', {'item': order_detail})
+        return render_to_response('print.html', {'item': order_detail}, context_instance=RequestContext(request))
     except DayOrder.DoesNotExist:
         pass
 
@@ -328,7 +330,7 @@ def print_all(request):
         merchant_id = request.session['username']
         merchant = Merchant.objects.get(alin_account=merchant_id)
         order_detail = DayOrder.objects.filter(merchant=merchant, status=1)
-        return render_to_response('print_all.html', {'items': order_detail})
+        return render_to_response('print_all.html', {'items': order_detail}, context_instance=RequestContext(request))
     except DayOrder.DoesNotExist:
         pass
 
@@ -354,7 +356,7 @@ def platform_delete(request, name):
 
 #进入添加平台页面
 def add_platform_page(request):
-    return render_to_response('merchant_add_platform.html')
+    return render_to_response('merchant_add_platform.html', context_instance=RequestContext(request))
 
 
 #添加平台
@@ -380,7 +382,7 @@ def add_platform(request):
         merchant.ele_passwd = password
         merchant.save()
     else:
-        return render_to_response('merchant_add_platform.html', {'fault': 'x'})
+        return render_to_response('merchant_add_platform.html', {'fault': 'x'}, context_instance=RequestContext(request))
     return HttpResponseRedirect('operate_pingtai')
 
 
@@ -402,4 +404,4 @@ def add_sender_page(request):
         merchant = Merchant.objects.get(alin_account=merchant_id)
         express_people = merchant.bind_sender.all()
         filename = request.session['qr_bind']
-        return render_to_response('merchant_add_sender.html', {'express_people': express_people, 'filename': filename})
+        return render_to_response('merchant_add_sender.html', {'express_people': express_people, 'filename': filename}, context_instance=RequestContext(request))

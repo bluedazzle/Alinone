@@ -14,6 +14,17 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 # http://napos.ele.me/order/processOrder/id/12259070287130497/category/1
 # ttp://napos.ele.me/order/setInvalid/id/12459171300411697/category/1?type=6&remark=
+class Ele(object):
+    def __init__(self):
+        self.account = ''
+        self.password = ''
+        self.merchantid = ''
+        self.cookie = None
+
+    def catchorder(self):
+        return 0
+
+
 def ensureleeorder(merid, orderlist):
     faillist = ''
     e = NetSpider()
