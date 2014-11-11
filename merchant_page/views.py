@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import HttpResponseRedirect
 from AlinApi.method import *
 from CronOrder.endecy import *
@@ -18,7 +19,7 @@ import time
 
 # Create your views here.
 # 登录验证函数
-@csrf_exempt
+@ensure_csrf_cookie
 def login_in(request):
     if 'user_name' in request.POST and request.POST['user_name'] and 'password' in request.POST and request.POST['password']:
         user_name = request.POST['user_name']
@@ -85,7 +86,7 @@ def forget_password_verify(request):
 
 
 #注册
-@csrf_exempt
+@ensure_csrf_cookie
 def register(request):
     if request.method == 'POST':
         password = request.POST.get('password')
@@ -126,7 +127,6 @@ def register(request):
 
 
 #注册获取验证码
-@csrf_exempt
 def register_verify(request):
     if request.method == 'POST':
         phone = request.POST.get('phone')
@@ -141,7 +141,6 @@ def register_verify(request):
 
 
 #修改密码
-@csrf_exempt
 def change_password(request):
     if request.method == 'GET':
         if request.session.get('username'):
@@ -171,7 +170,6 @@ def change_password(request):
             return render_to_response('change_password.html')
 
 
-@csrf_exempt
 def change_name(request):
     if request.method == 'GET':
         return render_to_response('change_name.html')
@@ -360,7 +358,6 @@ def add_platform_page(request):
 
 
 #添加平台
-@csrf_exempt
 def add_platform(request):
     if not request.session.get('username'):
         return HttpResponseRedirect('login_in')
@@ -406,3 +403,8 @@ def add_sender_page(request):
         express_people = merchant.bind_sender.all()
         filename = request.session['qr_bind']
         return render_to_response('merchant_add_sender.html', {'express_people': express_people, 'filename': filename})
+
+
+#update orders
+def update_new_orders(request):
+    return None

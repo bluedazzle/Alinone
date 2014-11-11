@@ -20,6 +20,7 @@ urlpatterns = patterns('',
     url(r'^fuwei$', fuwei),
 
     url(r'^operate_new$', operate_new),
+    url(r'^update_new_orders', update_new_orders),
     url(r'^operate_get$', operate_get),
     url(r'^operate_paisong$', operate_paisong),
     url(r'^operate_pingtai$', operate_pingtai),

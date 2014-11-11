@@ -132,7 +132,13 @@
         <script>
             $(document).ready(function(){
                 function fresh(){
-                    $.post();
+                    $.ajax({
+                        type: 'GET',
+                        url: get_new_orders,
+                        data: '',
+                        success: update_orders(data),
+                        dataType: 'json'
+                    });
                 }
                 var countdown = setInterval(fresh, 10000);
             })

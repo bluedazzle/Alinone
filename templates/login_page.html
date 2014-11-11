@@ -34,6 +34,7 @@
     <div class="jumbotron" style="text-align: center;">
         <h2>登录Alinone</h2>
         <form action = "" method="post">
+             {% csrf_token %}
         <div class="input-group" style="margin-top:40px;margin-left:25%;width: 50%;">
             <span class="input-group-addon" style=" font-size:17px;width: 30%;">用户名</span>
             <input type="text" class="form-control" name="user_name">
