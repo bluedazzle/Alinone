@@ -2,6 +2,7 @@ import random
 import simplejson
 import string
 import datetime
+import urllib
 from AlinApi.models import *
 from CronOrder.NetSpider import *
 import string
@@ -33,7 +34,10 @@ def sendverifycode(content, phone):
     postdic['apikey'] = apikey
     postdic['tpl_id'] = '512797'
     postdic['tpl_value'] = '#code#=' + content
-    res = vf.GetResFromRequest('POST', 'http://yunpian.com/v1/sms/tpl_send.json', 'gbk', postdic)
+    encode = urllib.urlencode(postdic)
+    resulthtml = urllib.urlopen('http://yunpian.com/v1/sms/tpl_send.json', encode)
+    res = resulthtml.read()
+    # res = vf.GetResFromRequest('POST', 'http://yunpian.com/v1/sms/tpl_send.json', 'gbk', postdic)
     jsres = simplejson.loads(res)
     msg = jsres['code']
     if str(msg) == '0':
