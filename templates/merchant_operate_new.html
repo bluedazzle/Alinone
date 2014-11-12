@@ -43,6 +43,7 @@
                                  {% for dish in item.dishs.all %}
                                      <li><p>{{ dish.dish_name }} X {{ dish.dish_count }}</p></li>
                                  {% endfor %}
+                                 <li><img src="/qrimg/{{ item.qr_path }}" alt="qrcode missing" style="width: 100px;height: 100px;"/></li>
                              </ul>
                          </div>
                      </td>

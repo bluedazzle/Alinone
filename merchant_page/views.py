@@ -9,6 +9,7 @@ from django.http import HttpResponse, Http404
 from AlinApi.models import *
 from QRcode.method import *
 from django.template import RequestContext
+import subprocessfile
 from django.contrib.auth.decorators import login_required
 from auth import *
 from CronOrder.models import *
@@ -30,6 +31,11 @@ def login_in(request):
             if user.check_password(password):
                 request.session['username'] = user_name
                 merchant = Merchant.objects.get(alin_account=user_name)
+                merchant.update_time = datetime.datetime.now()
+                merchant.is_online = True
+                merchant.save()
+                if merchant.ele_account != '':
+                    subprocessfile.spiderprocess(merchant.id)
                 qr_bind = createqr(2, merchant.id)
                 request.session['qr_bind'] = qr_bind
                 return HttpResponseRedirect("/merchant/operate_new")
@@ -43,6 +49,10 @@ def login_in(request):
 
 #登出函数
 def login_out(request):
+    user_name = request.session.get('username')
+    merchant = Merchant.objects.get(alin_account=user_name)
+    merchant.is_online = False
+    merchant.save()
     del request.session['username']
     return HttpResponseRedirect("login_in")
 
@@ -203,6 +213,8 @@ def operate_new(request):
             try:
                 merchant0 = request.session.get('username')
                 merchant = Merchant.objects.get(alin_account=merchant0)
+                merchant.update_time = datetime.datetime.now()
+                merchant.save()
                 order_detail = DayOrder.objects.order_by('-order_time').filter(merchant=merchant, status=1)
                 dish_list = Dish.objects.all
                 order_detail = pingtai_name(order_detail)
@@ -222,6 +234,8 @@ def operate_get(request):
             try:
                 merchant0 = request.session.get('username')
                 merchant = Merchant.objects.get(alin_account=merchant0)
+                merchant.update_time = datetime.datetime.now()
+                merchant.save()
                 order_detail = DayOrder.objects.order_by('-order_time').filter(merchant=merchant, status=2)
                 order_detail = pingtai_name(order_detail)
             except DayOrder.DoesNotExist:
@@ -238,6 +252,8 @@ def operate_paisong(request):
         return HttpResponseRedirect('login_in')
     merchant_id = request.session['username']
     merchant = Merchant.objects.get(alin_account=merchant_id)
+    merchant.update_time = datetime.datetime.now()
+    merchant.save()
     express_people = merchant.bind_sender.all()
     orders = DayOrder.objects.order_by('-order_time').filter(merchant=merchant, status=3)
     orders = pingtai_name(orders)
@@ -250,6 +266,8 @@ def operate_pingtai(request):
         return HttpResponseRedirect('login_in')
     merchant_id = request.session['username']
     merchant = Merchant.objects.get(alin_account=merchant_id)
+    merchant.update_time = datetime.datetime.now()
+    merchant.save()
     items = []
     if merchant.tao_account:
         item = {'name': '1',
@@ -274,6 +292,8 @@ def operate_delete(request):
             try:
                 merchant0 = request.session.get('username')
                 merchant = Merchant.objects.get(alin_account=merchant0)
+                merchant.update_time = datetime.datetime.now()
+                merchant.save()
                 order_detail = DayOrder.objects.order_by('-order_time').filter(merchant=merchant, status=5)
                 order_detail = pingtai_name(order_detail)
             except DayOrder.DoesNotExist:
@@ -290,6 +310,8 @@ def operate_express_person(request):
         return HttpResponseRedirect('login_in')
     merchant_id = request.session['username']
     merchant = Merchant.objects.get(alin_account=merchant_id)
+    merchant.update_time = datetime.datetime.now()
+    merchant.save()
     express_people = merchant.bind_sender.all()
     return render_to_response('merchant_operate_express_person.html', {'express_people': express_people}, context_instance=RequestContext(request))
 
@@ -329,6 +351,8 @@ def print_all(request):
     try:
         merchant_id = request.session['username']
         merchant = Merchant.objects.get(alin_account=merchant_id)
+        merchant.update_time = datetime.datetime.now()
+        merchant.save()
         order_detail = DayOrder.objects.filter(merchant=merchant, status=1)
         return render_to_response('print_all.html', {'items': order_detail}, context_instance=RequestContext(request))
     except DayOrder.DoesNotExist:
@@ -339,6 +363,7 @@ def print_all(request):
 def platform_delete(request, name):
     merchant_id = request.session['username']
     merchant = Merchant.objects.get(alin_account=merchant_id)
+    merchant.update_time = datetime.datetime.now()
     if name == '1':
         merchant.tao_account = ''
         merchant.tao_passwd = ''
@@ -369,6 +394,7 @@ def add_platform(request):
     password = Encrypt(password)
     merchant_id = request.session['username']
     merchant = Merchant.objects.get(alin_account=merchant_id)
+    merchant.update_time = datetime.datetime.now()
     if platform == '1' and not merchant.tao_account:
         merchant.tao_account = account
         merchant.tao_passwd = password
@@ -390,8 +416,10 @@ def add_platform(request):
 def delete_sender(request, phone):
     merchant_id = request.session['username']
     merchant = Merchant.objects.get(alin_account=merchant_id)
+    merchant.update_time = datetime.datetime.now()
     sender = Sender.objects.get(phone=phone)
     merchant.bind_sender.remove(sender)
+    merchant.save()
     return HttpResponseRedirect("operate_express_person")
 
 
@@ -402,6 +430,8 @@ def add_sender_page(request):
     else:
         merchant_id = request.session['username']
         merchant = Merchant.objects.get(alin_account=merchant_id)
+        merchant.update_time = datetime.datetime.now()
+        merchant.save()
         express_people = merchant.bind_sender.all()
         filename = request.session['qr_bind']
         return render_to_response('merchant_add_sender.html', {'express_people': express_people, 'filename': filename}, context_instance=RequestContext(request))
