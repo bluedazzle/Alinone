@@ -82,7 +82,6 @@
                                var message = {'phone': $('#phone').val(),
                                               'csrfmiddlewaretoken': getCookie('csrftoken')};
                                $.ajax({
-                                   {% csrf_token %}
                                    url:'register_verify', //后台处理程序
                                    type:'post',         //数据发送方式
                                    dataType:'json',     //接受数据格式

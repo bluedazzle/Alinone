@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response
+from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import HttpResponseRedirect
@@ -148,10 +149,10 @@ def register_verify(request):
         phone = request.POST.get('phone')
         merchant_have = Merchant.objects.filter(alin_account=phone)
         if merchant_have.count() > 0:
-            return render_to_response(json.dumps("false"), context_instance=RequestContext(request))
+            return HttpResponse(json.dumps("false"), content_type="application/json")
         req = createverfiycode(phone)
         print req
-        return render_to_response(json.dumps("true"), content_type="application/json", context_instance=RequestContext(request))
+        return HttpResponse(json.dumps("true"), content_type="application/json")
     raise Http404
 
 
@@ -219,8 +220,7 @@ def get_orders_count(request):
     else:
         merchant_id = request.session['username']
         merchant = Merchant.objects.get(alin_account=merchant_id)
-        time_now = datetime.datetime.now()
-        merchant.last_login = time_now
+        merchant.update_time = datetime.datetime.now()
         merchant.save()
         order_list = DayOrder.objects.filter(merchant=merchant, status=1)
         if order_list.count() == 0:
@@ -245,7 +245,7 @@ def operate_new(request):
                 request.session['new_order_id'] = order_detail[0].id
                 dish_list = Dish.objects.all
                 order_detail = pingtai_name(order_detail)
-                paginator = Paginator(order_detail, 1)
+                paginator = Paginator(order_detail, 20)
                 try:
                     page_num = request.GET.get('page')
                     order_detail = paginator.page(page_num)
@@ -273,6 +273,8 @@ def update_new_orders(request):
     else:
         merchant_id = request.session['username']
         merchant = Merchant.objects.get(alin_account=merchant_id)
+        merchant.update_time = datetime.datetime.now()
+        merchant.save()
         order_list = DayOrder.objects.order_by('-id').filter(merchant=merchant, status=1)
         if order_list.count() == 0:
             return HttpResponse(json.dumps('F'), content_type="application/json")
@@ -294,7 +296,7 @@ def operate_get(request):
                 merchant.save()
                 order_detail = DayOrder.objects.order_by('-order_time').filter(merchant=merchant, status=2)
                 order_detail = pingtai_name(order_detail)
-                paginator = Paginator(order_detail, 1)
+                paginator = Paginator(order_detail, 20)
                 try:
                     page_num = request.GET.get('page')
                     order_detail = paginator.page(page_num)
@@ -362,7 +364,7 @@ def operate_delete(request):
                 merchant.save()
                 order_detail = DayOrder.objects.order_by('-order_time').filter(merchant=merchant, status=5)
                 order_detail = pingtai_name(order_detail)
-                paginator = Paginator(order_detail, 1)
+                paginator = Paginator(order_detail, 20)
                 try:
                     page_num = request.GET.get('page')
                     order_detail = paginator.page(page_num)

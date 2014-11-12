@@ -19,4 +19,5 @@ urlpatterns = patterns('',
     url(r'^js/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.JS_DIR}),
     url(r'^dayin/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.DAYIN_DIR}),
     url(r'^qrimg/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.QR_DIR}),
+    url(r'^music/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MUSIC_DIR}),
 )

@@ -42,9 +42,10 @@ def tick():
     mer = Merchant.objects.filter(id = i)[0]
     acttime = mer.update_time.replace(tzinfo = None)
     is_act = isactive(acttime, 60)
+    mer.netspider_time = datetime.datetime.now()
     if not is_act:
         mer.is_online = False
-        mer.save()
+    mer.save()
     if mer.is_online is True:
         print('%s is online' % mer.name)
         # res = createnew(2, int(mer.todaynum))
@@ -57,6 +58,12 @@ def tick():
         # # print res
         # tres = tddcat.getpaddingorder()
         # print tres
+        if res is None:
+            mer.ele_status = False
+            mer.save()
+        else:
+            mer.ele_status = True
+            mer.save()
     elif mer.is_online is False:
         print('%s is offline,schel will exit' % mer.name)
         scheduler.shutdown()

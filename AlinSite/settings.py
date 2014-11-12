@@ -120,4 +120,5 @@ JS_DIR = './static/js/'
 DAYIN_DIR = './static/dayin'
 STATIC_ROOT = '/home/rapospectre/PycharmProjects/AlinSite/static'
 QR_DIR = './qrimg'
+MUSIC_DIR = './static/music/'
 

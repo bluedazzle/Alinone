@@ -124,6 +124,7 @@ class Merchant(AbstractBaseUser):
     bind_pic = models.CharField(max_length=30, null=True, blank=True)
     faillist = models.CharField(max_length=1000, null=True, blank=True)
     update_time = models.DateTimeField(max_length=20, blank=True, null=True)
+    netspider_time = models.DateTimeField(max_length=20, blank=True, null=True)
     auto_print = models.BooleanField(default=True)
 
     is_online = models.BooleanField(default=True)

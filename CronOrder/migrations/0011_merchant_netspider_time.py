@@ -7,13 +7,14 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('CronOrder', '0009_auto_20141110_2141'),
+        ('CronOrder', '0010_auto_20141111_1732'),
     ]
 
     operations = [
-        migrations.AlterField(
+        migrations.AddField(
             model_name='merchant',
-            name='update_time',
+            name='netspider_time',
             field=models.DateTimeField(max_length=20, null=True, blank=True),
+            preserve_default=True,
         ),
     ]
