@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'pagination',
     'merchant_page',
     'CronOrder',
     'AlinApi',
@@ -52,6 +53,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'pagination.middleware.PaginationMiddleware',
 )
 
 #自定义验证后台
@@ -98,6 +100,13 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
+# TEMPLATE_CONTEXT_PROCESSORS = (
+#         "django.core.context_processors.auth",
+#         "django.core.context_processors.debug",
+#         "django.core.context_processors.i18n",
+#         "django.core.context_processors.media",
+#         "django.core.context_processors.request"
+#     )
 
 STATIC_URL = '/static/'
 
@@ -105,9 +114,9 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
 )
 
-CSS_DIR = './static/bootstrap/css/'
-IMG_DIR = './static/bootstrap/img/'
-JS_DIR = './static/bootstrap/js/'
+CSS_DIR = './static/css/'
+IMG_DIR = './static/img/'
+JS_DIR = './static/js/'
 DAYIN_DIR = './static/dayin'
 STATIC_ROOT = '/home/rapospectre/PycharmProjects/AlinSite/static'
 QR_DIR = './qrimg'

@@ -10,6 +10,9 @@ from AlinApi.models import *
 from QRcode.method import *
 from django.template import RequestContext
 import subprocessfile
+from django.core.paginator import Paginator
+from django.core.paginator import PageNotAnInteger
+from django.core.paginator import EmptyPage
 from django.contrib.auth.decorators import login_required
 from auth import *
 from CronOrder.models import *
@@ -140,13 +143,15 @@ def register(request):
 #注册获取验证码
 def register_verify(request):
     if request.method == 'POST':
+        context = {}
+        context.update(csrf(request))
         phone = request.POST.get('phone')
         merchant_have = Merchant.objects.filter(alin_account=phone)
         if merchant_have.count() > 0:
-            return HttpResponse(json.dumps("false"), content_type="application/json")
+            return render_to_response(json.dumps("false"), context_instance=RequestContext(request))
         req = createverfiycode(phone)
         print req
-        return HttpResponse(json.dumps("true"), content_type="application/json")
+        return render_to_response(json.dumps("true"), content_type="application/json", context_instance=RequestContext(request))
     raise Http404
 
 
@@ -206,25 +211,76 @@ def change_name(request):
         else:
             return render_to_response('change_name.html', {'phone': phone, 'new_name': new_name}, context_instance=RequestContext(request))
 
+
+#get orders count
+def get_orders_count(request):
+    if not request.session.get('username'):
+        return HttpResponseRedirect('login_in')
+    else:
+        merchant_id = request.session['username']
+        merchant = Merchant.objects.get(alin_account=merchant_id)
+        time_now = datetime.datetime.now()
+        merchant.last_login = time_now
+        merchant.save()
+        order_list = DayOrder.objects.filter(merchant=merchant, status=1)
+        if order_list.count() == 0:
+            count = 'N'
+        else:
+            count = order_list.count()
+        return HttpResponse(json.dumps(count), content_type="application/json")
+
+
 #进入未处理订单界面
 def operate_new(request):
     if request.method == 'GET':
         if request.session.get('username'):
+            order_detail = []
+            dish_list = []
             try:
                 merchant0 = request.session.get('username')
                 merchant = Merchant.objects.get(alin_account=merchant0)
                 merchant.update_time = datetime.datetime.now()
                 merchant.save()
-                order_detail = DayOrder.objects.order_by('-order_time').filter(merchant=merchant, status=1)
+                order_detail = DayOrder.objects.order_by('-id').filter(merchant=merchant, status=1)
+                request.session['new_order_id'] = order_detail[0].id
                 dish_list = Dish.objects.all
                 order_detail = pingtai_name(order_detail)
-            except DayOrder.DoesNotExist:
+                paginator = Paginator(order_detail, 1)
+                try:
+                    page_num = request.GET.get('page')
+                    order_detail = paginator.page(page_num)
+                except PageNotAnInteger:
+                    order_detail = paginator.page(1)
+                except EmptyPage:
+                    order_detail = paginator.page(paginator.num_pages)
+                except:
+                    pass
+            except:
                 pass
-            return render_to_response('merchant_operate_new.html', {'items': order_detail, 'dishs': dish_list, 'user_name': merchant.name}, context_instance=RequestContext(request))
+            return render_to_response('merchant_operate_new.html', {'items': order_detail, 'dishs': dish_list,
+                                                                    'user_name': merchant.name},
+                                      context_instance=RequestContext(request))
         else:
             return HttpResponseRedirect("login_in")
     else:
         raise Http404
+
+
+#update orders
+def update_new_orders(request):
+    if not request.session.get('username'):
+        return HttpResponseRedirect('login_in')
+    else:
+        merchant_id = request.session['username']
+        merchant = Merchant.objects.get(alin_account=merchant_id)
+        order_list = DayOrder.objects.order_by('-id').filter(merchant=merchant, status=1)
+        if order_list.count() == 0:
+            return HttpResponse(json.dumps('F'), content_type="application/json")
+        else:
+            if not order_list[0].id == request.session['new_order_id']:
+                return HttpResponse(json.dumps('T'), content_type="application/json")
+            else:
+                return HttpResponse(json.dumps('F'), content_type="application/json")
 
 
 #进入已接受订单界面
@@ -238,6 +294,16 @@ def operate_get(request):
                 merchant.save()
                 order_detail = DayOrder.objects.order_by('-order_time').filter(merchant=merchant, status=2)
                 order_detail = pingtai_name(order_detail)
+                paginator = Paginator(order_detail, 1)
+                try:
+                    page_num = request.GET.get('page')
+                    order_detail = paginator.page(page_num)
+                except PageNotAnInteger:
+                    order_detail = paginator.page(1)
+                except EmptyPage:
+                    order_detail = paginator.page(paginator.num_pages)
+                except:
+                    pass
             except DayOrder.DoesNotExist:
                 pass
             return render_to_response('merchant_operate_get.html', {'items': order_detail}, context_instance=RequestContext(request))
@@ -296,6 +362,16 @@ def operate_delete(request):
                 merchant.save()
                 order_detail = DayOrder.objects.order_by('-order_time').filter(merchant=merchant, status=5)
                 order_detail = pingtai_name(order_detail)
+                paginator = Paginator(order_detail, 1)
+                try:
+                    page_num = request.GET.get('page')
+                    order_detail = paginator.page(page_num)
+                except PageNotAnInteger:
+                    order_detail = paginator.page(1)
+                except EmptyPage:
+                    order_detail = paginator.page(paginator.num_pages)
+                except:
+                    pass
             except DayOrder.DoesNotExist:
                 pass
             return render_to_response('merchant_operate_delete.html', {'items': order_detail}, context_instance=RequestContext(request))
@@ -433,5 +509,23 @@ def add_sender_page(request):
         merchant.update_time = datetime.datetime.now()
         merchant.save()
         express_people = merchant.bind_sender.all()
+        request.session['sender_count'] = express_people.count()
         filename = request.session['qr_bind']
-        return render_to_response('merchant_add_sender.html', {'express_people': express_people, 'filename': filename}, context_instance=RequestContext(request))
+        return render_to_response('merchant_add_sender.html', {'express_people': express_people, 'filename': filename})
+
+
+#get sender change
+def get_sender_change(request):
+    if not request.session.get('username'):
+        return HttpResponseRedirect('login_in')
+    else:
+        merchant_id = request.session['username']
+        merchant = Merchant.objects.get(alin_account=merchant_id)
+        express_people = merchant.bind_sender.all()
+        if request.session.get('sender_count'):
+            if request.session['sender_count'] == express_people.count():
+                return HttpResponse(json.dumps('F'), content_type="application/json")
+            else:
+                return HttpResponse(json.dumps('T'), content_type="application/json")
+        else:
+            return HttpResponse(json.dumps('T'), content_type="application/json")
