@@ -307,7 +307,7 @@ def register(req):
         if ishave.count() == 0:
             is_send_list = PhoneVerify.objects.filter(phone = str(username))
             if is_send_list.count() == 0:
-                return encodejson(11, body)
+                return HttpResponse(encodejson(11, body), content_type="application/json")
             is_send = is_send_list[0]
             if str(is_send.verify_code) == str(code):
                 mytoken = createtoken()

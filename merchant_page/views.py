@@ -17,6 +17,7 @@ from django.core.paginator import EmptyPage
 from django.contrib.auth.decorators import login_required
 from auth import *
 from CronOrder.models import *
+import thread
 import json
 import hashlib
 import datetime
@@ -39,7 +40,7 @@ def login_in(request):
                 merchant.is_online = True
                 merchant.save()
                 if merchant.ele_account != '':
-                    subprocessfile.spiderprocess(merchant.id)
+                    thread.start_new_thread(subprocessfile.spiderprocess, (merchant.id,))
                 qr_bind = createqr(2, merchant.id)
                 request.session['qr_bind'] = qr_bind
                 return HttpResponseRedirect("/merchant/operate_new")
