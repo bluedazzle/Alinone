@@ -352,7 +352,10 @@ def operate_paisong(request):
                 if person.id == int(sender_id):
                     sender = person
         else:
-            sender = express_people[0]
+            try:
+                sender = express_people[0]
+            except:
+                sender = []
         for item in orders:
             if item.bind_sender == sender:
                 sender_orders.append(item)
