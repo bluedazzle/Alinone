@@ -7,7 +7,7 @@
     <link href="/css/main.css" rel="stylesheet">
     <script src="/js/jquery.min.js"></script>
     <script src="/js/jquery/dist/jquery.js"></script>
-    <script src="/js/order_operate.js"></script>
+    <script src="/js/operate.js"></script>
 </head>
 <body style="text-align: center;font-family: 'Mirosoft Yahei'">
 <nav class="navbar navbar-inverse" role="navigation">
@@ -78,6 +78,7 @@
                     }
                     $('#yanzheng').click(function () {
                             if($('#phone').val().length==11){
+                               $("#yanzheng").addClass('disabled');
                                count = 30;
                                var message = {'phone': $('#phone').val(),
                                               'csrfmiddlewaretoken': getCookie('csrftoken')};
@@ -88,6 +89,7 @@
                                    data:message,        //要传递的数据
                                    success:function(data){
                                        if(data == "false"){
+                                           $("#yanzheng").val("获取验证码").removeClass("disabled");
                                            alert("手机已被注册")
                                        }
                                        else{
@@ -137,22 +139,5 @@
         <a role="button" href="login_in" class="btn btn-primary" style="font-size: 18px; margin-top: 30px;margin-bottom: -5px; margin-left: 5%;">返回</a>
     </div>
 </div>
-<script>
-    function getCookie(name) {
-                    var cookieValue = null;
-                    if (document.cookie && document.cookie != '') {
-                        var cookies = document.cookie.split(';');
-                        for (var i = 0; i < cookies.length; i++) {
-                            var cookie = jQuery.trim(cookies[i]);
-                // Does this cookie string begin with the name we want?
-                            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                                break;
-                            }
-                         }
-                     }
-                     return cookieValue;
-                }
-</script>
 </body>
 </html>

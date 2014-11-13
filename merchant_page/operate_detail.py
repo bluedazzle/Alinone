@@ -2,9 +2,11 @@
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from auth import *
 from CronOrder.models import *
+import json
 import hashlib
 import urllib
 
@@ -21,37 +23,41 @@ def fuwei(request):
 
 def jieshouone(request, order):
     if not request.session.get('username'):
-        return HttpResponseRedirect('login_in')
+        return HttpResponse(json.dumps('N'), content_type='application/json')
     order_detail = DayOrder.objects.get(order_id_alin=order)
     order_detail.status = 2
     order_detail.save()
-    return HttpResponseRedirect("operate_new")
+    return HttpResponse(json.dumps('T'), content_type='application/json')
 
 
 def jujueone(request, order):
     if not request.session.get('username'):
-        return HttpResponseRedirect('login_in')
+        return HttpResponse(json.dumps('N'), content_type='application/json')
     order_detail = DayOrder.objects.get(order_id_alin=order)
     order_detail.status = 5
     order_detail.save()
-    return HttpResponseRedirect("operate_new")
+    return HttpResponse(json.dumps('T'), content_type='application/json')
 
 
 def jieshouall(request):
+    if not request.session.get('username'):
+        return HttpResponse(json.dumps('N'), content_type='application/json')
     merchant0 = request.session.get('username')
     merchant = Merchant.objects.get(alin_account=merchant0)
     order_detail = DayOrder.objects.filter(merchant=merchant, status=1)
     for item in order_detail:
         item.status = 2
         item.save()
-    return HttpResponseRedirect("operate_new")
+    return HttpResponse(json.dumps('T'), content_type='application/json')
 
 
 def jujueall(request):
+    if not request.session.get('username'):
+        return HttpResponse(json.dumps('N'), content_type='application/json')
     merchant0 = request.session.get('username')
     merchant = Merchant.objects.get(alin_account=merchant0)
-    order_detail = DayOrder.objects.filter(merchant=merchant, status=1)
+    order_detail = DayOrder.objects.filter(merchant=merchant)
     for item in order_detail:
         item.status = 5
         item.save()
-    return HttpResponseRedirect("operate_new")
+    return HttpResponse(json.dumps('T'), content_type='application/json')

@@ -7,7 +7,8 @@ th{
     border-color: #2aabd2;
     border-radius: 0;
 }
-#user_name:hover,
+#change_name:hover,
+#change_password:hover,
 #login_out:hover{
     color: #28a4c9;
     background-color:#28a4c9;
