@@ -77,7 +77,7 @@ class Ele(object):
             print curmet.todaynum
             curmet.save()
             address = detail.string[3:]
-            neworder.address = address[3:]
+            neworder.address = address[1:]
             neworder.order_id_alin = newid
             neworder.order_id_old = orderid
             neworder.origin_price = price.string[1:]
