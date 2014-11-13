@@ -14,10 +14,21 @@
         </div>
     </div>
     {% else %}
-    {% for person in express_people %}
-    <div class="panel panel-default">
+    <div class="panel panel-default text-center">
     <div class="panel-heading">
-             <p class="text-center" style="font-size:21px;">派送员：{{ person.nick }}(电话：{{ person.phone }})</p>
+{#             <p class="text-center" style="font-size:21px;">派送员：{{ person.nick }}(电话：{{ person.phone }})</p>#}
+    <div class="btn-group">
+  <button type="button" class="btn btn-default btn-lg">派送员：{{ sender.nick }}(电话：{{ sender.phone }})</button>
+  <button type="button" class="btn btn-default dropdown-toggle btn-lg" data-toggle="dropdown">
+    <span class="caret"></span>
+    <span class="sr-only">Toggle Dropdown</span>
+  </button>
+  <ul class="dropdown-menu" role="menu">
+      {% for person in express_people %}
+    <li><a href="operate_paisong?id={{ person.id }}">派送员：{{ person.nick }}(电话：{{ person.phone }})</a></li>
+      {% endfor %}
+  </ul>
+</div>
          </div>
     <div class="panel-body">
     {% if not orders %}
@@ -35,7 +46,6 @@
 
                  </tr>
                  {% for item in orders %}
-                     {% if item.bind_sender == person %}
                  <tr>
                      <td>{{ item.order_id_alin }}</td>
                      <td>{{ item.order_time|date:"Y-m-d H:i:s" }}</td>
@@ -60,12 +70,27 @@
                          </div>
                      </td>
                  </tr>
-                     {% endif %}
                  {% endfor %}
              </table>
+        <nav>
+       <ul class="pagination">
+             {% if orders.has_previous %}
+        <li><a href="?id={{ sender.id }}&page={{ orders.previous_page_number }}">&laquo;</a></li>
+             {% endif %}
+             {% for page in orders.paginator.page_range %}
+               {% if page == orders.number %}
+        <li class="active"><a href="?page={{ page }}">{{ page }}</a></li>
+               {% else %}
+        <li><a href="?id={{ sender.id }}&page={{ page }}">{{ page }}</a></li>
+               {% endif %}
+            {% endfor %}
+            {% if orders.has_next %}
+        <li><a href="?id={{ sender.id }}&page={{ orders.next_page_number }}">&raquo;</a></li>
+            {% endif %}
+       </ul>
+     </nav>
         {% endif %}
         </div>
-    {% endfor %}
     {% endif %}
     </div>
 {% endblock define %}

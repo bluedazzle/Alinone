@@ -93,11 +93,16 @@ def forget_password(request):
 #忘记密码获取验证码
 def forget_password_verify(request):
     if request.method == 'POST':
+        context = {}
+        context.update(csrf(request))
         phone = request.POST.get('phone')
-        merchant_have = Merchant.objects.get(alin_account=phone)
-        if merchant_have:
+        merchant_have = Merchant.objects.filter(alin_account=phone)
+        if merchant_have.count() > 0:
             req = AlinApi.method.createverfiycode(phone)
+            print req
             return HttpResponse(json.dumps("OK"), content_type="application/json")
+        else:
+            return HttpResponse(json.dumps("False"), content_type="application/json")
     return HttpResponse(json.dumps("False"), content_type="application/json")
 
 
@@ -223,12 +228,24 @@ def get_orders_count(request):
         merchant = Merchant.objects.get(alin_account=merchant_id)
         merchant.update_time = datetime.datetime.now()
         merchant.save()
+        status = 'T'
+        if merchant.tao_account:
+            if merchant.tao_status == False:
+                status = 'F'
+        if merchant.ele_account:
+            if merchant.ele_status == False:
+                status = 'F'
+        if merchant.mei_account:
+            if merchant.mei_status == False:
+                status = 'F'
         order_list = DayOrder.objects.filter(merchant=merchant, status=1)
         if order_list.count() == 0:
             count = 'N'
         else:
             count = order_list.count()
-        return HttpResponse(json.dumps(count), content_type="application/json")
+
+        content = {'count': count, 'status': status}
+        return HttpResponse(json.dumps(content), content_type="application/json")
 
 
 #进入未处理订单界面
@@ -319,14 +336,41 @@ def operate_get(request):
 def operate_paisong(request):
     if not request.session.get('username'):
         return HttpResponseRedirect('login_in')
-    merchant_id = request.session['username']
-    merchant = Merchant.objects.get(alin_account=merchant_id)
-    merchant.update_time = datetime.datetime.now()
-    merchant.save()
-    express_people = merchant.bind_sender.all()
-    orders = DayOrder.objects.order_by('-order_time').filter(merchant=merchant, status=3)
-    orders = pingtai_name(orders)
-    return render_to_response('merchant_operate_paisong.html', {'orders': orders, 'express_people': express_people}, context_instance=RequestContext(request))
+    if request.method == 'GET':
+        merchant_id = request.session['username']
+        merchant = Merchant.objects.get(alin_account=merchant_id)
+        merchant.update_time = datetime.datetime.now()
+        merchant.save()
+        express_people = merchant.bind_sender.all()
+        orders = DayOrder.objects.order_by('-order_time').filter(merchant=merchant, status=3)
+        orders = pingtai_name(orders)
+        sender_orders = []
+        sender_id = request.GET.get('id')
+        sender = ''
+        if sender_id:
+            for person in express_people:
+                if person.id == int(sender_id):
+                    sender = person
+        else:
+            sender = express_people[0]
+        for item in orders:
+            if item.bind_sender == sender:
+                sender_orders.append(item)
+
+        paginator = Paginator(sender_orders, 20)
+        try:
+            page_num = request.GET.get('page')
+            sender_orders = paginator.page(page_num)
+        except PageNotAnInteger:
+            sender_orders = paginator.page(1)
+        except EmptyPage:
+            sender_orders = paginator.page(paginator.num_pages)
+        except:
+            pass
+        return render_to_response('merchant_operate_paisong.html', {'orders': sender_orders,
+                                                                    'express_people': express_people,
+                                                                    'sender': sender}
+                                  , context_instance=RequestContext(request))
 
 
 #进入平台管理页面
@@ -340,15 +384,21 @@ def operate_pingtai(request):
     items = []
     if merchant.tao_account:
         item = {'name': '1',
-                'account': merchant.tao_account}
+                'account': merchant.tao_account,
+                'status': merchant.tao_status,
+                'message': merchant.tao_message}
         items.append(item)
     if merchant.mei_account:
         item = {'name': '3',
-                'account': merchant.mei_account}
+                'account': merchant.mei_account,
+                'status': merchant.mei_status,
+                'message': merchant.mei_message}
         items.append(item)
     if merchant.ele_account:
         item = {'name': '2',
-                'account': merchant.ele_account}
+                'account': merchant.ele_account,
+                'status': merchant.ele_status,
+                'message': merchant.ele_message}
         items.append(item)
 
     return render_to_response('merchant_operate_pingtai.html', {'items': items}, context_instance=RequestContext(request))

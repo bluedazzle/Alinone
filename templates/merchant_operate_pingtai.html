@@ -17,6 +17,7 @@
                  <tr>
                      <th>名称</th>
                      <th>账号</th>
+                     <th>运行状态</th>
                      <th></th>
                  </tr>
                  {% for item in items %}
@@ -29,6 +30,13 @@
                      <td>饿了么</td>
                  {% endif %}
                      <td>{{ item.account }}</td>
+                     <td>
+                         {% if item.status == True %}
+                             正常
+                         {% else %}
+                             {{ item.message }}
+                         {% endif %}
+                     </td>
                      <td>
                          <a role="button" href="platform_delete{{ item.name }}" class="btn btn-primary btn-sm">删除</a>
                      </td>

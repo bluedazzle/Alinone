@@ -18,7 +18,7 @@
                      <th>付款</th>
                      <th>菜单</th>
                      <th>
-                         <a href="jieshouall" id="all_print" role="button" class="btn btn-primary btn-sm">一键接收</a>
+                         <a onclick="jieshouall()" id="all_print" role="button" class="btn btn-primary btn-sm">一键接收</a>
 {#                         <iframe id="all" name="all" src="print_all" frameborder='no' border='0' width="0" height="0"></iframe>#}
                          <a onclick="jujueall()" role="button" class="btn btn-primary btn-sm" style="background-color: #737373">一键拒绝</a>
                      </th>
@@ -50,7 +50,7 @@
                          </div>
                      </td>
                      <td>
-                         <a role="button" id="i{{ item.order_id_alin }}" href="jieshouone{{ item.order_id_alin }}" class="btn btn-primary btn-sm">接收</a>
+                         <a role="button" id="i{{ item.order_id_alin }}" onclick="jieshouone('{{ item.order_id_alin }}')" class="btn btn-primary btn-sm">接收</a>
 {#                         <iframe id="{{ item.order_id_alin }}" name="{{ item.order_id_alin }}" src="print_one{{ item.order_id_alin }}" frameborder='no' border='0' width="0" height="0"></iframe>#}
                          <a role="button" onclick="jujueone('{{ item.order_id_alin }}')" class="btn btn-primary btn-sm" style="background-color: #737373">拒绝</a>
                      </td>

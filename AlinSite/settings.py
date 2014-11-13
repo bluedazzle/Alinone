@@ -117,6 +117,7 @@ TEMPLATE_DIRS = (
 CSS_DIR = './static/css/'
 IMG_DIR = './static/img/'
 JS_DIR = './static/js/'
+FONTS_DIR = './static/fonts/'
 DAYIN_DIR = './static/dayin'
 STATIC_ROOT = '/home/rapospectre/PycharmProjects/AlinSite/static'
 QR_DIR = './qrimg'
