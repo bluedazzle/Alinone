@@ -410,7 +410,7 @@ def changepasswd(req):
     else:
         raise Http404
 
-
+@csrf_exempt
 def forgetpasswd(req):
     body = {}
     if req.method == 'POST':
@@ -432,6 +432,7 @@ def forgetpasswd(req):
     else:
         raise Http404
 
+@csrf_exempt
 def newpassword(req):
     body = {}
     if req.method == 'POST':

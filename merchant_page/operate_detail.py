@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from auth import *
 from CronOrder.models import *
+from AlinApi.views import isactive
 import json
 import hashlib
 import urllib
@@ -19,6 +20,12 @@ def fuwei(request):
         item.status = 1
         item.save()
     return HttpResponseRedirect("operate_new")
+
+def netSpiderStatus(req):
+    merchant0 = request.session.get('username')
+    merchant = Merchant.objects.get(alin_account=merchant0)
+    mystatus = merchant.netspider_time.replace(tzinfo = None)
+    return isactive(mystatus, 30)
 
 
 def jieshouone(request, order):
