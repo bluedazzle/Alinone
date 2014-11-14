@@ -16,18 +16,21 @@ from django.core.paginator import PageNotAnInteger
 from django.core.paginator import EmptyPage
 from django.contrib.auth.decorators import login_required
 from auth import *
+from CronOrder.Aaps import *
 from CronOrder.models import *
 import thread
 import json
 import hashlib
 import datetime
 import time
+ApsPoll = OrderAps()
 
 
 # Create your views here.
 # 登录验证函数
 @ensure_csrf_cookie
 def login_in(request):
+    global ApsPoll
     if 'user_name' in request.POST and request.POST['user_name'] and 'password' in request.POST and request.POST['password']:
         user_name = request.POST['user_name']
         password = request.POST['password']
@@ -39,8 +42,8 @@ def login_in(request):
                 merchant.update_time = datetime.datetime.now()
                 merchant.is_online = True
                 merchant.save()
-                if merchant.ele_account != '':
-                    thread.start_new_thread(subprocessfile.spiderprocess, (merchant.id,))
+                if merchant.ele_account != '' or merchant.tao_account != '' or merchant.mei_account != '':
+                    ApsPoll.addJobs(str(merchant.id))
                 qr_bind = createqr(2, merchant.id)
                 request.session['qr_bind'] = qr_bind
                 return HttpResponseRedirect("/merchant/operate_new")
@@ -54,13 +57,19 @@ def login_in(request):
 
 #登出函数
 def login_out(request):
+    global ApsPoll
     user_name = request.session.get('username')
     merchant = Merchant.objects.get(alin_account=user_name)
     merchant.is_online = False
     merchant.save()
+    ApsPoll.removeJobs(str(merchant.id))
     del request.session['username']
     return HttpResponseRedirect("login_in")
 
+def apstest(req):
+    global ApsPoll
+    ApsPoll.stopAps()
+    return HttpResponse('success stop task')
 
 #忘记密码操作
 def forget_password(request):

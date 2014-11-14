@@ -1,647 +1,201 @@
+<div id="list_container">
+      <ul id="list_items">
+                <li orderId="12259197077731397"
+    CategoryId="1"
+    id="list-12259197077731397"
+    class="new"
+    createdAt="1415964436"
+    online-pay="1">
 
+  <span class="process_num">136</span>
 
-<Script Language="JavaScript"> 
-<!--弹出显示页面
-//参数说明：
-//[url]-需要连接的页面地址
-//[pagename]-为弹出页面命名（不同名称将开不同的窗口，建议英文）
-//[width]-弹出页面的宽度
-//[height]-弹出页面的高度
-//[scrollbars]- 是否带滚动条（此处填写yes no）
-//47849,46562,52727,49894,45285,51367,52216,54223,
-function PageDisp(url,pagename,widths,heights,scrollbars){
-window.open(url,pagename,"width="+widths+",height="+heights+" screenX=50,screenY=50,scrollbars="+scrollbars+",toolbar=no,menubar=no,resizable=no,locationbar=no,hotkeys=no");
-}
-//-->
-<!--弹出显示页面 （新页面）
-//不限制浏览器任何属性，相当于打开一个新的浏览器窗口
-function PageDispNew(url){
-window.open(url);
-}
-//-->
-<!-- 鼠标经过改变背景颜色|47849,46562,52727,49894,45285,51367,52216,54223,-->
-function changebg(obj, pviiColor) {
-	obj.style.backgroundColor=pviiColor
-}
-//-->
-<!-- 弹出"是否"消息框-->
-function ifmsgbox(message,url) {
-	     if ( confirm(message) ) {
-		 window.location.href=url
-		 }
-	}
-//-->
-<!--随机文件名-->
-var titlechange = false
-function getFileExt(fn, tp) {
-	var l0 = fn.length
-	var l1 = fn.search(/\\[^\\]+$/g) + 1
-	var l2 = fn.search(/\.[^\.]+$/g)
-	if (l2 <= l1) l2 = l0
-	if (tp == 1) {
-		return fn.substring(0, l1)
-	}else if (tp == 2) {
-		return fn.substring(l1, l2)
-	}else if (tp == 3) {
-		return fn.substring(l2, l0)
-	}
-}
+          <div class="list_notice notice"><a rel="tipsy" explain="该订单为在线支付订单" >在线支付</a></div>
+        <div class="list_notice notice"><a rel="tipsy" explain="该订单来自移动设备" >移动端用户</a></div>
+        <br class="clear">
+  
+  <div class="list_time">2分钟前</div>
+  <!-- output class tag according to order category -->
+  <div class="list_content">
 
-</script>
-<script type="text/javascript" src="/www/js/jquery-1.4.4.min.js"></script> 
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
-<title>校园招聘会</title>
-<link href="../Hdimages/Hdcss.css" rel="stylesheet" type="text/css">
-</head>
+    <p class="list_price">￥10</p>
 
-<body>
-<script language="JavaScript" type="text/JavaScript">
-<!--
-function MM_findObj(n, d) { //v4.01
-  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
-    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
-  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
-  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
-  if(!x && d.getElementById) x=d.getElementById(n); return x;
-}
-
-function MM_showHideLayers() { //v6.0
-  var i,p,v,obj,args=MM_showHideLayers.arguments;
-  for (i=0; i<(args.length-2); i+=3) if ((obj=MM_findObj(args[i]))!=null) { v=args[i+2];
-    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
-    obj.visibility=v; }
-}
-//-->
-</script>
-
-<table width="980" align="center" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td><a href=# target=blank><img src=../fileup/pic/201131511281848.jpg height=120 width=980  border=0 title=广告></a></td>
-  </tr>
-</table>
-<table width="980" align="center" border="0" cellspacing="0" cellpadding="0" style="background:url(../Hdimages/c_r2_c6.jpg)">
-  <tr>
-    <td height="2"><img src="../Hdimages/c_r2_c4.jpg" width="2" height="34" /></td>
-    <td Class="dh" align="center" onmouseover="MM_showHideLayers('Layer1','','hide','Layer2','','hide','Layer3','','hide','Layer4','','hide');" onmouseout="MM_showHideLayers('Layer1','','hide','Layer2','','hide','Layer3','','hide','Layer4','','hide');"><a href="/www/default.asp">网站首页</a></td>
-    <td width="2"><img src="../Hdimages/c_r2_c34.jpg" width="2" height="34" /></td>
-    <td Class="dh" align="center" onmouseover="MM_showHideLayers('Layer1','','hide','Layer2','','hide','Layer3','','hide','Layer4','','show');" onmouseout="MM_showHideLayers('Layer1','','hide','Layer2','','hide','Layer3','','hide','Layer4','','hide');"><a href="/www/ContentsMain.asp?Classid=1&page=1">就业中心</a></td>
-    <td width="2"><img src="../Hdimages/c_r2_c34.jpg" width="2" height="34" /></td>
-    <td Class="dh" align="center" onmouseover="MM_showHideLayers('Layer1','','show','Layer2','','hide','Layer3','','hide','Layer4','','hide');" onmouseout="MM_showHideLayers('Layer1','','hide','Layer2','','hide','Layer3','','hide','Layer4','','hide');"><a href="/www/UpCLassMain1.asp?UpClass=2">就业指导</a></td>
-    <td width="2"><img src="../Hdimages/c_r2_c34.jpg" width="2" height="34" /></td>
-    <td Class="dh" align="center" onmouseover="MM_showHideLayers('Layer1','','hide','Layer2','','show','Layer3','','hide','Layer4','','hide');" onmouseout="MM_showHideLayers('Layer1','','hide','Layer2','','hide','Layer3','','hide','Layer4','','hide');"><a href="/www/UpCLassMain1.asp?UpClass=3">就业培训</a></td>
-    <td width="2"><img src="../Hdimages/c_r2_c34.jpg" width="2" height="34" /></td>
-    <td Class="dh" align="center" onmouseover="MM_showHideLayers('Layer1','','hide','Layer2','','hide','Layer3','','show','Layer4','','hide');" onmouseout="MM_showHideLayers('Layer1','','hide','Layer2','','hide','Layer3','','hide','Layer4','','hide');"><a href="/www/HdJobMain.asp">求职招聘</a></td>
-    <td width="2"><img src="../Hdimages/c_r2_c34.jpg" width="2" height="34" /></td>
-    <td Class="dh" align="center" onmouseover="MM_showHideLayers('Layer1','','hide','Layer2','','hide','Layer3','','hide','Layer4','','hide');" onmouseout="MM_showHideLayers('Layer1','','hide','Layer2','','hide','Layer3','','hide','Layer4','','hide');"><a href="http://lut.51langtu.com/" target="_blank">职业测评</a></td>
-    <td align="right">
-    
-    <a href="/manage/MagLogin.asp"><img src="../Hdimages/c_r2_c50.jpg" width="79" height="34" /></a>
-    
-    <a href="/www/HdStudent.asp"><img src="../Hdimages/c_r2_c58.jpg" width="79" height="34" hspace="3"/></a><a href="/WWW/HdCompany.asp"><img src="../Hdimages/c_r2_c70.jpg" width="82" height="34" /></a></td>
-    <td height="2"><img src="../Hdimages/c_r2_c78.jpg" width="2" height="34" /></td>
-  </tr>
-</table>
-<table width="980" align="center" border="0" cellspacing="0" cellpadding="0" style="background:url(../HdImages/c_r4_c6.jpg)">
-  <tr>
-    <td width="1"><img src="../HdImages/c_r4_c4.jpg" width="1" height="33" /></td>
-    <td valign="top">
-     		<div style=" position:relative; width:0; height:0;">
-        <div id="Layer1" style="position:absolute; left:218px; top:0px; z-index:100; visibility: hidden;" onMouseMove="MM_showHideLayers('Layer1','','show','Layer2','','hide','Layer3','','hide','Layer4','','hide')" onMouseOut="MM_showHideLayers('Layer1','','hide','Layer2','','hide','Layer3','','hide','Layer4','','hide')">
-          <table width="100%" border="0" cellspacing="0" cellpadding="0" >
-            <tr>
-              <td class="toptop2">
-              <a href="/www/ContentsMain.asp?page=1&Classid=12">形势政策</a>&nbsp;|&nbsp;
-              <a href="/www/ContentsMain.asp?page=1&Classid=13">职前教育</a>&nbsp;|&nbsp;
-              <a href="/www/ContentsMain.asp?page=1&Classid=14">职业规划</a>&nbsp;|&nbsp;
-              <a href="/www/ContentsMain.asp?page=1&Classid=15">地区就业</a>&nbsp;|&nbsp;
-              <a href="/www/ContentsMain.asp?page=1&Classid=16">竞争力提升</a>&nbsp;|&nbsp;
-              <a href="/www/ContentsMain.asp?page=1&Classid=17">求职系列</a>&nbsp;|&nbsp;
-              <a href="/www/ContentsMain.asp?page=1&Classid=18">下载中心</a></td>
-              <td>&nbsp;</td>
-            </tr>
-          </table>
-        </div>
-        <div id="Layer2" style="position:absolute; left:321px; top:0px; z-index:100; visibility: hidden;" onMouseMove="MM_showHideLayers('Layer1','','hide','Layer2','','show','Layer3','','hide','Layer4','','hide')" onMouseOut="MM_showHideLayers('Layer1','','hide','Layer2','','hide','Layer3','','hide','Layer4','','hide')">
-          <table width="100%" border="0" cellspacing="0" cellpadding="0" >
-            <tr>
-              <td class="toptop2">
-              <a href="/www/ContentsMain.asp?page=1&Classid=19">培训课程</a>&nbsp;|&nbsp;
-              <a href="/www/ContentsMain.asp?page=1&Classid=20">企业培训</a>&nbsp;|&nbsp;
-              <a href="/www/ContentsMain.asp?page=1&Classid=21">面试技巧</a>&nbsp;|&nbsp;
-              <a href="/www/ContentsMain.asp?page=1&Classid=22">简历撰写</a>&nbsp;|&nbsp;
-              <a href="/www/ContentsMain.asp?page=1&Classid=23">权益维护</a></td>
-              <td>&nbsp;</td>
-            </tr>
-          </table>
-        </div>
-        <div id="Layer3" style="position:absolute; left:429px; top:0px; z-index:100; visibility: hidden;" onMouseMove="MM_showHideLayers('Layer1','','hide','Layer2','','hide','Layer3','','show','Layer4','','hide')" onMouseOut="MM_showHideLayers('Layer1','','hide','Layer2','','hide','Layer3','','hide','Layer4','','hide')">
-          <table width="100%" border="0" cellspacing="0" cellpadding="0" >
-            <tr>
-              <td class="toptop2">
-              <a href="/www/ContentsMain.asp?page=1&Classid=27">招聘会</a>&nbsp;|&nbsp;
-              <a href="/www/HdJobMain.asp?page=1">最新招聘</a>&nbsp;|&nbsp;
-              <a href="/www/HdComMain.asp?page=1">招聘企业</a>&nbsp;|&nbsp;
-              <a href="/www/HdStuMain.asp?page=1">毕业生源</a></td>
-              <td>&nbsp;</td>
-            </tr>
-          </table>
-        </div>
-        <div id="layer4" style="position:absolute; left:111px; top:0px; z-index:100;visibility: hidden;" onMouseMove="MM_showHideLayers('Layer1','','hide','Layer2','','hide','Layer3','','hide','Layer4','','show')" onMouseOut="MM_showHideLayers('Layer1','','hide','Layer2','','hide','Layer3','','hide','Layer4','','hide')">
-         <table width="100%" border="0" cellspacing="0" cellpadding="0" >
-            <tr>
-              <td class="toptop2">
-              <a href="/www/ContentsMain.asp?Classid=1&page=1">中心简介</a>&nbsp;|&nbsp;
-              <a href="/www/ContentsMain.asp?Classid=2&page=1">中心通知</a>&nbsp;|&nbsp;
-              <a href="/www/UpCLassMain.asp">就业政策</a>&nbsp;|&nbsp;
-              <a href="/www/ContentsMain.asp?Classid=4&page=1">就业流程</a>&nbsp;|&nbsp;
-              <a href="/www/ContentsMain.asp?Classid=5&page=1">手续办理</a>&nbsp;|&nbsp;
-              <a href="/www/ContentsMain.asp?Classid=6&page=1">协议书相关</a>&nbsp;|&nbsp;
-              <a href="/www/ContentsMain.asp?Classid=7&page=1">相关下载</a>&nbsp;|&nbsp;
-              <a href="/www/ContentsMain.asp?Classid=8&page=1">联系我们</a>
-              </td>
-              <td>&nbsp;</td>
-            </tr>
-          </table>
-        </div>
-      </div>
-       <form name="form1" method="post" action="/www/ContentsMain.asp">
-    <div id="sch">
-     <input type="text" name="Keywords" id="Keywords" class="topInput" style="width:110px;line-height:15px; ">
-     <input name="MainType" type="hidden" value="1">
-     <span>
-     	<a href="javascript:form1.submit();"><img src="../HdImages/D_r4_c17_s1.jpg" width="39" height="19" alt="搜索本站"></a>
-     </span>
- </div>
- </form>
-       </td>
-    <td width="1"><img src="../HdImages/c_r4_c79.jpg" width="1" height="33" /></td>
-  </tr>
-</table>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td height="10"></td>
-  </tr>
-</table>
-<table width="980" align="center" border="0" cellspacing="5" cellpadding="0" class="bord1">
-  <tr>
-    <td width="27"><img src="../HdImages/c_r6_c7.jpg" width="22" height="64" /></td>
-    <td style="line-height:21px;">
-    <a href="/www/UpCLassMain.asp">就业政策</a>&nbsp;&nbsp; 
-    <a href="/www/ContentsMain.asp?Classid=4&page=1">就业流程</a>&nbsp;&nbsp;<br>
-      <a href="/www/ContentsMain.asp?Classid=9&page=1">企业服务</a>&nbsp;&nbsp; 
-      <a href="/www/ContentsMain.asp?Classid=10&page=1">学生专区</a><br>
-      <a href="/www/ContentsMain.asp?Classid=11&page=1">学院管理</a></td>
-    <td width="27"><img src="../HdImages/c_r6_c32.jpg" width="22" height="64" /></td>
-    <td style="line-height:21px;">
-    <a href="/www/ContentsMain.asp?Classid=12&page=1">形势政策</a>&nbsp;&nbsp; 
-    <a href="/www/ContentsMain.asp?Classid=13&page=1">职前教育</a>&nbsp;&nbsp;<br>
-      <a href="/www/ContentsMain.asp?Classid=14&page=1">职业规划</a>&nbsp;&nbsp; 
-      <a href="/www/ContentsMain.asp?Classid=15&page=1">地区就业</a><br>
-      <a href="/www/ContentsMain.asp?Classid=17&page=1">求职系列</a>&nbsp;&nbsp;
-      <a href="/www/ContentsMain.asp?Classid=16&page=1">竞争力提升</a>
-      </td>
-    <td width="27"><img src="../HdImages/c_r6_c44.jpg" width="22" height="64" /></td>
-    <td style="line-height:21px;">
-      <a href="/www/HdUserRegister1.asp">企业登记</a>&nbsp;&nbsp; 
-      <a href="/www/HdFunStatusAdd.asp">企业发布</a>&nbsp;&nbsp; 
-      <a href="/www/HdJobMain.asp?page=1&xingzhi=1">校外招聘</a>&nbsp;&nbsp; 
-      <br>
-      <a href="/www/HdJobMain.asp?page=1&xingzhi=2">全职招聘</a>&nbsp;&nbsp; 
-      <a href="/www/HdJobMain.asp?page=1&xingzhi=3">兼职招聘</a>&nbsp;&nbsp; 
-      <a href="/www/HdJobMain.asp?page=1&xingzhi=4">实习招聘</a><br>
-      <a href="/www/HdJobMain.asp?page=1">最新招聘</a>&nbsp;&nbsp;
-      <a href="/www/HdStuMain.asp?page=1">生源信息查询</a></td>
-    <td width="27"><img src="../HdImages/c_r6_c48.jpg" width="22" height="64" /></td>
-    <td style="line-height:21px;">
-    <a href="/www/ContentsMain.asp?Classid=26&page=1">出国|考研</a>&nbsp;&nbsp; 
-      <a href="/www/ContentsMain.asp?Classid=28&page=1">选调生|公务员</a>&nbsp;&nbsp; 
-      <a href="/www/ContentsMain.asp?Classid=29&page=1">西部就业</a>&nbsp;&nbsp;<br>
-      <a href="/www/ContentsMain.asp?Classid=30&page=1">三支一扶</a>&nbsp;&nbsp; 
-      <a href="/www/ContentsMain.asp?Classid=31&page=1">到村任职</a>&nbsp;&nbsp; 
-      <a href="/www/ContentsMain.asp?Classid=32&page=1">自主创业</a><br>
-      <a href="/www/ContentsMain.asp?Classid=33&page=1">预征入伍</a>&nbsp;&nbsp; 
-      <a href="/www/ContentsMain.asp?Classid=34&page=1">往届毕业生</a>
-      <a href="/www/ContentsMain.asp?Classid=35&page=1">长三角行业</a></td>
-    <td width="27"><img src="../HdImages/c_r6_c61.jpg" width="22" height="64" /></td>
-    <td style="line-height:21px;">
-      <a href="/www/ContentsMain.asp?Classid=24&page=1">关于工大</a>&nbsp;&nbsp; 
-      <a href="/www/BClassSClassMain.asp">学院介绍</a>&nbsp;&nbsp;<br>
-      <a href="/www/BClassSClassMain.asp?BClass=1">专业介绍</a>&nbsp;&nbsp; 
-      <a href="/www/ContentsMain.asp?Classid=25&page=1">联系学院</a><br>
-      <a href="/www/ContentsMain.asp?Classid=39&page=1">毕业生就业方案</a></td>
-  </tr>
-</table>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td height="10"></td>
-  </tr>
-</table>
-
-<table width="980" align="center" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td width="240" valign="top">
-
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td><img src="../HdImages/c_r21_c46.jpg" width="240" height="32" /></td>
-  </tr>
-</table>
-<table width="100%" border="0" cellspacing="5" cellpadding="0" class="bord2">
-  <tr>
-    <td><table width="96%" align="center" border="0" cellspacing="0" cellpadding="0">
-        
-        <tr>
-          <td width="25"><img src="../HdImages/c_r66_c10.jpg" width="13" height="11"></td>
-          <td class="left"><a href="/www/ContentsMain.asp?Classid=27&page=1">校园招聘会</a></td>
-        </tr>
-        <tr>
-          <td class="line"></td>
-          <td class="line"></td>
-        </tr>
-        
-        <tr>
-          <td width="25"><img src="../HdImages/c_r66_c10.jpg" width="13" height="11"></td>
-          <td class="left"><a href="/www/ContentsMain.asp?Classid=40&page=1">双选会</a></td>
-        </tr>
-        <tr>
-          <td class="line"></td>
-          <td class="line"></td>
-        </tr>
-        
-      </table></td>
-  </tr>
-</table>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td height="10"></td>
-  </tr>
-</table>
-
-<table width="100%" border="0" cellspacing="1" class="title1table" cellpadding="0">
-  <tr>
-    <td class="title1"><a href="/www/ContentsMain.asp?Classid=27&page=1">校园招聘日历</a></td>
-  </tr>
-</table>
-<link type="text/css" href="/www/css/redmond/jquery-ui-1.8.10.custom.css" rel="stylesheet" />
-<script type="text/javascript" src="/www/js/jquery.ui.datepicker.js"></script>
-<style>
-.ui-datepicker { width: 220px; }
-</style>
-<script type="text/javascript">
-			$(function(){
-				// Datepicker
-				$('#datepicker').datepicker({
-					inline: true,
-					closeText: '关闭',
-					prevText: '&#x3c;上月',
-					nextText: '下月&#x3e;',
-					currentText: '今天',
-					monthNames: ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'],
-					monthNamesShort: ['一','二','三','四','五','六','七','八','九','十','十一','十二'],
-					dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],
-					dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
-					dayNamesMin: ['日','一','二','三','四','五','六'],
-					weekHeader: '周',
-					dateFormat: 'yy-mm-dd',
-					firslefttDay: 1,
-					isRTL: false,
-					showMonthAfterYear: true,
-					
-					  
-					specialDate1: ('2014-10-17'),
-					
-					
-					
-					specialDate2: ('2014-10-18'),
-					
-					
-					
-					specialDate3: ('2014-10-19'),
-					
-					
-					
-					specialDate4: ('2014-10-20'),
-					
-					
-					
-					specialDate5: ('2014-10-21'),
-					
-					
-					
-					specialDate6: ('2014-10-22'),
-					
-					
-					
-					specialDate7: ('2014-10-23'),
-					
-					
-					
-					specialDate8: ('2014-10-24'),
-					
-					
-					
-					specialDate9: ('2014-10-25'),
-					
-					
-					
-					specialDate10: ('2014-10-27'),
-					
-					
-					
-					specialDate11: ('2014-10-28'),
-					
-					
-					
-					specialDate12: ('2014-10-29'),
-					
-					
-					
-					specialDate13: ('2014-10-30'),
-					
-					
-					
-					specialDate14: ('2014-10-31'),
-					
-					
-					
-					specialDate15: ('2014-11-1'),
-					
-					
-					
-					specialDate16: ('2014-11-3'),
-					
-					
-					
-					specialDate17: ('2014-11-4'),
-					
-					
-					
-					specialDate18: ('2014-11-5'),
-					
-					
-					
-					specialDate19: ('2014-11-6'),
-					
-					
-					
-					specialDate20: ('2014-11-7'),
-					
-					
-					
-					specialDate21: ('2014-11-9'),
-					
-					
-					
-onSelect: function(dateText, inst) {location.href='/www/ContentsMain.asp?Classid=27&page=1&MainType=3&whattime='+dateText},
-yearsleftuffix: '年'
-				});
-			});
-		</script>
-<table width="100%" border="0" cellspacing="9" cellpadding="0" class="bord1">
-  <tr>
-    <td><div id="datepicker"></div>
-     <table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td class="xxbt" valign="bottom" height="20"><img src="../HdImages/pic1.jpg" width="15" height="10">&nbsp;当前日期　<img src="../HdImages/pic2.jpg" width="15" height="10">&nbsp;下次招聘会日期</td>
-  </tr>
-</table>
-    </td>
-  </tr>
-</table>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td height="10"></td>
-  </tr>
-</table>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td><a href="/www/ContentsMain.asp?Classid=27&page=1"><img src="../HdImages/c_r21_c47.jpg" ></a></td>
-  </tr>
-</table>
-<table width="100%" border="0" cellspacing="10" cellpadding="0" class="bord2">
-  <tr>
-    <td><table width="96%" align="center" border="0" cellspacing="0" cellpadding="0">
-        
-        <tr>
-          <td height="30"><span class="xxbt">[2014-10-31]</span><strong>&nbsp;<a href="ContentsDisp.asp?id=4522" target="_blank">喜之郎录用人员...</a></strong></td>
-        </tr>
-        <tr>
-          <td class="brown" style="line-height:24px;">喜之郎录用人员名单及签约相关事宜</td>
-        </tr>
-        
-        <tr>
-          <td height="30"><span class="xxbt">[2014-10-31]</span><strong>&nbsp;<a href="ContentsDisp.asp?id=4466" target="_blank">上海电机学院</a></strong></td>
-        </tr>
-        <tr>
-          <td class="brown" style="line-height:24px;">上海电机学院</td>
-        </tr>
-        
-        <tr>
-          <td height="30"><span class="xxbt">[2014-10-31]</span><strong>&nbsp;<a href="ContentsDisp.asp?id=4451" target="_blank">甘肃嘉盛集团</a></strong></td>
-        </tr>
-        <tr>
-          <td class="brown" style="line-height:24px;">甘肃嘉盛集团</td>
-        </tr>
-        
-      </table></td>
-  </tr>
-</table>
-</td>
-    <td width="10"></td>
-    <td valign="top">
-    <table width="100%" border="0" cellspacing="1" class="title1table" cellpadding="0">
-        <tr>
-          <td class="title1">校园招聘会</td>
-        </tr>
-      </table>
-      <table width="100%" border="0" cellspacing="10" cellpadding="0" class="bord1">
-        <tr>
-          <td>
+          <p class="list_customer waimai">电话：18981776104</p>
+      <p class="list_addr">地址: 电子科技大学清水河校区本科14栋</p>
           
-          <table width="100%"  border="0" cellspacing="0" cellpadding="0">
-              
-               <tr>
-                <td style="line-height:24px;"><strong>时间：</strong><span class="blue">2014-10-31&nbsp;15:00</span>&nbsp;&nbsp;<strong>单位：</strong><a href="ContentsDisp.asp?id=4522" target="_blank"><span class="blue">喜之郎录用人员名单及签约相关事宜</span></a><br>
-<strong>地点：</strong><span class="blue">职业发展中心三楼</span>
-          <img src="../HdImages/new.gif" width="19" height="9">
-          </td>
-              </tr>
-              <tr>
-                <td class="brown" style="line-height:20px;" height="40" valign="top">　　<a href="ContentsDisp.asp?id=4522" target="_blank">喜之郎录用人员名单及签约相关事宜</a></td>
-              </tr>
-              <tr>
-                <td height="10" ></td>
-              </tr>
-              
-               <tr>
-                <td style="line-height:24px;"><strong>时间：</strong><span class="blue">2014-10-31&nbsp;9:30</span>&nbsp;&nbsp;<strong>单位：</strong><a href="ContentsDisp.asp?id=4466" target="_blank"><span class="blue">上海电机学院</span></a><br>
-<strong>地点：</strong><span class="blue">1号北楼305教室</span>
-          <img src="../HdImages/new.gif" width="19" height="9">
-          </td>
-              </tr>
-              <tr>
-                <td class="brown" style="line-height:20px;" height="40" valign="top">　　<a href="ContentsDisp.asp?id=4466" target="_blank">上海电机学院</a></td>
-              </tr>
-              <tr>
-                <td height="10" ></td>
-              </tr>
-              
-               <tr>
-                <td style="line-height:24px;"><strong>时间：</strong><span class="blue">2014-10-31&nbsp;15:00</span>&nbsp;&nbsp;<strong>单位：</strong><a href="ContentsDisp.asp?id=4451" target="_blank"><span class="blue">甘肃嘉盛集团</span></a><br>
-<strong>地点：</strong><span class="blue">图书馆T-207 教室</span></td>
-              </tr>
-              <tr>
-                <td class="brown" style="line-height:20px;" height="40" valign="top">　　<a href="ContentsDisp.asp?id=4451" target="_blank">甘肃嘉盛集团</a></td>
-              </tr>
-              <tr>
-                <td height="10" ></td>
-              </tr>
-              
-               <tr>
-                <td style="line-height:24px;"><strong>时间：</strong><span class="blue">2014-10-31&nbsp;9:00</span>&nbsp;&nbsp;<strong>单位：</strong><a href="ContentsDisp.asp?id=4449" target="_blank"><span class="blue">浙江医药股份有限公司</span></a><br>
-<strong>地点：</strong><span class="blue">图书馆二楼报告厅</span></td>
-              </tr>
-              <tr>
-                <td class="brown" style="line-height:20px;" height="40" valign="top">　　<a href="ContentsDisp.asp?id=4449" target="_blank">浙江医药股份有限公司</a></td>
-              </tr>
-              <tr>
-                <td height="10" ></td>
-              </tr>
-              
-               <tr>
-                <td style="line-height:24px;"><strong>时间：</strong><span class="blue">2014-10-31&nbsp;14:00</span>&nbsp;&nbsp;<strong>单位：</strong><a href="ContentsDisp.asp?id=4429" target="_blank"><span class="blue">北京国遥新天地信息技术有限公司</span></a><br>
-<strong>地点：</strong><span class="blue">图书馆二楼报告厅</span></td>
-              </tr>
-              <tr>
-                <td class="brown" style="line-height:20px;" height="40" valign="top">　　<a href="ContentsDisp.asp?id=4429" target="_blank">北京国遥新天地信息技术有限公司</a></td>
-              </tr>
-              <tr>
-                <td height="10" ></td>
-              </tr>
-              
-			  <tr>
-                <td height="30" style="background:url(../HdImages/DotLine.gif) repeat-x center;">&nbsp;</td>
-              </tr>
-			  
-               <tr>
-                <td style="line-height:24px;"><strong>时间：</strong><span class="blue">2014-10-31&nbsp;14:30</span>&nbsp;&nbsp;<strong>单位：</strong><a href="ContentsDisp.asp?id=4428" target="_blank"><span class="blue">陕西柴油机重工有限公司</span></a><br>
-<strong>地点：</strong><span class="blue">图书馆T-209 教室</span></td>
-              </tr>
-              <tr>
-                <td class="brown" style="line-height:20px;" height="40" valign="top">　　<a href="ContentsDisp.asp?id=4428" target="_blank">陕西柴油机重工有限公司</a></td>
-              </tr>
-              <tr>
-                <td height="10" ></td>
-              </tr>
-              
-               <tr>
-                <td style="line-height:24px;"><strong>时间：</strong><span class="blue">2014-10-31&nbsp;9:00</span>&nbsp;&nbsp;<strong>单位：</strong><a href="ContentsDisp.asp?id=4427" target="_blank"><span class="blue">福田雷沃国际重工股份有限公司</span></a><br>
-<strong>地点：</strong><span class="blue">图书馆T-209 教室</span></td>
-              </tr>
-              <tr>
-                <td class="brown" style="line-height:20px;" height="40" valign="top">　　<a href="ContentsDisp.asp?id=4427" target="_blank">福田雷沃国际重工股份有限公司</a></td>
-              </tr>
-              <tr>
-                <td height="10" ></td>
-              </tr>
-              
-               <tr>
-                <td style="line-height:24px;"><strong>时间：</strong><span class="blue">2014-10-31&nbsp;9:00</span>&nbsp;&nbsp;<strong>单位：</strong><a href="ContentsDisp.asp?id=4426" target="_blank"><span class="blue">三主粮集团股份公司</span></a><br>
-<strong>地点：</strong><span class="blue">图书馆T-207教室</span></td>
-              </tr>
-              <tr>
-                <td class="brown" style="line-height:20px;" height="40" valign="top">　　<a href="ContentsDisp.asp?id=4426" target="_blank">三主粮集团股份公司</a></td>
-              </tr>
-              <tr>
-                <td height="10" ></td>
-              </tr>
-              
-               <tr>
-                <td style="line-height:24px;"><strong>时间：</strong><span class="blue">2014-11-4&nbsp;10:00</span>&nbsp;&nbsp;<strong>单位：</strong><a href="ContentsDisp.asp?id=4506" target="_blank"><span class="blue">正泰集团</span></a><br>
-<strong>地点：</strong><span class="blue">一号北楼302</span>
-          <img src="../HdImages/new.gif" width="19" height="9">
-          </td>
-              </tr>
-              <tr>
-                <td class="brown" style="line-height:20px;" height="40" valign="top">　　<a href="ContentsDisp.asp?id=4506" target="_blank">正泰集团</a></td>
-              </tr>
-              <tr>
-                <td height="10" ></td>
-              </tr>
-              
-               <tr>
-                <td style="line-height:24px;"><strong>时间：</strong><span class="blue">2014-11-1&nbsp;19:30</span>&nbsp;&nbsp;<strong>单位：</strong><a href="ContentsDisp.asp?id=4505" target="_blank"><span class="blue">国网冀北电力有限公司</span></a><br>
-<strong>地点：</strong><span class="blue">一号南楼201</span>
-          <img src="../HdImages/new.gif" width="19" height="9">
-          </td>
-              </tr>
-              <tr>
-                <td class="brown" style="line-height:20px;" height="40" valign="top">　　<a href="ContentsDisp.asp?id=4505" target="_blank">国网冀北电力有限公司</a></td>
-              </tr>
-              <tr>
-                <td height="10" ></td>
-              </tr>
-              
-			  <tr>
-                <td height="30" style="background:url(../HdImages/DotLine.gif) repeat-x center;">&nbsp;</td>
-              </tr>
-			  
-            </table><table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td height="10"></td>
-  </tr>
-</table>
-      <table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td height="23" class="itembar">
-      <div align="right">
-        
-        <a Href="ContentsMain.asp?Page=2&MainType=0&Keywords=&ClassId=27">下一页</a> <a Href="ContentsMain.asp?Page=139&MainType=0&Keywords=&ClassId=27">尾页</a>
-        
-        [第<span class="style2">1</span>页 共<span class="style2">139</span>页] [共<span class="style2">1389</span>条记录]
-	</div>
-	</td>
-  </tr>
-</table>
- </td>
-        </tr>
-      </table>
+    
+    <hr />
+
+    <p class="list_details">
+      卤鸡腿 1份/【且行且珍惜的小炒肉】 1份 在线支付立减优惠    </p>
+
+  </div>
+
+  <div class="hidden" id="order_detail_12259197077731397">
+
+          <div class="slide_notice notice"><span>在线支付:</span><span class="memo_detail">该订单为在线支付订单</span></div>
+        <div class="slide_notice notice"><span>移动端用户:</span><span class="memo_detail">该订单来自移动设备</span></div>
       
-    </td>
-  </tr>
-</table>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td height="30"></td>
-  </tr>
-</table>
-<table width="100%" border="0" cellspacing="0" cellpadding="0" style="background:url(../HdImages/c_r74_c18.jpg)">
-  <tr>
-    <td height="33" align="center">
-    <a href="/www/default.asp">网站首页</a>&nbsp;|&nbsp;
-    <a href="/www/UpCLassMain1.asp?UpClass=2">就业指导</a>&nbsp;|&nbsp;
-    <a href="/www/MessageMain.asp?page=1">就业咨询</a>&nbsp;|&nbsp;
-    <a href="/www/HdJobMain.asp?page=1">招聘信息</a>&nbsp;|&nbsp;
-    <a href="/www/ContentsMain.asp?Classid=8&page=1">联系我们</a><!--&nbsp;|&nbsp;
-    <a href="/www/ContentsMain.asp?Classid=37&page=1">网站地图</a>-->
-    </td>
-  </tr>
-</table>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td class="foot">
+
+  <div class="order_content new" online-pay="1">
+    <span class="process_num">136</span>
+    <div class="list_time"></div>
+    <div class="order_detail">
+      <div>
+        <p><span class="info_name">订单流水号:</span><span class="info_content">136</span></p>
+        <p><span class="info_name">订单编号:</span><span class="info_content">12259197077731397</span></p>
+        <p>
+          <span class="info_name">订单状态:</span>
+          <span class="info_content">等待餐厅确认</span>
+        </p>
+      </div>
+      <div>
+        <p><span class="info_name">订单类型:</span><span class="info_content">饿了么订单</span></p>
+        <p><span class="info_name">订单时间:</span><span class="info_content">2014-11-14 19:27:16</span></p>
+        <p><span class="info_name">订单备注:</span><span class="info_content"></span></p>
+      </div>
+      <div class="customer">
+                  <p><span class="info_name">顾客电话:</span><span class="info_content">18981776104</span></p>
+          <p><span class="info_name">顾客地址:</span><span class="info_content">电子科技大学清水河校区本科14栋</span></p>
+              </div>
+              <div class="list_source">
+          <span class="eleme">饿</span>
+        </div>
+          </div> <!-- order_content new -->
+  </div>
+
+  <hr />
+
+  <div class="menu_detail">
+    <div class="order_action">
+
+    <a href="#" class="print button success action notcombined hidden" orderId="12259197077731397">打印</a>
+                        <a class="process button success print orderProcessBtn combined hidden"
+             categoryId="1"
+             orderId="12259197077731397"
+             rel="order12259197077731397"
+             dayNumber="136"
+             href="/order/processOrder/id/12259197077731397/category/1">打印并处理</a>
+          <a class="process button orderProcessBtn notcombined hidden"
+             categoryId="1"
+             orderId="12259197077731397"
+             rel="order12259197077731397"
+             dayNumber="136"
+             href="/order/processOrder/id/12259197077731397/category/1">处理</a>
+          <a class="setInvalid button warning orderProcessBtn"
+             categoryId="1"
+             orderId="12259197077731397"
+             rel="order12259197077731397"
+             dayNumber="136"
+             href="/order/setInvalid/id/12259197077731397/category/1">无效</a>
+                                  <a class="copy2 button orderProcessBtn" data-order-text="怪蜀黍连锁快餐[11月14日 No.136] 电子科技大学清水河校区本科14栋[18981776104] 卤鸡腿 1份/【且行且珍惜的小炒肉】 1份 在线支付立减优惠/共10元">复制</a>
+      
+      
+                      <a class="button more_user_info fr mr10" href="/order/getUserInfo/userId/3856826/phone/18981776104" target="_blank">顾客订单记录</a>
+          </div>
+
+    <div class="menu_content">
+        <table class="item_table">
+    <thead>
+      <tr>
+              <th>美食篮子</th>
+              <th>单价</th>
+        <th>数量</th>
+        <th>总价</th>
+      </tr>
+    </thead>
+    <tbody>
+              <tr>
+          <td class="item_name"><span class="dishname">卤鸡腿</span></td>
+          <td class="item_price">4</td>
+          <td class="item_quantity">1</td>
+          <td class="item_total_price">4</td>
+        </tr>
+                      <tr>
+          <td class="item_name"><span class="dishname">【且行且珍惜的小炒肉】</span></td>
+          <td class="item_price">16</td>
+          <td class="item_quantity">1</td>
+          <td class="item_total_price">16</td>
+        </tr>
+                  </tbody>
+    <tfoot>
+      <tr>
+        <th colspan="3">小计</th>
+        <th>20</th>
+      </tr>
+    </tfoot>
+  </table>
+
+  <table class="item_table">
+    <thead>
+      <tr>
+        <th>其他费用</th>
+        <th>单价</th>
+        <th>数量</th>
+        <th>总价</th>
+      </tr>
+    </thead>
+    <tbody>
+              <tr>
+          <td class="item_name"><span class="dishname">在线支付立减优惠</span></td>
+          <td class="item_price">-10</td>
+          <td class="item_quantity">1</td>
+          <td class="item_total_price">-10</td>
+        </tr>
+          </tbody>
+    <tfoot>
+      <tr>
+        <th colspan="3">小计</th>
+        <th>-10</th>
+      </tr>
+    </tfoot>
+  </table>
+
+    </div><!-- end of menu_content -->
+          <div id="customer_detail" class=""></div>
+    
+    <div class="height_holder"></div>
+  </div><!-- end of menu_detail -->
+
+  <div id="order_json_data" class="hidden">
+    {"total":10,"items":[{"entity_id":9119708,"name":"\u5364\u9e21\u817f","price":4,"parent_entity_id":0,"group_id":1,"quantity":1,"entity_category_id":1},{"entity_id":6405637,"name":"\u3010\u4e14\u884c\u4e14\u73cd\u60dc\u7684\u5c0f\u7092\u8089\u3011","price":16,"parent_entity_id":0,"group_id":1,"quantity":1,"entity_category_id":1},{"entity_id":10207,"name":"\u5728\u7ebf\u652f\u4ed8\u7acb\u51cf\u4f18\u60e0","price":-10,"parent_entity_id":0,"group_id":0,"quantity":1,"entity_category_id":12}],"isWaimai":true,"isTangchi":false,"isBook":false,"deliverTime":"","restaurantNumber":136,"createdAt":"2014-11-14 19:27:16","table":"","people":"","phone":"18981776104","address":"\u7535\u5b50\u79d1\u6280\u5927\u5b66\u6e05\u6c34\u6cb3\u6821\u533a\u672c\u79d114\u680b","description":"","isFollower":false,"isOnlinePayment":true,"invoice":"","isTimeEnsure":false,"timeEnsureText":""}  </div>
+
+</div>
+
+
+  <div class="button_container">
+    <a href="#" class="print button success action notcombined hidden" orderId="12259197077731397">&nbsp;打印&nbsp;</a>
+
+                  <a class="process button success print orderProcessBtn combined hidden"
+           categoryId="1"
+           orderId="12259197077731397"
+           rel="order12259197077731397"
+           dayNumber="136"
+           href="/order/processOrder/id/12259197077731397/category/1">打印并处理</a>
+        <a class="process button orderProcessBtn notcombined hidden"
+           categoryId="1"
+           orderId="12259197077731397"
+           rel="order12259197077731397"
+           dayNumber="136"
+           href="/order/processOrder/id/12259197077731397/category/1">处理</a>
+        <a class="setInvalid button warning orderProcessBtn"
+           categoryId="1"
+           orderId="12259197077731397"
+           rel="order12259197077731397"
+           dayNumber="136"
+           href="/order/setInvalid/id/12259197077731397/category/1">无效</a>
+                        <a class="copy button orderProcessBtn" data-order-text="怪蜀黍连锁快餐[11月14日 No.136] 电子科技大学清水河校区本科14栋[18981776104] 卤鸡腿 1份/【且行且珍惜的小炒肉】 1份 在线支付立减优惠/共10元">复制</a>
     
     
-    Copyright&nbsp;&copy;&nbsp;2014&nbsp;jiuye.lut.cn All rights reserved.&nbsp;&nbsp;兰州理工大学毕业生就业指导服务中心 版权所有<br>
-联系电话:0931-2741678&nbsp;&nbsp;地址:兰州市兰工坪路287号&nbsp;&nbsp;邮编:730050&nbsp;&nbsp;设计制作 <a href="http://www.lzhongdian.com" target="_blank">宏点网络</a>
-		<br/>总访问量：21787854次 &nbsp; 日访问量： 16406次
-</td>
-  </tr>
-</table>
+      </div>
+</li>
 
+<script>
+  var NAPOS = NAPOS || {};
+  NAPOS.orders = NAPOS.orders || {};
+  NAPOS.orders[12259197077731397] = {"total":10,"items":[{"entity_id":9119708,"name":"\u5364\u9e21\u817f","price":4,"parent_entity_id":0,"group_id":1,"quantity":1,"entity_category_id":1},{"entity_id":6405637,"name":"\u3010\u4e14\u884c\u4e14\u73cd\u60dc\u7684\u5c0f\u7092\u8089\u3011","price":16,"parent_entity_id":0,"group_id":1,"quantity":1,"entity_category_id":1},{"entity_id":10207,"name":"\u5728\u7ebf\u652f\u4ed8\u7acb\u51cf\u4f18\u60e0","price":-10,"parent_entity_id":0,"group_id":0,"quantity":1,"entity_category_id":12}],"isWaimai":true,"isTangchi":false,"isBook":false,"deliverTime":"","restaurantNumber":136,"createdAt":"2014-11-14 19:27:16","table":"","people":"","phone":"18981776104","address":"\u7535\u5b50\u79d1\u6280\u5927\u5b66\u6e05\u6c34\u6cb3\u6821\u533a\u672c\u79d114\u680b","description":"","isFollower":false,"isOnlinePayment":true,"invoice":"","isTimeEnsure":false,"timeEnsureText":""};
+</script>
+          </ul>
+  </div>
 
-
-</body>
-</html>
+<div class="height_holder"></div>
+  </div>

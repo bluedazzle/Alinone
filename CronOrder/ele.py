@@ -3,6 +3,7 @@ from CronOrder.models import *
 from CronOrder.endecy import *
 import cookielib
 from CronOrder.method import *
+import psycopg2
 from QRcode.method import *
 from CronOrder.NetSpider import *
 from ProxyWork.method import *
@@ -24,14 +25,21 @@ class Ele(object):
         self.net.Host = 'napos.ele.me'
 
     def catcheorder(self):
-        curmet = None
-        self.net.Referer = 'http://napos.ele.me/'
-        if not self.iflogin():
-            res = self.loginele()
-            if res is None or res is False:
-                return None
-        html = self.net.GetResFromRequest('GET', 'http://napos.ele.me/dashboard/index/list/unprocessed_waimai', 'utf-8', use_proxy=True)
-        # print html
+        # curmet = None
+        # thiscount = 0
+        # self.net.Referer = 'http://napos.ele.me/'
+        # if not self.iflogin():
+        #     res = self.loginele()
+        #     if res is None or res is False:
+        #         return None
+        # html = self.net.GetResFromRequest('GET', 'http://napos.ele.me/dashboard/index/list/unprocessed_waimai', 'utf-8', use_proxy=True)
+        # # print html
+        html = ''
+        with open('abc.txt', 'r') as f1:
+            line = f1.readline()
+            while line:
+                html += line
+                line = f1.readline()
         if html is None:
             return None
         soup = BeautifulSoup(html)
@@ -47,6 +55,8 @@ class Ele(object):
         if len(res) == 0:
             print 'no new orders'
             return False
+        thiscount = curmet.todaynum
+        print 'start: ' + str(thiscount)
         for item in res:
             neworder = DayOrder()
             onpay = False
@@ -71,11 +81,9 @@ class Ele(object):
             formattime = time.localtime(float(timestamp))
             datetimee = datetime.datetime(*formattime[:6])
             timee = time.strftime('%Y-%m-%d %H:%M:%S', formattime)
-            newid = createAlinOrderNum(2, self.merchantid, curmet.todaynum)
+            newid = createAlinOrderNum(2, self.merchantid, thiscount)
+            thiscount += 1
             qrres = createqr(1, newid)
-            curmet.todaynum += 1
-            print curmet.todaynum
-            curmet.save()
             address = detail.string[3:]
             neworder.address = address[1:]
             neworder.order_id_alin = newid
@@ -91,7 +99,7 @@ class Ele(object):
             neworder.note = note
             neworder.platform = 2
             neworder.qr_path = qrres
-            neworder.merchant = Merchant.objects.get(id = self.merchantid)
+            neworder.merchant = curmet
             neworder.save()
             print timee
             print orderid
@@ -108,7 +116,11 @@ class Ele(object):
                 newdish.dish_price = float(dishprice[i].string)
                 newdish.order = DayOrder.objects.get(order_id_alin = newid)
                 newdish.save()
-        return True
+        # curmet.todaynum = thiscount
+        # print thiscount
+        # print curmet.todaynum
+        # curmet.save()
+        return thiscount
 
 
     def iflogin(self):

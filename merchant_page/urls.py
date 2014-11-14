@@ -39,4 +39,5 @@ urlpatterns = patterns('',
     url(r'^print_all$', print_all),
     url(r'^jujueall$', jujueall),
     url(r'^jieshouall$', jieshouall),
+    url(r'^test$', apstest),
 )
