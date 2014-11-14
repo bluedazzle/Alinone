@@ -47,10 +47,15 @@
                          </div>
                      </td>
                      <td>
-                         <a role="button" class="btn btn-primary btn-sm" id="i{{ item.order_id_alin }}">打印</a>
+                         <a role="button" class="btn btn-primary btn-sm" id="i{{ item.order_id_alin }}">
+                             打印<span class="badge" id="n{{ item.order_id_alin }}" style="margin-left:2px;padding: 1px;"></span>
+                         </a>
                          <a role="button" onclick="cancel_one('{{ item.order_id_alin }}')" class="btn btn-primary btn-sm" style="background-color: #737373">撤销</a>
                      </td>
                      <script>
+                         if(sessionStorage['{{ item.order_id_alin }}']){
+                             $('#n{{ item.order_id_alin }}').text(sessionStorage['{{ item.order_id_alin }}'])
+                         }
                          $('#i{{ item.order_id_alin }}').click(
                                  function(){
                                      var LODOP=getLodop();
@@ -82,7 +87,18 @@
                                      +"<img src=\"/qrimg/{{ item.qr_path }}\" style=\"height: 130px;width: 130px;\">"
                                      +"<br/>"
                                      +"==================<br/>");
-                                     LODOP.PRINT();
+                                     var print_req = LODOP.PRINT();
+                                     if(print_req){
+                                         if(sessionStorage.get('{{ item.order_id_alin }}')){
+                                             sessionStorage['{{ item.order_id_alin }}'] = parseInt(sessionStorage['{{ item.order_id_alin }}']) + 1
+                                         }
+                                         else{
+                                             sessionStorage['{{ item.order_id_alin }}'] = 1;
+                                         }
+                                     }
+                                     else{
+                                        alert('打印失败!')
+                                     }
                                  }
                          )
                      </script>
@@ -116,8 +132,9 @@
                                      }
                                      LODOP.SET_PRINT_PAGESIZE(0,5800,2970,"A4");
 {#                                     LODOP. ADD_PRINT_HTM (0,0, 300,100,"<hr><font size=5>hello </font>");#}
-
-                                     LODOP.ADD_PRINT_HTM(0,0,'100%','70%', "{% for item in items %}{% for item in items %}<h1>{{ item.phone }}</h1>"
+                                     {% for item in items %}
+                                     LODOP.NEWPAGEA();
+                                     LODOP.ADD_PRINT_HTM(0,0,'100%','70%', "<h1>{{ item.phone }}</h1>"
                                      +"<h3 style=\"text-align: center;\">{{ item.merchant.name }}</h3>"
                                      +"<p style=\"font-size: 13px;\">订单号：{{ item.order_id_alin }}<br/>"
                                      +" 时间: {{ item.order_time|date:"Y-m-d H:i:s" }}<br/>"
@@ -138,8 +155,22 @@
                                              {% endif %}
                                      +"<img src=\"/qrimg/{{ item.qr_path }}\" style=\"height: 130px;width: 130px;\">"
                                      +"<br/>"
-                                     +"==================<br/>{% endfor %}{% endfor %}");
-                                     LODOP.PREVIEW();
+                                     +"==================<br/>");
+                                     {% endfor %}
+                                     var print_req = LODOP.PREVIEW();
+                                     if(print_req){
+                                         {% for item in items %}
+                                         if(sessionStorage.get('{{ item.order_id_alin }}')){
+                                             sessionStorage['{{ item.order_id_alin }}'] = parseInt(sessionStorage['{{ item.order_id_alin }}']) + 1
+                                         }
+                                         else{
+                                             sessionStorage['{{ item.order_id_alin }}'] = 1;
+                                         }
+                                         {% endfor %}
+                                     }
+                                     else{
+                                        alert('打印失败!')
+                                     }
                                  }
                          )
                      </script>
