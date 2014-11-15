@@ -40,6 +40,13 @@ color: #000000;
 .col-md-10{
     width: 88%;
 }
+
+.auto-print-lg{
+    font-size: 22px;
+}
+.auto-print-sm{
+    font-size: 10px;
+}
 @font-face {
   font-family: 'Mine';       /* 字体名称,可自己定义 */
   src: url('/dayin/weiruanyahei.ttf');
