@@ -286,7 +286,7 @@ def operate_new(request):
             except:
                 pass
             return render_to_response('merchant_operate_new.html', {'items': order_detail, 'dishs': dish_list,
-                                                                    'user_name': merchant.name},
+                                                                    'user_name': merchant.name, 'merchant': merchant},
                                       context_instance=RequestContext(request))
         else:
             return HttpResponseRedirect("login_in")
