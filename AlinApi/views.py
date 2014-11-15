@@ -443,7 +443,7 @@ def newpassword(req):
         currentuserset = Sender.objects.filter(phone = phone)
         if currentuserset.count() > 0:
             currentuser = currentuserset[0]
-            if str(currentuser.verfiy_code) == str(vercode):
+            if str(currentuser.verify_code) == str(vercode):
                 currentuser.password = hashlib.md5(newpasswd).hexdigest()
                 currentuser.is_verify = False
                 currentuser.verify_code = ''

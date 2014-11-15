@@ -10,7 +10,8 @@ from django.http import HttpResponse, Http404
 from AlinApi.models import *
 from QRcode.method import *
 from django.template import RequestContext
-import subprocessfile
+from CronOrder.spol import *
+from uwsgidecorators import *
 from django.core.paginator import Paginator
 from django.core.paginator import PageNotAnInteger
 from django.core.paginator import EmptyPage
@@ -23,7 +24,7 @@ import json
 import hashlib
 import datetime
 import time
-ApsPoll = OrderAps()
+ApsPoll = createback.spool()
 
 
 # Create your views here.

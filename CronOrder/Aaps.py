@@ -3,7 +3,10 @@ from apscheduler.jobstores.base import ConflictingIdError
 from AlinApi.views import *
 from CronOrder.ele import *
 from CronOrder.tdd import *
+from CronOrder.ordermig import *
 from CronOrder.models import *
+from CronOrder.method import *
+from ProxyWork.method import *
 from apscheduler.jobstores.base import JobLookupError
 from apscheduler.events import *
 from apscheduler.events import JobExecutionEvent
@@ -27,6 +30,10 @@ class OrderAps(object):
             return True
 
     def initJobs(self):
+        self.scheduler.add_job(resetAutoId, 'cron', hour='0')
+        self.scheduler.add_job(getproxy, 'cron', hour='10,16')
+        self.scheduler.add_job(checkproxy, 'cron', hour='8,15')
+        self.scheduler.add_job(migrateorder, 'cron', hour='1')
         return True
 
     def stopAps(self):
