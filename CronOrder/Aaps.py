@@ -3,7 +3,10 @@ from apscheduler.jobstores.base import ConflictingIdError
 from AlinApi.views import *
 from CronOrder.ele import *
 from CronOrder.tdd import *
+from CronOrder.ordermig import *
 from CronOrder.models import *
+from CronOrder.method import *
+from ProxyWork.method import *
 from apscheduler.jobstores.base import JobLookupError
 from apscheduler.events import *
 from apscheduler.events import JobExecutionEvent
@@ -13,8 +16,8 @@ class OrderAps(object):
     def __init__(self):
         self.scheduler = BackgroundScheduler()
         self.scheduler._daemon = False
-        self.tdict = {}
-        self.edict = {}
+        # self.tdict = {}
+        # self.edict = {}
         self.initJobs()
         self.scheduler.start()
 
@@ -27,38 +30,42 @@ class OrderAps(object):
             return True
 
     def initJobs(self):
+        self.scheduler.add_job(resetAutoId, 'cron', hour='0')
+        self.scheduler.add_job(getproxy, 'cron', hour='10,16')
+        self.scheduler.add_job(checkproxy, 'cron', hour='8,15')
+        self.scheduler.add_job(migrateorder, 'cron', hour='1')
         return True
 
     def stopAps(self):
         self.scheduler.shutdown(wait=True)
         return True
 
-    def addJobs(self, merchantid):
-        if self.ifruning(merchantid):
-            return True
-        try:
-            self.scheduler.add_job(self.cronOrder, 'interval', (str(merchantid),), seconds = 10, id=str(merchantid), name=str(merchantid))
-            cumer = Merchant.objects.filter(id = merchantid)[0]
-            if cumer.ele_account != '':
-                newele = Ele(merchantid=str(merchantid))
-                self.edict[merchantid] = newele
-            if cumer.tao_account != '':
-                newtdd = Tao(merchantid=str(merchantid))
-                self.tdict[merchantid] = newtdd
-            return True
-        except Exception, e:
-            print e
-            return False
+    # def addJobs(self, merchantid):
+    #     if self.ifruning(merchantid):
+    #         return True
+    #     try:
+    #         self.scheduler.add_job(self.cronOrder, 'interval', (str(merchantid),), seconds = 10, id=str(merchantid), name=str(merchantid))
+    #         cumer = Merchant.objects.filter(id = merchantid)[0]
+    #         if cumer.ele_account != '':
+    #             newele = Ele(merchantid=str(merchantid))
+    #             self.edict[merchantid] = newele
+    #         if cumer.tao_account != '':
+    #             newtdd = Tao(merchantid=str(merchantid))
+    #             self.tdict[merchantid] = newtdd
+    #         return True
+    #     except Exception, e:
+    #         print e
+    #         return False
 
-    def removeJobs(self, merchantid):
-        try:
-            self.scheduler.remove_job(job_id=str(merchantid))
-            self.tdict[str(merchantid)] = None
-            self.edict[str(merchantid)] = None
-            return True
-        except Exception, e:
-            print e
-            return False
+    # def removeJobs(self, merchantid):
+    #     try:
+    #         self.scheduler.remove_job(job_id=str(merchantid))
+    #         self.tdict[str(merchantid)] = None
+    #         self.edict[str(merchantid)] = None
+    #         return True
+    #     except Exception, e:
+    #         print e
+    #         return False
 
     def cronOrder(self, merchantid):
         try:

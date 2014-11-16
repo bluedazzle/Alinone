@@ -177,3 +177,4 @@ class Tao(object):
             curmer.tao_message = errmes
             curmer.tao_status = errstatus
             curmer.save()
+        return None

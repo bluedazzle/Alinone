@@ -3,18 +3,21 @@ from CronOrder.crontest import *
 from CronOrder.models import *
 from CronOrder.ele import *
 from CronOrder.Aaps import *
+from CronOrder.ALO import *
 import os, sys
 from apscheduler.schedulers.blocking import BlockingScheduler
 from CronOrder.method import *
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        # # # catcheleorder(1)
-        # # ordlist = ['12459171300411697']
-        # # ensureleeorder(1,ordlist)
-        # a = Ele(1)
-        # res = a.catcheorder()
-        # print res
-        a = OrderAps()
-        res = a.addJobs('1')
-        # print res
+        # # # # catcheleorder(1)
+        # # # ordlist = ['12459171300411697']
+        # # # ensureleeorder(1,ordlist)
+        # # a = Ele(1)
+        # # res = a.catcheorder()
+        # # print res
+        # a = OrderAps()
+        # res = a.addJobs('1')
+        # # print res
+        al = Alo()
+        al.cronOrder(str(1))
