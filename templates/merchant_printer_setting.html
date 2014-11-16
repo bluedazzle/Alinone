@@ -5,8 +5,52 @@
              <p class="text-center" style="font-size:21px;">打印机设置</p>
     </div>
     <div class="panel-body">
+        <h3>接收时自动打印：</h3>
+        {% if flag == 'T' %}
+            <button id="auto_print_ok" class="btn btn-success auto-print-lg">
+               <span class="glyphicon glyphicon-ok"></span>
+            </button>
+            <button id="auto_print_no" class="btn btn-danger auto-print-sm">
+               <span class="glyphicon glyphicon-remove"></span>
+            </button>
+        {% else %}
+            <button id="auto_print_ok" class="btn btn-success auto-print-sm">
+               <span class="glyphicon glyphicon-ok"></span>
+            </button>
+            <button id="auto_print_no" class="btn btn-danger auto-print-lg">
+               <span class="glyphicon glyphicon-remove"></span>
+            </button>
+        {% endif %}
+        <script>
+            $('#auto_print_ok').click(function(){
+                $('#auto_print_ok').removeClass('auto-print-sm');
+                $('#auto_print_ok').addClass('auto-print-lg');
+                $('#auto_print_no').removeClass('auto-print-lg');
+                $('#auto_print_no').addClass('auto-print-sm');
+                var message = {'auto_print_status': 'T'};
+                $.ajax({
+                    type: 'GET',
+                    url: 'printer_setting',
+                    data: message,
+                    dataType: 'json'
+                });
+            });
+            $('#auto_print_no').click(function(){
+                $('#auto_print_no').removeClass('auto-print-sm');
+                $('#auto_print_no').addClass('auto-print-lg');
+                $('#auto_print_ok').removeClass('auto-print-lg');
+                $('#auto_print_ok').addClass('auto-print-sm');
+                var message = {'auto_print_status': 'F'};
+                $.ajax({
+                    type: 'GET',
+                    url: 'printer_setting',
+                    data: message,
+                    dataType: 'json'
+                });
+            })
+        </script>
         <h3 id="printer">目前的打印机：</h3>
-{#        <p id="printer"></p>#}
+        <p id="printer"></p>
         <script>
             var LODOP = getLodop();
             function select_printer(){

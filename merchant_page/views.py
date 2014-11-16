@@ -457,7 +457,26 @@ def operate_express_person(request):
 def printer_setting(request):
     if not request.session.get('username'):
         return HttpResponseRedirect('login_in')
-    return render_to_response('merchant_printer_setting.html', context_instance=RequestContext(request))
+    merchant_id = request.session['username']
+    merchant = Merchant.objects.get(alin_account=merchant_id)
+    auto_print_status = request.GET.get('auto_print_status')
+    if auto_print_status:
+        if auto_print_status == 'T':
+            merchant.auto_print = True
+            merchant.save()
+            print 'yes'
+        elif auto_print_status == 'F':
+            merchant.auto_print = False
+            merchant.save()
+        else:
+            print 'no'
+    else:
+        print 'NNN'
+    if merchant.auto_print:
+        flag = 'T'
+    else:
+        flag = 'F'
+    return render_to_response('merchant_printer_setting.html', {'flag': flag}, context_instance=RequestContext(request))
 
 
 #加载平台名称
