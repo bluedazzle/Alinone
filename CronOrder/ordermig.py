@@ -1,7 +1,10 @@
+#coding: utf-8
 from CronOrder.models import *
+from AlinLog.models import *
 
 def migrateorder():
     dayorder_list = DayOrder.objects.all()
+    totalnum = dayorder_list.count()
     for itm in dayorder_list:
         newto = TotalOrder()
         newto.order_time = itm.order_time
@@ -32,6 +35,13 @@ def migrateorder():
         newtd.save()
     dayorder_list = DayOrder.objects.all().delete()
     if dayorder_list is None:
+        content = '迁移订单成功，迁移数目：' + str(totalnum) + '条'
+        print content
+        newlog = CronLog()
+        newlog.status = True
+        newlog.content = content
+        newlog.ltype = 3
+        newlog.save()
         return True
     else:
         return False

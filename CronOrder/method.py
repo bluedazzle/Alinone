@@ -1,5 +1,6 @@
 import datetime
 from CronOrder.models import *
+from AlinLog.models import *
 from django.http import Http404
 
 def createAlinOrderNum(platid,merchantid,autoid):
@@ -22,5 +23,11 @@ def resetAutoId():
     for itm in merlist:
         itm.todaynum = 1
         itm.save()
-    print 'success reset todaynum'
+    content = 'success reset todaynum'
+    print content
+    newlog = CronLog()
+    newlog.ltype = 4
+    newlog.content = content
+    newlog.status = True
+    newlog.save()
     return True

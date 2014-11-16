@@ -42,6 +42,9 @@ class Ele(object):
         soup = BeautifulSoup(html)
         intro = soup.find('ul', attrs={'id': 'list_items'})
         if intro is None:
+            notlogin = soup.find('label', attrs={'for': 'tab1'})
+            if notlogin is not None:
+                self.cookie = None
             print 'no new orders'
             return False
         cur_list = Merchant.objects.filter(id = self.merchantid)
@@ -178,7 +181,7 @@ class Ele(object):
         for itm in orderlist:
             requrl = 'http://napos.ele.me/order/processOrder/id/' + str(itm) + '/category/1'
             html = self.net.GetResFromRequest('GET', requrl, 'utf-8', use_proxy=True)
-            print html
+            # print html
             if str(html) == '0':
                 faillist += str(itm)
                 faillist += ','

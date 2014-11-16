@@ -16,8 +16,8 @@ class OrderAps(object):
     def __init__(self):
         self.scheduler = BackgroundScheduler()
         self.scheduler._daemon = False
-        self.tdict = {}
-        self.edict = {}
+        # self.tdict = {}
+        # self.edict = {}
         self.initJobs()
         self.scheduler.start()
 
@@ -40,32 +40,32 @@ class OrderAps(object):
         self.scheduler.shutdown(wait=True)
         return True
 
-    def addJobs(self, merchantid):
-        if self.ifruning(merchantid):
-            return True
-        try:
-            self.scheduler.add_job(self.cronOrder, 'interval', (str(merchantid),), seconds = 10, id=str(merchantid), name=str(merchantid))
-            cumer = Merchant.objects.filter(id = merchantid)[0]
-            if cumer.ele_account != '':
-                newele = Ele(merchantid=str(merchantid))
-                self.edict[merchantid] = newele
-            if cumer.tao_account != '':
-                newtdd = Tao(merchantid=str(merchantid))
-                self.tdict[merchantid] = newtdd
-            return True
-        except Exception, e:
-            print e
-            return False
+    # def addJobs(self, merchantid):
+    #     if self.ifruning(merchantid):
+    #         return True
+    #     try:
+    #         self.scheduler.add_job(self.cronOrder, 'interval', (str(merchantid),), seconds = 10, id=str(merchantid), name=str(merchantid))
+    #         cumer = Merchant.objects.filter(id = merchantid)[0]
+    #         if cumer.ele_account != '':
+    #             newele = Ele(merchantid=str(merchantid))
+    #             self.edict[merchantid] = newele
+    #         if cumer.tao_account != '':
+    #             newtdd = Tao(merchantid=str(merchantid))
+    #             self.tdict[merchantid] = newtdd
+    #         return True
+    #     except Exception, e:
+    #         print e
+    #         return False
 
-    def removeJobs(self, merchantid):
-        try:
-            self.scheduler.remove_job(job_id=str(merchantid))
-            self.tdict[str(merchantid)] = None
-            self.edict[str(merchantid)] = None
-            return True
-        except Exception, e:
-            print e
-            return False
+    # def removeJobs(self, merchantid):
+    #     try:
+    #         self.scheduler.remove_job(job_id=str(merchantid))
+    #         self.tdict[str(merchantid)] = None
+    #         self.edict[str(merchantid)] = None
+    #         return True
+    #     except Exception, e:
+    #         print e
+    #         return False
 
     def cronOrder(self, merchantid):
         try:

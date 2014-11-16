@@ -10,8 +10,6 @@ from django.http import HttpResponse, Http404
 from AlinApi.models import *
 from QRcode.method import *
 from django.template import RequestContext
-from CronOrder.spol import *
-from uwsgidecorators import *
 from django.core.paginator import Paginator
 from django.core.paginator import PageNotAnInteger
 from django.core.paginator import EmptyPage
@@ -19,19 +17,18 @@ from django.contrib.auth.decorators import login_required
 from auth import *
 from CronOrder.Aaps import *
 from CronOrder.models import *
-import thread
+from CronOrder.ALO import *
 import json
 import hashlib
 import datetime
 import time
-ApsPoll = createback.spool()
-
+alo = Alo()
+aps = OrderAps()
 
 # Create your views here.
 # 登录验证函数
 @ensure_csrf_cookie
 def login_in(request):
-    global ApsPoll
     if 'user_name' in request.POST and request.POST['user_name'] and 'password' in request.POST and request.POST['password']:
         user_name = request.POST['user_name']
         password = request.POST['password']
@@ -43,8 +40,6 @@ def login_in(request):
                 merchant.update_time = datetime.datetime.now()
                 merchant.is_online = True
                 merchant.save()
-                if merchant.ele_account != '' or merchant.tao_account != '' or merchant.mei_account != '':
-                    ApsPoll.addJobs(str(merchant.id))
                 qr_bind = createqr(2, merchant.id)
                 request.session['qr_bind'] = qr_bind
                 return HttpResponseRedirect("/merchant/operate_new")
@@ -55,22 +50,19 @@ def login_in(request):
     else:
         return render_to_response('login_page.html', context_instance=RequestContext(request))
 
+def apstest(req):
+    global aps
+    aps.stopAps()
+    return HttpResponse('success stop aps task')
 
 #登出函数
 def login_out(request):
-    global ApsPoll
     user_name = request.session.get('username')
     merchant = Merchant.objects.get(alin_account=user_name)
     merchant.is_online = False
     merchant.save()
-    ApsPoll.removeJobs(str(merchant.id))
     del request.session['username']
     return HttpResponseRedirect("login_in")
-
-def apstest(req):
-    global ApsPoll
-    ApsPoll.stopAps()
-    return HttpResponse('success stop task')
 
 #忘记密码操作
 def forget_password(request):
@@ -231,6 +223,7 @@ def change_name(request):
 
 #get orders count
 def get_orders_count(request):
+    global alo
     if not request.session.get('username'):
         return HttpResponseRedirect('login_in')
     else:
@@ -238,6 +231,8 @@ def get_orders_count(request):
         merchant = Merchant.objects.get(alin_account=merchant_id)
         merchant.update_time = datetime.datetime.now()
         merchant.save()
+        if merchant.tao_account != '' or merchant.ele_account != '' or merchant.mei_account != '':
+            alo.cronOrder(str(merchant.id))
         status = 'T'
         if merchant.tao_account:
             if merchant.tao_status == False:

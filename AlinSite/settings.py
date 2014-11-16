@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'merchant_page',
     'CronOrder',
     'AlinApi',
+    'AlinLog',
     'ProxyWork',
     'top',
 )
