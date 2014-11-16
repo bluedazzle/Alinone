@@ -40,8 +40,6 @@ def login_in(request):
                 merchant.update_time = datetime.datetime.now()
                 merchant.is_online = True
                 merchant.save()
-                qr_bind = createqr(2, merchant.id)
-                request.session['qr_bind'] = qr_bind
                 return HttpResponseRedirect("/merchant/operate_new")
             else:
                 return render_to_response('login_page.html', {'flag': 1}, context_instance=RequestContext(request))
@@ -590,7 +588,12 @@ def add_sender_page(request):
         merchant.save()
         express_people = merchant.bind_sender.all()
         request.session['sender_count'] = express_people.count()
-        filename = request.session['qr_bind']
+        if request.GET.get('flag'):
+            filename = request.session['qr_bind']
+        else:
+            qr_bind = createqr(2, merchant.id)
+            request.session['qr_bind'] = qr_bind
+            filename = qr_bind
         return render_to_response('merchant_add_sender.html', {'express_people': express_people, 'filename': filename})
 
 
