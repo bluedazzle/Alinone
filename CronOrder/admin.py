@@ -8,9 +8,9 @@ class MerchantAdmin(admin.ModelAdmin):
     ordering = ('-last_login',)
 
 class DayOrderAdmin(admin.ModelAdmin):
-    list_display = ('order_id_alin', 'order_id_old', 'phone', 'pay', 'platform', 'real_price', 'status')
+    list_display = ('order_id_alin', 'order_time', 'order_id_old', 'phone', 'pay', 'platform', 'real_price', 'status')
     list_filter = ('order_time',)
-    ordering = ('-order_time',)
+    ordering = ('-order_id_alin',)
 
 class DishAdmin(admin.ModelAdmin):
     list_display = ('dish_name', 'dish_count', 'dish_price', 'order')
