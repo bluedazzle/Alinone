@@ -65,25 +65,26 @@
                                          var num = parseInt(localStorage['printer']);
                                          LODOP.SET_PRINTER_INDEX(num);
                                      }
-                                     var print_status = LODOP.PRINT_INIT("{{ item.order_id_alin }}");
+                                     var print_status = LODOP.PRINT_INIT("");
                                      if(!print_status){
                                          alert("打印机异常!");
                                          return false
                                      }
-                                     LODOP.SET_PRINT_PAGESIZE(0,5800,2100,"");
+                                     LODOP.SET_PRINT_PAGESIZE(3,5800,"1mm","CreateCustomPage");
 {#                                     LODOP. ADD_PRINT_HTM (0,0, 300,100,"<hr><font size=5>hello </font>");#}
+                                     LODOP.NEWPAGEA();
                                      LODOP.ADD_PRINT_HTM(0,0,'100%','70%',"<h1>{{ item.phone }}</h1>"
                                      +"<h3 style=\"text-align: center;\">{{ item.merchant.name }}</h3>"
-                                     +"<p style=\"font-size: 13px;\">订单号：{{ item.order_id_alin }}<br/>"
+                                     +"<p style=\"font-size: 17px;\">订单号：{{ item.order_id_alin }}<br/>"
                                      +" 时间: {{ item.order_time|date:"Y-m-d H:i:s" }}<br/>"
                                      +" 平台: {{ item.platform }}<br/>"
                                      +" 菜单:<p/>"
                                      +"--------------------------"
                                               {% for dish in item.dishs.all %}
-                                     +" <p style=\"font-size: 10px;\">{{ dish.dish_name }} X {{ dish.dish_count }}  &nbsp;&nbsp; {{ dish.dish_price }}元/份</p>"
+                                     +" <p style=\"font-size: 14px;\">{{ dish.dish_name }} X {{ dish.dish_count }}  &nbsp;&nbsp; {{ dish.dish_price }}元/份</p>"
                                               {% endfor %}
                                      +"--------------------------"
-                                     +"<p style=\"font-size: 13px;\">地址: {{ item.address }}<br/>"
+                                     +"<p style=\"font-size: 17px;\">地址: {{ item.address }}<br/>"
                                      +" 优惠: {{ item.promotion }}<br/>"
                                      +" 电话: {{ item.phone }}<br/>"
                                              {% if item.pay == True %}
@@ -96,7 +97,7 @@
                                      +"==================<br/>");
                                      var print_req = LODOP.PRINT();
                                      if(print_req){
-                                         if(sessionStorage.get('{{ item.order_id_alin }}')){
+                                         if(sessionStorage['{{ item.order_id_alin }}']){
                                              sessionStorage['{{ item.order_id_alin }}'] = parseInt(sessionStorage['{{ item.order_id_alin }}']) + 1
                                          }
                                          else{
@@ -104,7 +105,7 @@
                                          }
                                      }
                                      else{
-                                        alert('打印失败!')
+                                        alert('订单{{ item.order_id_alin }}打印失败!')
                                      }
                                  }
                          )
@@ -131,25 +132,25 @@
      </nav>
            {% if merchant.auto_print %}
             <script>
-                         $('#all_print').click(
+                         $('#all_get').click(
                                  function(){
                                      var LODOP=getLodop();
                                      if(localStorage['printer']){
                                          var num = parseInt(localStorage['printer']);
                                          LODOP.SET_PRINTER_INDEX(num);
                                      }
-                                     LODOP.SET_PRINT_PAGESIZE(0,5800,2970,"");
 {#                                     LODOP. ADD_PRINT_HTM (0,0, 300,100,"<hr><font size=5>hello </font>");#}
-                                     {% for item in items %}
                                      var print_status = LODOP.PRINT_INIT("{{ item.order_id_alin }}");
                                      if(!print_status){
                                          alert("打印机异常!");
                                          return false
                                      }
+                                     LODOP.SET_PRINT_PAGESIZE(3,5800,"1mm","CreateCustomPage");
+                                     {% for item in items %}
                                      LODOP.NEWPAGEA();
-                                     LODOP.ADD_PRINT_HTM(0,0,'100%','70%', "<h1>{{ item.phone }}</h1>"
+                                     LODOP.ADD_PRINT_HTM(1,1,'100%','70%', "<h1>{{ item.phone }}</h1>"
                                      +"<h3 style=\"text-align: center;\">{{ item.merchant.name }}</h3>"
-                                     +"<p style=\"font-size: 17px;\">订单号：{{ item.order_id_alin }}<br/>"
+                                     +"<p style=\"font-size: 15px;\">订单号：{{ item.order_id_alin }}<br/>"
                                      +" 时间: {{ item.order_time|date:"Y-m-d H:i:s" }}<br/>"
                                      +" 平台: {{ item.platform }}<br/>"
                                      +" 菜单:</p>"
@@ -158,7 +159,7 @@
                                      +" <p style=\"font-size: 14px;\">{{ dish.dish_name }} X {{ dish.dish_count }}  &nbsp;&nbsp; {{ dish.dish_price }}元/份</p>"
                                               {% endfor %}
                                      +" －－－－－－－－－"
-                                     +"<p style=\"font-size: 17px;\">地址: {{ item.address }}<br/>"
+                                     +"<p style=\"font-size: 15px;\">地址: {{ item.address }}<br/>"
                                      +"优惠: {{ item.promotion }}<br/>"
                                      +" 电话: {{ item.phone }}<br/>"
                                              {% if item.pay == True %}
@@ -169,20 +170,21 @@
                                      +"<img src=\"/qrimg/{{ item.qr_path }}\" style=\"height: 130px;width: 130px;\">"
                                      +"<br/>"
                                      +"==================<br/>");
+                                     {% endfor %}
                                      var print_req = LODOP.PRINT();
                                      if(print_req){
-                                         if(sessionStorage.get('{{ item.order_id_alin }}')){
+                                         {% for item in items %}
+                                         if(sessionStorage['{{ item.order_id_alin }}']){
                                              sessionStorage['{{ item.order_id_alin }}'] = parseInt(sessionStorage['{{ item.order_id_alin }}']) + 1
                                          }
                                          else{
                                              sessionStorage['{{ item.order_id_alin }}'] = 1;
                                          }
+                                         {% endfor %}
                                      }
                                      else{
-                                        alert('订单{{ item.order_id_alin }}打印失败!')
+                                        alert('打印失败!')
                                      }
-
-                                     {% endfor %}
                          }
                          )
                      </script>

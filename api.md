@@ -277,3 +277,22 @@ POST /sender/new_password
 ```
 {"status":1,"body":{}}
 ```
+
+##**获取之前绑定的单**
+#####物流人员获取之前绑定的单
+```
+POST /sender/get_bind_orders
+```
+###**Parameters**
+* private_token(_Required_|string)-用户token
+###**Request**
+```
+{"private_token":"18215606355"}
+```
+###**Return**
+```
+有单
+{"status": 1, "body": {"order_list": [{"phone": "18200115204", "name": "1", "dish_list": [{"count": 1, "price": -10.0, "name": "1"}, {"count": 1, "price": 16.0, "name": "1"}, {"count": 1, "price": 4.0, "name": "1"}], "address": "1", "order_id": "2014111602000000010070", "merchant_id": "00000001"}]}}
+无单
+{"status":1,"body":{}}
+```

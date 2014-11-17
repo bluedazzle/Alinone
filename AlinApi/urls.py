@@ -16,5 +16,6 @@ urlpatterns = patterns('',
     url(r'^sender/forget_password$', views.forgetpasswd),
     url(r'^sender/new_password$', views.newpassword),
     url(r'^sender/req_verify$', views.reg_ver),
+    url(r'^sender/get_bind_orders$', views.getcurlist),
 )
 

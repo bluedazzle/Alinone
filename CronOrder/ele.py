@@ -84,6 +84,7 @@ class Ele(object):
             newid = createAlinOrderNum(2, self.merchantid, thiscount)
             thiscount += 1
             qrres = createqr(1, newid)
+            time.sleep(1)
             address = detail.string[3:]
             neworder.address = address[1:]
             neworder.order_id_alin = newid

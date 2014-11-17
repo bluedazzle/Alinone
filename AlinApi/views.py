@@ -221,6 +221,49 @@ def bindorders(req):
         raise Http404
 
 @csrf_exempt
+def getcurlist(req):
+    body = {}
+    orderslist = []
+    if req.method == 'POST':
+        reqdata = simplejson.loads(req.body)
+        privatetoken = reqdata['private_token']
+        currentuser_list = Sender.objects.filter(private_token = str(privatetoken))
+        if currentuser_list.count() > 0:
+            currentuser = currentuser_list[0]
+            lasttime = currentuser.active_time.replace(tzinfo = None)
+            if not isactive(lasttime):
+                return HttpResponse(encodejson(5, body), content_type="application/json")
+            currentuser.active_time = datetime.datetime.now()
+            currentuser.save()
+            bindorders = DayOrder.objects.filter(bind_sender = currentuser)
+            if bindorders.count > 0:
+                for item in bindorders:
+                    order = {}
+                    dishs = []
+                    order['order_id'] = str(item.order_id_alin)
+                    order['name'] = str(item.merchant.name)
+                    order['merchant_id'] = str('%08i' % item.merchant.id)
+                    order['phone'] = str(item.phone)
+                    order['address'] = str(item.address)
+                    dishlist = item.dishs.all()
+                    for it in dishlist:
+                        dish = {}
+                        dish['name'] = it.dish_name
+                        dish['count'] = it.dish_count
+                        dish['price'] = it.dish_price
+                        dishs.append(copy.copy(dish))
+                    order['dish_list'] = dishs
+                    orderslist.append(copy.copy(order))
+                body['order_list'] = orderslist
+                return HttpResponse(encodejson(1, body), content_type="application/json")
+            else:
+                return HttpResponse(encodejson(1, body), content_type="application/json")
+        else:
+            return HttpResponse(encodejson(7, body), content_type="application/json")
+    else:
+        raise Http404
+
+@csrf_exempt
 def senderinfo(req):
     body = {}
     merchantlist = []
@@ -301,6 +344,7 @@ def register(req):
     if req.method == 'POST':
         reqdata = simplejson.loads(req.body)
         username = reqdata['username']
+        nick = reqdata['nick']
         passwd = reqdata['password']
         code = reqdata['reg_code']
         ishave = Sender.objects.filter(phone = str(username))
@@ -315,6 +359,7 @@ def register(req):
                 newsender.phone = username
                 newsender.password = hashlib.md5(passwd).hexdigest()
                 newsender.active_time = datetime.datetime.now()
+                newsender.nick = nick
                 newsender.private_token = mytoken
                 newsender.save()
                 body["private_token"] = mytoken

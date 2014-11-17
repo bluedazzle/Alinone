@@ -67,10 +67,7 @@ function cancel_one(order_account){
                         data: '',
                         success: function(data) {
                             if (data == 'T') {
-                                $('#i' + order_account).parent().parent().remove();
-                                if($('tr').length == 1){
                                     window.location.href = 'operate_get'
-                                }
                             }
                             else{
                                 window.location.href = 'login_in'
