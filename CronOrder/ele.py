@@ -31,12 +31,12 @@ class Ele(object):
                 return None
         html = self.net.GetResFromRequest('GET', 'http://napos.ele.me/dashboard/index/list/unprocessed_waimai', 'utf-8', use_proxy=True)
         # # print html
-        # html = ''
-        # with open('abc.txt', 'r') as f1:
-        #     line = f1.readline()
-        #     while line:
-        #         html += line
-        #         line = f1.readline()
+        html = ''
+        with open('abc.txt', 'r') as f1:
+            line = f1.readline()
+            while line:
+                html += line
+                line = f1.readline()
         if html is None:
             return None
         soup = BeautifulSoup(html)
@@ -88,7 +88,9 @@ class Ele(object):
             address = detail.string[3:]
             neworder.address = address[1:]
             neworder.order_id_alin = newid
+            print '111'
             neworder.order_id_old = orderid
+            print '222'
             neworder.origin_price = price.string[1:]
             neworder.real_price = price.string[1:]
             neworder.phone = phone.string[3:]
@@ -101,6 +103,7 @@ class Ele(object):
             neworder.platform = 2
             neworder.qr_path = qrres
             neworder.merchant = curmet
+            print '333'
             neworder.save()
             print timee
             print orderid

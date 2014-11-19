@@ -178,7 +178,7 @@ class DayOrder(models.Model):
     merchant = models.ForeignKey(Merchant, blank=True, null=True)
     bind_sender = models.ForeignKey(Sender, blank=True, null=True, related_name="order")
     finish_by = models.CharField(max_length=20, blank=True, null=True)
-    qr_path = models.CharField(max_length=20, null=True, blank=True)
+    qr_path = models.CharField(max_length=50, null=True, blank=True)
 
     def __unicode__(self):
         return self.order_id_alin
