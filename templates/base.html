@@ -12,9 +12,12 @@
 </head>
 <body  style="font-family: Microsoft Yahei;">
 <nav class="navbar navbar-mine" role="navigation">
+    <span class="navbar-brand">今日共有<span id="order_num">0</span>笔已完成订单，<span id="total_money">0.0</span>元</span>
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header" style="padding-left: 46%;">
+
+            <div class="navbar-header" style="padding-left: 30%;">
+
                 <a class="navbar-brand" style="font-size: 34px;color: #ffffff;">Alinone</a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -46,10 +49,10 @@
 </div>
 <div class="col-md-2 col-lg-2" style="padding-left: 0;padding-top:5%;position: fixed;">
    <div class="btn-group-vertical" style="width: 110%;">
-      <a role="button" class="btn btn-primary btn-lg" onclick="playmusic()" href="operate_new">
+      <a role="button" class="btn btn-primary btn-lg" href="operate_new">
           未处理订单<span class="badge" id="new_orders_count" style="margin-left: 10px;"></span>
       </a>
-      <a role="button" class="btn btn-primary btn-lg" onclick="stopmusic()" href="operate_get">已接收订单</a>
+      <a role="button" class="btn btn-primary btn-lg" href="operate_get">已接收订单</a>
       <a role="button" class="btn btn-primary btn-lg" href="operate_paisong">派送的订单</a>
       <a role="button" class="btn btn-primary btn-lg" href="operate_delete">取消的订单</a>
       <a role="button" class="btn btn-primary btn-lg" href="operate_pingtai">
@@ -98,6 +101,8 @@
                         url: 'get_orders_count',
                         data: '',
                         success: function(data){
+                            $('#order_num').text(data['order_num']);
+                            $('#total_money').text(data['total_money']);
                             if(data['count'] != 'N') {
                                 $('#new_orders_count').text(data['count']);
                                  playmusic()
@@ -119,6 +124,8 @@
             url: 'get_orders_count',
             data: '',
             success: function (data) {
+                $('#order_num').text(data['order_num']);
+                $('#total_money').text(data['total_money']);
                 if (data['count'] != 'N') {
                     $('#new_orders_count').text(data['count'])
                 }

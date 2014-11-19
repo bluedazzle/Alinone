@@ -19,6 +19,7 @@ from CronOrder.Aaps import *
 from CronOrder.models import *
 from CronOrder.ALO import *
 import json
+import simplejson
 import hashlib
 import datetime
 import time
@@ -242,13 +243,17 @@ def get_orders_count(request):
             if merchant.mei_status == False:
                 status = 'F'
         order_list = DayOrder.objects.filter(merchant=merchant, status=1)
+        finish_list = DayOrder.objects.filter(merchant=merchant, status=4)
+        finnum = finish_list.count()
+        total = 0.0
+        for it in finish_list:
+            total += float(it.real_price)
         if order_list.count() == 0:
             count = 'N'
         else:
             count = order_list.count()
-
-        content = {'count': count, 'status': status}
-        return HttpResponse(json.dumps(content), content_type="application/json")
+        content = {'count': count, 'status': status, 'order_num': finnum, 'total_money': total}
+        return HttpResponse(simplejson.dumps(content), content_type="application/json")
 
 
 #进入未处理订单界面

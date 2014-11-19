@@ -18,6 +18,7 @@
             <a role="button" href="operate_new" class="btn btn-primary" style="font-size: 18px; margin-top: 30px;margin-bottom: -5px; margin-left: 30px;">返回</a>
         {% else %}
         <form action ="change_name" method="post" id="change_name_mes">
+        {% csrf_token %}
             <div class="input-group" style="margin-top:40px;margin-left:120px;width: 68%;">
                 <span class="input-group-addon" style=" font-size:17px;width: 30%;">手机号</span>
                  <input type="text" class="form-control" name="phone" style="width: 70%" id='phone' value="{{ phone }}">
