@@ -23,7 +23,7 @@ import hashlib
 import datetime
 import time
 alo = Alo()
-aps = OrderAps()
+# aps = OrderAps()
 
 # Create your views here.
 # 登录验证函数
@@ -50,10 +50,10 @@ def login_in(request):
     else:
         return render_to_response('login_page.html', context_instance=RequestContext(request))
 
-def apstest(req):
-    global aps
-    aps.stopAps()
-    return HttpResponse('success stop aps task')
+# def apstest(req):
+#     global aps
+#     aps.stopAps()
+#     return HttpResponse('success stop aps task')
 
 #登出函数
 def login_out(request):

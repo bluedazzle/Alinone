@@ -3,6 +3,7 @@ from apscheduler.jobstores.base import ConflictingIdError
 from AlinApi.views import *
 from CronOrder.ele import *
 from CronOrder.tdd import *
+from AlinLog.models import *
 from CronOrder.ordermig import *
 from CronOrder.models import *
 from CronOrder.method import *
@@ -19,7 +20,20 @@ class OrderAps(object):
         # self.tdict = {}
         # self.edict = {}
         self.initJobs()
-        self.scheduler.start()
+        try:
+            self.scheduler.start()
+            newlog = CronLog()
+            newlog.ltype = 10
+            newlog.content = 'aps start successfully'
+            newlog.status = True
+            newlog.save()
+        except Exception, e:
+            newlog = CronLog()
+            newlog.ltype = 10
+            newlog.content = 'aps start failed'
+            newlog.err_message = str(e)
+            newlog.save()
+
 
     def ifruning(self, merchantid):
         merchantid = str(merchantid)
@@ -34,7 +48,16 @@ class OrderAps(object):
         self.scheduler.add_job(getproxy, 'cron', hour='10,16')
         self.scheduler.add_job(checkproxy, 'cron', hour='8,15')
         self.scheduler.add_job(migrateorder, 'cron', hour='1')
+        self.scheduler.add_job(self.checkAps, 'cron', hour='0-23')
+        print 'add jobs success'
         return True
+
+    def checkAps(self):
+        newlog = CronLog()
+        newlog.content = 'aps jobs working good'
+        newlog.ltype = 11
+        newlog.status = True
+        newlog.save()
 
     def stopAps(self):
         self.scheduler.shutdown(wait=True)

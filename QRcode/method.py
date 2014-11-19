@@ -20,12 +20,12 @@ def createqr(type, qrtext):
             return None
         #http://localhost:8888/search/result?searchtext=18215606355
         qr.add_data('http://www.chafanbao.com/search/result?searchtext=' + qrtext)
-        filename = 'order' + str(str(time.time())[0:10]) + '.png'
+        filename = 'order' + str(qrtext) + '.png'
         savename = BASE + '/qrimg/' + filename
     elif str(type) == '2':
         qrtext = '%08i' % int(qrtext)
         qr.add_data(qrtext + str(time.time())[0:10])
-        filename = 'bind' + str(str(time.time())[0:10]) + '.png'
+        filename = 'bind' + str(str(time.time())[0:10]) + str(qrtext) + '.png'
         savename = BASE + '/qrimg/' + filename
         res = Merchant.objects.filter(id = int(qrtext))
         if res.count() > 0:
