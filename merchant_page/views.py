@@ -384,6 +384,33 @@ def operate_paisong(request):
                                   , context_instance=RequestContext(request))
 
 
+def operate_finish(request):
+    if request.method == 'GET':
+        if request.session.get('username'):
+            try:
+                merchant0 = request.session.get('username')
+                merchant = Merchant.objects.get(alin_account=merchant0)
+                merchant.update_time = datetime.datetime.now()
+                merchant.save()
+                order_detail = DayOrder.objects.order_by('-order_time').filter(merchant=merchant, status=4)
+                order_detail = pingtai_name(order_detail)
+                paginator = Paginator(order_detail, 20)
+                try:
+                    page_num = request.GET.get('page')
+                    order_detail = paginator.page(page_num)
+                except PageNotAnInteger:
+                    order_detail = paginator.page(1)
+                except EmptyPage:
+                    order_detail = paginator.page(paginator.num_pages)
+                except:
+                    pass
+            except DayOrder.DoesNotExist:
+                pass
+            return render_to_response('merchant_operate_finish.html', {'items': order_detail}, context_instance=RequestContext(request))
+        else:
+            return HttpResponseRedirect("login_in")
+    return render_to_response('merchant_operate_finish.html', context_instance=RequestContext(request))
+
 #进入平台管理页面
 def operate_pingtai(request):
     if not request.session.get('username'):

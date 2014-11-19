@@ -14,12 +14,12 @@
                      <th>下单时间</th>
                      <th>联系方式</th>
                      <th>地址</th>
-                     <th>订餐平台</th>
+                     <th style="min-width: 80px">订餐平台</th>
                      <th>付款</th>
                      <th>菜单</th>
-                     <th>
+                     <th style="min-width: 170px">
                          <a role="button" class="btn btn-primary btn-sm" id="all_print">一键打印</a>
-                         <a onclick="cancel_all()" role="button" class="btn btn-primary btn-sm" style="background-color: #737373">一键撤销</a>
+                         <a onclick="finish_all()" role="button" class="btn btn-success btn-sm">一键完成</a>
                      </th>
                  </tr>
                  {%for item in items%}
@@ -50,7 +50,10 @@
                          <a role="button" class="btn btn-primary btn-sm" id="i{{ item.order_id_alin }}">
                              打印<span class="badge" id="n{{ item.order_id_alin }}" style="margin-left:2px;padding: 1px;"></span>
                          </a>
+                         <a role="button" onclick="finish_one('{{ item.order_id_alin }}')" class="btn btn-success btn-sm">完成</a>
                          <a role="button" onclick="cancel_one('{{ item.order_id_alin }}')" class="btn btn-primary btn-sm" style="background-color: #737373">撤销</a>
+
+
                      </td>
                      <script>
                          if(sessionStorage['{{ item.order_id_alin }}']){

@@ -68,3 +68,25 @@ def jujueall(request):
         item.status = 5
         item.save()
     return HttpResponse(json.dumps('T'), content_type='application/json')
+
+
+def finishall(request):
+    if not request.session.get('username'):
+        return HttpResponse(json.dumps('N'), content_type='application/json')
+    merchant0 = request.session.get('username')
+    merchant = Merchant.objects.get(alin_account=merchant0)
+    order_detail = DayOrder.objects.filter(merchant=merchant)
+    for item in order_detail:
+        item.status = 4
+        item.save()
+    return HttpResponse(json.dumps('T'), content_type='application/json')
+
+
+def finishone(request):
+    if not request.session.get('username'):
+        return HttpResponse(json.dumps('N'), content_type='application/json')
+    order_id_alin = request.GET.get('order')
+    order_detail = DayOrder.objects.get(order_id_alin=order_id_alin)
+    order_detail.status = 4
+    order_detail.save()
+    return HttpResponse(json.dumps('T'), content_type='application/json')

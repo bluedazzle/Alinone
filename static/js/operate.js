@@ -119,13 +119,33 @@ function jujueall(){
     }
 }
 
-function cancel_all(){
-    var r=confirm("您确定要取消所有订单么？？？");
+//function cancel_all(){
+//    var r=confirm("您确定要取消所有订单么？？？");
+//    if(r==true){
+//        $.ajax({
+//                        type: 'GET',
+//                        url: "jujueall",
+//                        data: '',
+//                        success: function(data) {
+//                            if (data == 'T') {
+//                                window.location.href = 'operate_get'
+//                            }
+//                            else{
+//                                window.location.href = 'login_in'
+//                            }
+//                        },
+//                        dataType: 'json'
+//                    });
+//    }
+//}
+
+function finish_one(order){
+    var r=confirm("您确定要完成订单吗？")
     if(r==true){
         $.ajax({
                         type: 'GET',
-                        url: "jujueall",
-                        data: '',
+                        url: "finishone",
+                        data: {'order': order},
                         success: function(data) {
                             if (data == 'T') {
                                 window.location.href = 'operate_get'
@@ -139,6 +159,26 @@ function cancel_all(){
     }
 }
 
+
+function finish_all(){
+    var r=confirm("您确定要完成所有订单吗？")
+    if(r==true){
+        $.ajax({
+                        type: 'GET',
+                        url: "finishall",
+                        data: '',
+                        success: function(data) {
+                            if (data == 'T') {
+                                window.location.href = 'operate_get'
+                            }
+                            else{
+                                window.location.href = 'login_in'
+                            }
+                        },
+                        dataType: 'json'
+                    });
+    }
+}
 
 function platform_name(name){
     $('#platform_name').value(name);
