@@ -30,9 +30,9 @@
                      <td>{{ item.address }}</td>
                      <td>{{ item.platform }}</td>
                      {% if item.pay == True %}
-                     <td>{{ item.real_price }}(已付)</td>
+                     <td>{{ item.real_price }}元(已付)</td>
                      {% else %}
-                     <td>{{ item.real_price }}</td>
+                     <td>{{ item.real_price }}元(未付)</td>
                      {% endif %}
                      <td>
                          <div class="btn-group dropdown">

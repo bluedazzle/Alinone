@@ -643,10 +643,11 @@ def get_sender_change(request):
         merchant_id = request.session['username']
         merchant = Merchant.objects.get(alin_account=merchant_id)
         express_people = merchant.bind_sender.all()
-        if request.session.get('sender_count'):
+        if request.session.get('sender_count') or request.session['sender_count'] == 0:
             if request.session['sender_count'] == express_people.count():
                 return HttpResponse(json.dumps('F'), content_type="application/json")
             else:
                 return HttpResponse(json.dumps('T'), content_type="application/json")
+
         else:
             return HttpResponse(json.dumps('T'), content_type="application/json")

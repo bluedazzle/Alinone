@@ -140,7 +140,6 @@ function jujueall(){
 //}
 
 function finish_one(order){
-    if(r==true){
         $.ajax({
                         type: 'GET',
                         url: "finishone",
@@ -155,7 +154,6 @@ function finish_one(order){
                         },
                         dataType: 'json'
                     });
-    }
 }
 
 
