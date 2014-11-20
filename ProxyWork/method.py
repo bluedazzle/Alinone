@@ -24,6 +24,7 @@ def getproxy(args = None):
                 newproxy.ip = item
                 newproxy.is_online = True
                 newproxy.is_used = False
+                newproxy.req_times = 0
                 newproxy.get_time = datetime.datetime.now()
                 newproxy.save()
         except Exception, e:
@@ -54,12 +55,38 @@ def distriproxy(merid):
     proxy.bind_merchant = Merchant.objects.get(id = merid)
     proxy.is_used = True
     proxy.save()
+    newlog = RunTimeLog()
+    newlog.content = '获取代理IP:' + str(proxy.ip) + '成功'
+    newlog.status = True
+    newlog.ltype = 14
+    newlog.merchant = Merchant.objects.get(id = merid)
+    newlog.save()
     return proxy.ip
 
 def delofflineproxy(ipstr):
     offline = Proxy.objects.filter(ip = str(ipstr))
     if offline.count() > 0:
         offline.delete()
+    return True
+
+def check_proxy_times(ipstr):
+    times = Proxy.objects.filter(ip = str(ipstr))
+    if times.count() > 0:
+        time = times[0]
+        if time.req_times == 3:
+            delofflineproxy(ipstr)
+        else:
+            time.req_times += 1
+            time.save()
+        return True
+    return False
+
+def reset_proxy_times(ipstr):
+    times = Proxy.objects.filter(ip = str(ipstr))
+    if times.count() > 0:
+        time = times[0]
+        time.req_times = 0
+        time.save()
     return True
 
 def checkproxy(args = None):

@@ -7,15 +7,17 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('AlinLog', '0006_auto_20141127_1442'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Notice',
+            name='SeachLog',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('content', models.CharField(max_length=100, null=True, blank=True)),
-                ('create_time', models.DateTimeField(auto_now_add=True)),
+                ('req_ip', models.CharField(max_length=15)),
+                ('req_time', models.DateTimeField(auto_now_add=True)),
+                ('req_param', models.CharField(max_length=100)),
             ],
             options={
             },

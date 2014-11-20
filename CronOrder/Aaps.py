@@ -90,45 +90,44 @@ class OrderAps(object):
     #         print e
     #         return False
 
-    def cronOrder(self, merchantid):
-        try:
-            mer = Merchant.objects.filter(id = merchantid)[0]
-            acttime = mer.update_time.replace(tzinfo = None)
-            is_act = isactive(acttime, 60)
-            mer.netspider_time = datetime.datetime.now()
-            if not is_act:
-                mer.is_online = False
-            mer.save()
-            if is_act:
-                print('%s is online' % mer.name)
-                if str(merchantid) in self.tdict and self.tdict[str(merchantid)] is not None:
-                    tddcat = self.tdict[str(merchantid)]
-                    tres = tddcat.getpaddingorder()
-                    if tres is None:
-                        mer.tdd_status = False
-                    else:
-                        mer.tdd_status = True
-                if str(merchantid) in self.edict and self.edict[str(merchantid)] is not None:
-                    elecat = self.edict[str(merchantid)]
-                    res = elecat.catcheorder()
-            # tres = tddcat.getpaddingorder()
-            # print tres
-                    if res is None:
-                        mer.ele_status = False
-                        mer.save()
-                    elif res is False:
-                        mer.ele_status = True
-                        mer.save()
-                    else:
-                        print 'res is : ' + str(res)
-                        mer.todaynum = int(res)
-                        mer.ele_status = True
-                        mer.save()
-            else:
-                print('%s is offline,schel will exit' % mer.name)
-                ress = self.removeJobs(merchantid)
-                print ress
-        except Exception, e:
-            print e
+    # def cronOrder(self, merchantid):
+    #     try:
+    #         mer = Merchant.objects.filter(id = merchantid)[0]
+    #         acttime = mer.update_time.replace(tzinfo = None)
+    #         is_act = isactive(acttime, 60)
+    #         mer.netspider_time = datetime.datetime.now()
+    #         if not is_act:
+    #             mer.is_online = False
+    #         mer.save()
+    #         if is_act:
+    #             print('%s is online' % mer.name)
+    #             if str(merchantid) in self.tdict and self.tdict[str(merchantid)] is not None:
+    #                 tddcat = self.tdict[str(merchantid)]
+    #                 tres = tddcat.getpaddingorder()
+    #                 if tres is None:
+    #                     mer.tdd_status = False
+    #                 else:
+    #                     mer.tdd_status = True
+    #             if str(merchantid) in self.edict and self.edict[str(merchantid)] is not None:
+    #                 elecat = self.edict[str(merchantid)]
+    #                 res = elecat.catcheorder()
+    #         # tres = tddcat.getpaddingorder()
+    #         # print tres
+    #                 if res is None:
+    #                     mer.ele_status = False
+    #                     mer.save()
+    #                 elif res is False:
+    #                     mer.ele_status = True
+    #                     mer.save()
+    #                 else:
+    #                     print 'res is : ' + str(res)
+    #                     mer.ele_status = True
+    #                     mer.save()
+    #         else:
+    #             print('%s is offline,schel will exit' % mer.name)
+    #             ress = self.removeJobs(merchantid)
+    #             print ress
+    #     except Exception, e:
+    #         print e
 
 
