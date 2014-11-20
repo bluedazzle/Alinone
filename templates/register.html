@@ -68,12 +68,67 @@
             <span class="input-group-btn" style="margin-left: 20px;width: 50%">
                     <input id="yanzheng" class="btn btn-default" type="button" value="获取验证码">
             </span>
+{#            <script>#}
+{#                $(document).ready(function() {#}
+{#                    var count, countdown;#}
+{#                    if (localStorage['r_time_count']) {#}
+{#                        count = localStorage['r_time_count'];#}
+{#                        $("#yanzheng").attr("disabled", true);#}
+{#                        countdown = setInterval(CountDown, 1000);#}
+{#                    }#}
+{#                    $('#yanzheng').click(function () {#}
+{#                            if($('#phone').val().length==11){#}
+{#                               $("#yanzheng").addClass('disabled');#}
+{#                               count = 30;#}
+{#                               var message = {'phone': $('#phone').val(),#}
+{#                                              'csrfmiddlewaretoken': getCookie('csrftoken')};#}
+{#                               $.ajax({#}
+{#                                   url:'register_verify', //后台处理程序#}
+{#                                   type:'post',         //数据发送方式#}
+{#                                   dataType:'json',     //接受数据格式#}
+{#                                   data:message,        //要传递的数据#}
+{#                                   success:function(data){#}
+{#                                       if(data == "false"){#}
+{#                                           $("#yanzheng").val("获取验证码").removeClass("disabled");#}
+{#                                           alert("手机已被注册")#}
+{#                                       }#}
+{#                                       else{#}
+{#                                           countdown = setInterval(CountDown, 1000);#}
+{#                                       }#}
+{#                                   }#}
+{#                               });#}
+{#                               countdown = setInterval(CountDown, 1000);#}
+{##}
+{#                            }#}
+{#                            else{#}
+{#                                alert("请输入有效的电话号码！")#}
+{#                            }#}
+{##}
+{#                    });#}
+{##}
+{#                        function CountDown() {#}
+{#                            localStorage['r_time_count'] = count;#}
+{#                            $("#yanzheng").addClass('disabled');#}
+{#                            $("#yanzheng").val("请等待 " + count + "秒");#}
+{#                            if (count <= 0) {#}
+{#                                $("#yanzheng").val("获取验证码").removeClass("disabled");#}
+{#                                clearInterval(countdown);#}
+{#                                localStorage.removeItem("r_time_count");#}
+{#                            }#}
+{#                            count--;#}
+{#                        }#}
+{#                })#}
+{#            </script>#}
+        </div>
+        </form>
+        <button class="btn btn-primary" onclick="submit_mes()" style="font-size: 18px; margin-top: 30px;margin-bottom: -5px;">确定</button>
             <script>
+                var count, countdown;
                 $(document).ready(function() {
-                    var count, countdown;
+{#                    var count, countdown;#}
                     if (localStorage['r_time_count']) {
                         count = localStorage['r_time_count'];
-                        $("#yanzheng").attr("disabled", true);
+                        $("#yanzheng").addClass("disabled");
                         countdown = setInterval(CountDown, 1000);
                     }
                     $('#yanzheng').click(function () {
@@ -97,7 +152,6 @@
                                        }
                                    }
                                });
-{#                               countdown = setInterval(CountDown, 1000);#}
 
                             }
                             else{
@@ -111,18 +165,14 @@
                             $("#yanzheng").addClass('disabled');
                             $("#yanzheng").val("请等待 " + count + "秒");
                             if (count <= 0) {
-                                $("#yanzheng").val("获取验证码").removeClass("disabled");
                                 clearInterval(countdown);
                                 localStorage.removeItem("r_time_count");
+                                $("#yanzheng").removeClass("disabled");
+                                $("#yanzheng").val("获取验证码")
                             }
                             count--;
                         }
-                })
-            </script>
-        </div>
-        </form>
-        <button class="btn btn-primary" onclick="submit_mes()" style="font-size: 18px; margin-top: 30px;margin-bottom: -5px;">确定</button>
-            <script>
+                });
                 function submit_mes(){
                     if(!$('#phone').val()||!$('#password').val()||!$('#merchant_name').val()||!$('#verify').val()){
                         alert("请完善注册信息")
@@ -130,8 +180,13 @@
                     else if($('#password').val().length<6||$('#password').val().length>20){
                         alert("密码需为6～20位")
                     }
+                    else if($('#phone').val().length!=11){
+                        alert("请输入11位手机号码")
+                    }
                     if($('#phone').val() && $('#password').val() && $('#merchant_name').val() && $('#verify').val() &&
-                            $('#password').val().length>=6 && $('#password').val().length<=20){
+                            $('#password').val().length>=6 && $('#password').val().length<=20 && $('#phone').val().length==11){
+                        clearInterval(countdown);
+                        localStorage.removeItem('r_time_count');
                         $('#form_mes').submit();
                     }
                 }
