@@ -1,28 +1,19 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response
 from django.core.context_processors import csrf
-from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import HttpResponseRedirect
-from AlinApi.method import *
-from CronOrder.endecy import *
-from django.http import HttpResponse, Http404
-from AlinApi.models import *
-from QRcode.method import *
 from django.template import RequestContext
 from django.core.paginator import Paginator
 from django.core.paginator import PageNotAnInteger
 from django.core.paginator import EmptyPage
-from django.contrib.auth.decorators import login_required
-from auth import *
+from merchant_page.models import *
 from CronOrder.Aaps import *
-from CronOrder.models import *
 from CronOrder.ALO import *
 import json
 import simplejson
 import hashlib
 import datetime
-import time
 alo = Alo()
 # aps = OrderAps()
 
@@ -252,7 +243,11 @@ def get_orders_count(request):
             count = 'N'
         else:
             count = order_list.count()
-        content = {'count': count, 'status': status, 'order_num': finnum, 'total_money': total}
+        notice_list = Notice.objects.all()
+        if notice_list.count() > 0:
+            content = {'count': count, 'status': status, 'order_num': finnum, 'total_money': total, 'notice_list': notice_list}
+        else:
+            content = {'count': count, 'status': status, 'order_num': finnum, 'total_money': total}
         return HttpResponse(simplejson.dumps(content), content_type="application/json")
 
 
