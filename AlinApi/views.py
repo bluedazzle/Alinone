@@ -115,6 +115,9 @@ def finishorder(req):
                         item.finish_by = str(currentuser.phone)
                         item.status = 4
                         item.save()
+                    else:
+                        item.status = 2
+                        item.save()
             else:
                 for item in currentorders:
                     item.finish_by = str(currentuser.phone)
@@ -309,6 +312,7 @@ def login(req):
                 sender.active_time = datetime.datetime.now()
                 sender.save()
                 body["private_token"] = mytoken
+                body['nick'] = str(sender.nick)
                 return HttpResponse(encodejson(1, body), content_type="application/json")
             else:
                 return HttpResponse(encodejson(4, body), content_type="application/json")

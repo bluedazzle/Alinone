@@ -57,7 +57,7 @@ def login_out(request):
 #忘记密码操作
 def forget_password(request):
     if request.method == 'GET':
-        return render_to_response('forget_password.html')
+        return render_to_response('forget_password.html', context_instance=RequestContext(request))
     if request.method == 'POST':
         phone = request.POST.get('phone')
         password = request.POST.get('password')
@@ -69,10 +69,10 @@ def forget_password(request):
                 if (update_time.replace(tzinfo=None) + datetime.timedelta(minutes=30)) < \
                         datetime.datetime.utcnow():
                     return render_to_response('register.html', {'phone': phone,
-                                                                'fault1': 'T'})
+                                                                'fault1': 'T'}, context_instance=RequestContext(request))
                 else:
                     merchant = Merchant.objects.get(alin_account=phone)
-                    merchant.password = password
+                    merchant.password = hashlib.md5(password).hexdigest()
                     merchant.save()
                     request.session['username'] = phone
                     phone_verify.delete()
@@ -90,7 +90,8 @@ def forget_password_verify(request):
         phone = request.POST.get('phone')
         merchant_have = Merchant.objects.filter(alin_account=phone)
         if merchant_have.count() > 0:
-            req = AlinApi.method.createverfiycode(phone)
+            # print 'aa'
+            req = createverfiycode(phone)
             print req
             return HttpResponse(json.dumps("OK"), content_type="application/json")
         else:
@@ -111,9 +112,9 @@ def register(request):
             if user_test_list.count() > 0:
                 return render_to_response('register.html', {'phone': phone, 'merchant_name': merchant_name,
                                                             'fault2': 'T'}, context_instance=RequestContext(request))
-            phone_verify = PhoneVerify.objects.get(phone=str(phone), verify_code=str(verify))
-            if phone_verify:
-                update_time = phone_verify.update_time
+            phone_verify = PhoneVerify.objects.filter(phone=str(phone), verify_code=str(verify))
+            if phone_verify.count() > 0:
+                update_time = phone_verify[0].update_time
                 if (update_time.replace(tzinfo=None) + datetime.timedelta(minutes=30)) < \
                         datetime.datetime.utcnow():
                     return render_to_response('register.html', {'phone': phone, 'merchant_name': merchant_name,
