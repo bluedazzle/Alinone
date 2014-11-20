@@ -66,7 +66,7 @@ def jujueall(request):
         return HttpResponse(json.dumps('N'), content_type='application/json')
     merchant0 = request.session.get('username')
     merchant = Merchant.objects.get(alin_account=merchant0)
-    order_detail = DayOrder.objects.filter(merchant=merchant)
+    order_detail = DayOrder.objects.filter(merchant=merchant, status=1)
     for item in order_detail:
         item.status = 5
         item.save()
@@ -78,7 +78,7 @@ def finishall(request):
         return HttpResponse(json.dumps('N'), content_type='application/json')
     merchant0 = request.session.get('username')
     merchant = Merchant.objects.get(alin_account=merchant0)
-    order_detail = DayOrder.objects.filter(merchant=merchant)
+    order_detail = DayOrder.objects.filter(merchant=merchant, status=2)
     for item in order_detail:
         item.status = 4
         item.save()
