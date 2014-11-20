@@ -99,7 +99,7 @@
                                      var print_req = LODOP.PRINTB();
                                      if(print_req){
                                          if(sessionStorage['{{ item.order_id_alin }}']){
-                                             sessionStorage['{{ item.order_id_alin }}'] = parseInt(sessionStorage['{{ item.order_id_alin }}']) + 1
+                                             sessionStorage['{{ item.order_id_alin }}'] = parseInt(sessionStorage['{{ item.order_id_alin }}']) + 1;
                                              $('#n{{ item.order_id_alin }}').text(sessionStorage['{{ item.order_id_alin }}'])
                                          }
                                          else{
@@ -177,10 +177,12 @@
                                      if(print_req){
                                          {% for item in items %}
                                          if(sessionStorage['{{ item.order_id_alin }}']){
-                                             sessionStorage['{{ item.order_id_alin }}'] = parseInt(sessionStorage['{{ item.order_id_alin }}']) + 1
+                                             sessionStorage['{{ item.order_id_alin }}'] = parseInt(sessionStorage['{{ item.order_id_alin }}']) + 1;
+                                             $('#n{{ item.order_id_alin }}').text(sessionStorage['{{ item.order_id_alin }}']);
                                          }
                                          else{
                                              sessionStorage['{{ item.order_id_alin }}'] = 1;
+                                             $('#n{{ item.order_id_alin }}').text(sessionStorage['{{ item.order_id_alin }}']);
                                          }
                                              {% endfor %}
                                      }

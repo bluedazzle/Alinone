@@ -11,15 +11,16 @@
     </div>
 
     {% endif %}
- <div style="text-align: center;">
+<div class="panel-body">
+ <div  class="col-md-9 col-lg-9" style="text-align: center;">
     <h3>扫描下方二维码添加快递人员</h3>
     <img src="/qrimg/{{ filename }}" style="padding-top: 25px;padding-bottom: 25px;">
     <br/>
     <a role="button" class="btn btn-primary btn-lg" href="operate_express_person" style="margin-bottom: 20px">返回</a>
  </div>
-<div id="person_list">
+ <div id="person_list">
 {% if express_people %}
- <div class="list-group container text-center" style="width: 20%;margin-left: 5%;margin-top: -40%;margin-bottom: 33%;">
+ <div class="list-group container text-center col-md-3 col-lg-3" style="">
         <a class="list-group-item active" style="background-color: #31708f">
            已绑定的快递人员
         </a>
@@ -28,6 +29,7 @@
      {% endfor %}
   </div>
 {% endif %}
+ </div>
 </div>
 </div>
     <script>

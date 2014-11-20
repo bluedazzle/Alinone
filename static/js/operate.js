@@ -140,7 +140,6 @@ function jujueall(){
 //}
 
 function finish_one(order){
-    var r=confirm("您确定要完成订单吗？")
     if(r==true){
         $.ajax({
                         type: 'GET',
@@ -161,7 +160,7 @@ function finish_one(order){
 
 
 function finish_all(){
-    var r=confirm("您确定要完成所有订单吗？")
+    var r=confirm("您确定要完成所有订单吗？");
     if(r==true){
         $.ajax({
                         type: 'GET',
