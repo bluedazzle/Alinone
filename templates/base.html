@@ -38,8 +38,8 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
         </div><!-- /.container-fluid -->
 </nav>
-<div class="alert alert-warning alert-dismissible" role="alert" style="text-align: center;margin-top:-20px;line-height: 0.1;">
-  <strong>公告!</strong>
+<div class="alert alert-warning alert-dismissible" role="alert"style="text-align: center;margin-top:-20px;line-height: 0.1;">
+ <p id="notice"></p>
 </div>
 <div>
     <audio loop="-1" id="clicksound">
@@ -134,6 +134,24 @@
                 }
                 else{
                     $('#platform_status').addClass('hidden')
+                }
+                if (data['notice_list'] != 'N'){
+                    var notice_num = 0;
+                    var max_num = data['notice_list'].length;
+                    var notice_list = data['notice_list'];
+                    $('#notice').text("1:"+notice_list[notice_num]);
+                    notice_num++;
+                    function update_notice() {
+                        var num = notice_num+1;
+                        $('#notice').text(num+":"+notice_list[notice_num]);
+                        if(notice_num >= max_num-1){
+                            notice_num = 0
+                        }
+                        else{
+                            notice_num++
+                        }
+                    }
+                    var notice_countdown = setInterval(update_notice, 5000);
                 }
             },
             dataType: 'json'

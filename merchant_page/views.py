@@ -245,9 +245,20 @@ def get_orders_count(request):
             count = order_list.count()
         notice_list = Notice.objects.all()
         if notice_list.count() > 0:
-            content = {'count': count, 'status': status, 'order_num': finnum, 'total_money': total, 'notice_list': notice_list}
+            notice_list0 = []
+            for item in notice_list:
+                notice_list0.append(item.content)
+            content = {'count': count,
+                       'status': status,
+                       'order_num': finnum,
+                       'total_money': total,
+                       'notice_list': notice_list0}
         else:
-            content = {'count': count, 'status': status, 'order_num': finnum, 'total_money': total}
+            content = {'count': count,
+                       'status': status,
+                       'order_num': finnum,
+                       'total_money': total,
+                       'notice_list': 'N'}
         return HttpResponse(simplejson.dumps(content), content_type="application/json")
 
 
