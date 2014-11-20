@@ -6,20 +6,21 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from auth import *
 from CronOrder.models import *
+from merchant_page.views import *
 from AlinApi.views import isactive
 import json
 import hashlib
 import urllib
 
 
-def fuwei(request):
-    merchant0 = request.session.get('username')
-    merchant = Merchant.objects.get(alin_account=merchant0)
-    order_detail = DayOrder.objects.filter(merchant=merchant)
-    for item in order_detail:
-        item.status = 1
-        item.save()
-    return HttpResponseRedirect("operate_new")
+# def fuwei(request):
+#     merchant0 = request.session.get('username')
+#     merchant = Merchant.objects.get(alin_account=merchant0)
+#     order_detail = DayOrder.objects.filter(merchant=merchant)
+#     for item in order_detail:
+#         item.status = 1
+#         item.save()
+#     return HttpResponseRedirect("operate_new")
 
 def netSpiderStatus(req):
     merchant0 = request.session.get('username')
@@ -29,11 +30,13 @@ def netSpiderStatus(req):
 
 
 def jieshouone(request, order):
+    global alo
     if not request.session.get('username'):
         return HttpResponse(json.dumps('N'), content_type='application/json')
     order_detail = DayOrder.objects.get(order_id_alin=order)
     order_detail.status = 2
     order_detail.save()
+
     return HttpResponse(json.dumps('T'), content_type='application/json')
 
 

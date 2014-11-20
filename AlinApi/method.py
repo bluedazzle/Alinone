@@ -4,6 +4,7 @@ import string
 import datetime
 import urllib
 from AlinApi.models import *
+from AlinApi.yunpian import *
 from CronOrder.NetSpider import *
 import string
 
@@ -28,18 +29,13 @@ def sendverifycode(content, phone):
         lasttime = result.update_time.replace(tzinfo=None)
         if (nowtime - lasttime) < datetime.timedelta(seconds=30):
             return False
-    postdic = {}
     apikey = '72c9f01d5db2dc40f4aa31865b17940c'
-    postdic['mobile'] = phone
-    postdic['apikey'] = apikey
-    postdic['tpl_id'] = '512797'
-    postdic['tpl_value'] = '#code#=' + content
-    encode = urllib.urlencode(postdic)
-    resulthtml = urllib.urlopen('http://yunpian.com/v1/sms/tpl_send.json', encode)
-    res = resulthtml.read()
-    # res = vf.GetResFromRequest('POST', 'http://yunpian.com/v1/sms/tpl_send.json', 'gbk', postdic)
+    tplvalue = '#code#=' + content
+    res = tpl_send_sms(apikey, '512797', tplvalue, phone)
     jsres = simplejson.loads(res)
     msg = jsres['code']
+    print msg
+    print result
     if str(msg) == '0':
         if result is not None:
             result.verify_code = content

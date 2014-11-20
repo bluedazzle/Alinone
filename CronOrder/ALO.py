@@ -8,6 +8,9 @@ class Alo(object):
         self.tdict = {}
         self.mdict = {}
 
+    def ensure_order(self, merchantid, order_list):
+        return 0
+
     def cronOrder(self, merchantid):
         mer = Merchant.objects.filter(id = merchantid)[0]
         try:
