@@ -31,12 +31,12 @@ class Ele(object):
                 return None
         html = self.net.GetResFromRequest('GET', 'http://napos.ele.me/dashboard/index/list/unprocessed_waimai', 'utf-8', use_proxy=True)
         # # print html
-        html = ''
-        with open('abc.txt', 'r') as f1:
-            line = f1.readline()
-            while line:
-                html += line
-                line = f1.readline()
+        # html = ''
+        # with open('abc.txt', 'r') as f1:
+        #     line = f1.readline()
+        #     while line:
+        #         html += line
+        #         line = f1.readline()
         if html is None:
             return None
         soup = BeautifulSoup(html)
