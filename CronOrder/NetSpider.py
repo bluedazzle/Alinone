@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import cookielib
 import urllib2
 import urllib
@@ -114,7 +115,7 @@ class NetSpider(object):
 			for key,itm in self.__postHeaders.items():
 				req.add_header(key,itm)
 			res = urllib2.urlopen(req, timeout=6)
-			print res
+			# print res
 			return res.read().decode(encodemethod)
 		except Exception, e:
 			self.__ErrorHandle(e)

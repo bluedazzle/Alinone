@@ -2,7 +2,7 @@
 from CronOrder.models import *
 from AlinLog.models import *
 
-def migrateorder():
+def migrateorder(args = None):
     dayorder_list = DayOrder.objects.all()
     totalnum = dayorder_list.count()
     for itm in dayorder_list:

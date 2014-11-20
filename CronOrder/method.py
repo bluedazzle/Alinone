@@ -18,7 +18,7 @@ def createAlinOrderNum(platid,merchantid,autoid):
     aon = str(odate) + plat_format + merchant_format + auto_format
     return aon
 
-def resetAutoId():
+def resetAutoId(args = None):
     merlist = Merchant.objects.all()
     for itm in merlist:
         itm.todaynum = 1

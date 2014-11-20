@@ -1,51 +1,41 @@
 #coding: utf-8
-import urllib
-import re
 import random
-import urllib2
-import cookielib
-import hashlib
-import datetime
 from AlinLog.models import *
-from bs4 import BeautifulSoup
-from CronOrder.NetSpider import *
 from ProxyWork.models import *
+from ProxyWork.proxys import *
 
-def getproxy():
-    url = "http://cn-proxy.com/"
+def getproxy(args = None):
     a = NetSpider()
-    a.Host = 'www.baidu.com'
-    html = urllib2.urlopen(url).read()
-    soup = BeautifulSoup(html)
-    s = soup.findAll('tr')
-    # print len(s)
+    a.Host = 'www.hao123.com'
+    errmsg = ''
+    myproxy = SProxy()
+    ip_list = myproxy.renew_proxy()
     newitems = 0
-    for i in range(2, len(s)):
+    for item in ip_list:
         try:
-            speed = s[i].findAll('td')[3]
-            speedres = speed.find('strong', attrs={'class': 'bar'})
-            reres = re.findall(r'width[: ]+(\d{1,3})[%]', speedres['style'])
-            if int(reres[0]) > 59:
-                proxip = s[i].findAll('td')[0].string+':'+s[i].findAll('td')[1].string
-                ishave = Proxy.objects.filter(ip = proxip)
-                print proxip
-                a.Proxy = proxip
-                res = a.GetResFromRequest('GET', "http://www.baidu.com/", 'utf-8', use_proxy=True)
-                if res is not None and ishave.count() == 0:
-                    newitems += 1
-                    newproxy = Proxy()
-                    newproxy.ip = proxip
-                    newproxy.is_online = True
-                    newproxy.is_used = False
-                    newproxy.get_time = datetime.datetime.now()
-                    newproxy.save()
-        except:
+            ishave = Proxy.objects.filter(ip = str(item))
+            if ishave.count() > 0:
+                continue
+            a.Proxy = item
+            res = a.GetResFromRequest('GET', "http://www.hao123.com/", 'utf-8', use_proxy=True)
+            if res is not None:
+                newitems += 1
+                newproxy = Proxy()
+                newproxy.ip = item
+                newproxy.is_online = True
+                newproxy.is_used = False
+                newproxy.get_time = datetime.datetime.now()
+                newproxy.save()
+        except Exception, e:
+            print e
+            errmsg = str(e)
             continue
     content = '新增代理IP成功，新增数量' + str(newitems) + '条'
     print content
     newlog = CronLog()
     newlog.content = content
     newlog.ltype = 1
+    newlog.err_message = errmsg
     newlog.status = True
     newlog.save()
 
@@ -72,16 +62,16 @@ def delofflineproxy(ipstr):
         offline.delete()
     return True
 
-def checkproxy():
+def checkproxy(args = None):
     a = NetSpider()
-    a.Host = 'www.baidu.com'
+    a.Host = 'napos.ele.me'
     useless = 0
     off = Proxy.objects.filter(is_online = False).delete()
     oters = Proxy.objects.all()
     print oters.count()
     for item in oters:
         a.Proxy = item.ip
-        res = a.GetResFromRequest('GET', "http://www.baidu.com/", 'utf-8', use_proxy=True)
+        res = a.GetResFromRequest('GET', "http://napos.ele.me/login", 'utf-8', use_proxy=True)
         if res is None:
             print 'del ' + item.ip
             item.delete()
