@@ -88,9 +88,7 @@ class Ele(object):
             address = detail.string[3:]
             neworder.address = address[1:]
             neworder.order_id_alin = newid
-            print '111'
             neworder.order_id_old = orderid
-            print '222'
             neworder.origin_price = price.string[1:]
             neworder.real_price = price.string[1:]
             neworder.phone = phone.string[3:]
@@ -103,7 +101,6 @@ class Ele(object):
             neworder.platform = 2
             neworder.qr_path = qrres
             neworder.merchant = curmet
-            print '333'
             neworder.save()
             print timee
             print orderid
@@ -172,54 +169,31 @@ class Ele(object):
                 print 'succ'
                 return True
 
-    def ensureorder(self, orderlist):
-        faillist = ''
-        curmet_list = Merchant.objects.filter(id = merid)
+    def ensureorder(self, order):
+        curmet_list = Merchant.objects.filter(id = self.merchantid)
         if curmet_list.count() == 0:
             return None
-        curmet = curmet_list[0]
         if not self.iflogin():
             res = self.loginele()
             if res is None or res is False:
                 return None
-        for itm in orderlist:
-            requrl = 'http://napos.ele.me/order/processOrder/id/' + str(itm) + '/category/1'
-            html = self.net.GetResFromRequest('GET', requrl, 'utf-8', use_proxy=True)
-            # print html
-            if str(html) == '0':
-                faillist += str(itm)
-                faillist += ','
-        if faillist != '':
-            if curmet.faillist is None:
-                curmet.faillist = faillist
-            else:
-                curmet.faillist += faillist
-            curmet.save()
+        requrl = 'http://napos.ele.me/order/processOrder/id/' + str(order) + '/category/1'
+        html = self.net.GetResFromRequest('GET', requrl, 'utf-8', use_proxy=True)
+        if str(html) == '0':
             return False
         return True
 
-    def refuseorder(self):
-        curmet_list = Merchant.objects.filter(id = merid)
+    def refuseorder(self, order):
+        curmet_list = Merchant.objects.filter(id = self.merchantid)
         if curmet_list.count() == 0:
             return None
-        curmet = curmet_list[0]
         if not self.iflogin():
             res = self.loginele()
             if res is None or res is False:
                 return None
-        for itm in orderlist:
-            requrl = 'http://napos.ele.me/order/setInvalid/id/' + str(itm) + '/category/1?type=6&remark='
-            html = self.net.GetResFromRequest('GET', requrl, 'utf-8', use_proxy=True)
-            print html
-            if str(html) == '0':
-                return False
-        #         faillist += str(itm)
-        #         faillist += ','
-        # if faillist != '':
-        #     if curmet.faillist is None:
-        #         curmet.faillist = faillist
-        #     else:
-        #         curmet.faillist += faillist
-        #     curmet.save()
-        #     return False
+        requrl = 'http://napos.ele.me/order/setInvalid/id/' + str(order) + '/category/1?type=6&remark='
+        html = self.net.GetResFromRequest('GET', requrl, 'utf-8', use_proxy=True)
+        print html
+        if str(html) == '0':
+            return False
         return True

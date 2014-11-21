@@ -33,19 +33,28 @@ def jieshouone(request, order):
     global alo
     if not request.session.get('username'):
         return HttpResponse(json.dumps('N'), content_type='application/json')
+    merchant0 = request.session.get('username')
+    currentusr = Merchant.objects.get(alin_account=merchant0)
     order_detail = DayOrder.objects.get(order_id_alin=order)
     order_detail.status = 2
-    order_detail.save()
-
+    orderstr = str(order_detail.order_id_old) + ',' + str(order_detail.platform)
+    res = alo.ensure_order(str(currentusr.id), orderstr)
+    if res:
+        order_detail.save()
     return HttpResponse(json.dumps('T'), content_type='application/json')
 
 
 def jujueone(request, order):
     if not request.session.get('username'):
         return HttpResponse(json.dumps('N'), content_type='application/json')
+    merchant0 = request.session.get('username')
+    currentusr = Merchant.objects.get(alin_account=merchant0)
     order_detail = DayOrder.objects.get(order_id_alin=order)
-    order_detail.status = 5
-    order_detail.save()
+    orderstr = str(order_detail.order_id_old) + ',' + str(order_detail.platform)
+    res = alo.refuse_order(str(currentusr.id), orderstr)
+    if res:
+        order_detail.status = 5
+        order_detail.save()
     return HttpResponse(json.dumps('T'), content_type='application/json')
 
 
@@ -56,8 +65,11 @@ def jieshouall(request):
     merchant = Merchant.objects.get(alin_account=merchant0)
     order_detail = DayOrder.objects.filter(merchant=merchant, status=1)
     for item in order_detail:
-        item.status = 2
-        item.save()
+        orderstr = str(item.order_id_old) + ',' + str(item.platform)
+        res = alo.ensure_order(str(merchant.id), orderstr)
+        if res:
+            item.status = 2
+            item.save()
     return HttpResponse(json.dumps('T'), content_type='application/json')
 
 
@@ -66,10 +78,13 @@ def jujueall(request):
         return HttpResponse(json.dumps('N'), content_type='application/json')
     merchant0 = request.session.get('username')
     merchant = Merchant.objects.get(alin_account=merchant0)
-    order_detail = DayOrder.objects.filter(merchant=merchant)
+    order_detail = DayOrder.objects.filter(merchant=merchant, status=1)
     for item in order_detail:
-        item.status = 5
-        item.save()
+        orderstr = str(item.order_id_old) + ',' + str(item.platform)
+        res = alo.refuse_order(str(merchant.id), orderstr)
+        if res:
+            item.status = 5
+            item.save()
     return HttpResponse(json.dumps('T'), content_type='application/json')
 
 
