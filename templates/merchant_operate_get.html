@@ -192,6 +192,10 @@
                                      +"<img src=\"/qrimg/{{ item.qr_path }}\" style=\"height: 130px;width: 130px;\">"
                                      +"<br/>"
                                      +"==================<br/>");
+                                     if(localStorage.getItem('print_pages')){
+                                         var pages = parseInt(localStorage['print_pages']);
+                                         SET_PRINT_COPIES(pages)
+                                     }
                                      var print_req = LODOP.PRINTB();
                                      if(print_req){
                                          if(sessionStorage['{{ item.order_id_alin }}']){
@@ -269,6 +273,10 @@
                                      +"<br/>"
                                      +"==================<br/>");
                                      {% endfor %}
+                                     if(localStorage.getItem('print_pages')){
+                                         var pages = parseInt(localStorage['print_pages']);
+                                         SET_PRINT_COPIES(pages)
+                                     }
                                      var print_req = LODOP.PREVIEW();
                                      if(print_req){
                                          {% for item in items %}
