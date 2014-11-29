@@ -4,10 +4,10 @@
     <div class="panel-heading">
              <p class="text-center" style="font-size:21px;">已接收订单</p>
     </div>
-    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" style="float: right" data-target="#myModal">
+    <div class="panel-body">
+    <button type="button" class=" btn btn-primary btn-lg" data-toggle="modal" style="margin-left: 80%;margin-bottom: 2%" data-target="#myModal">
     添加订单
     </button>
-    <div class="panel-body">
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -15,15 +15,61 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+        <h4 class="modal-title" id="myModalLabel">添加订单</h4>
       </div>
       <div class="modal-body">
-        ...
+        <div class="input-group" style="margin-top:40px;margin-left:25%;width: 50%;">
+            <span class="input-group-addon" style=" font-size:17px;width: 30%;">手机号</span>
+            <input type="text" class="form-control" id='phone' name="phone">
+        </div>
+        <div class="input-group" style="margin-left:25%;width: 50%;">
+            <span class="input-group-addon" style=" font-size:17px;width: 30%;">金额</span>
+            <input type="text" class="form-control" placeholder="输入最多带一位小数的数字" onkeyup="value=value.replace(/[^\d{1,}\.\d|\d{1,}]/g,'')" id='money' name="money">
+        </div>
+        <div class="input-group" style="margin-left:25%;width: 50%;margin-bottom: 0">
+            <span class="input-group-addon" style="font-size:17px;width: 30%%;">地址</span>
+            <input type="text" class="form-control" id='address' name="address">
+        </div>
+        <div class="input-group" style="margin-left:25%;width: 50%;margin-bottom: 0">
+            <span class="input-group-addon" style="font-size:17px;width: 30%%;">平台</span>
+            <select class="form-control" name="platform" id="platform">
+                    <option value="3">美团</option>
+                        <option value="1" >淘点点</option>
+                        <option value="2">饿了么</option>
+            </select>
+        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary" id="submit">提交</button>
       </div>
+        <script>
+            $('#submit').click(function(){
+                if($('#phone').val().length==11 && $('#money').val() && $('#address').val()
+                        && $('#platform').val()){
+                    var phone = $('#phone').val();
+                    var money = $('#money').val();
+                    var address = $('#address').val();
+                    var platform = $('#platform').val();
+                    $.ajax({
+                        type: 'GET',
+                        url: 'add_order',
+                        data: {'phone':phone,
+                               'money':money,
+                               'address':address,
+                               'platform':platform},
+                        success: function(data){
+                            if(data == 'T') {
+                                window.location.href = 'operate_get'
+                            }else {
+                                alert('添加订单失败!')
+                            }
+                        },
+                        dataType: 'json'
+                    });}
+            })
+        </script>
+
     </div>
   </div>
 </div>
