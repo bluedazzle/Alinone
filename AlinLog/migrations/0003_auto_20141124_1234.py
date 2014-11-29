@@ -7,13 +7,13 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('CronOrder', '0011_merchant_netspider_time'),
+        ('AlinLog', '0002_runtimelog'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='dayorder',
-            name='qr_path',
-            field=models.CharField(max_length=50, null=True, blank=True),
+            model_name='runtimelog',
+            name='merchant',
+            field=models.ForeignKey(blank=True, to='CronOrder.Merchant', null=True),
         ),
     ]

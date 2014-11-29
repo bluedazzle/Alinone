@@ -7,8 +7,8 @@ from CronOrder.method import *
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        merlist = Merchant.objects.all()
-        for itm in merlist:
-            itm.todaynum = 1
-            itm.save()
-        print 'succ'
+        # merlist = Merchant.objects.all()
+        # for itm in merlist:
+        #     itm.todaynum = 1
+        #     itm.save()
+        # print 'succ'

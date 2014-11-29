@@ -7,13 +7,13 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('CronOrder', '0011_merchant_netspider_time'),
+        ('AlinLog', '0005_auto_20141127_1439'),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='dayorder',
-            name='qr_path',
-            field=models.CharField(max_length=50, null=True, blank=True),
+            model_name='accountlog',
+            name='atype',
+            field=models.CharField(default=b'0', max_length=5),
         ),
     ]

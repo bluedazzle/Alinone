@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
 from django.http import HttpResponse
 from django.http import Http404
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
+from AlinLog.models import AccountLog, SeachLog
 from AlinApi.models import *
 from AlinApi.fixlnglat import *
 from AlinApi.method import *
@@ -313,6 +315,13 @@ def login(req):
                 sender.save()
                 body["private_token"] = mytoken
                 body['nick'] = str(sender.nick)
+                newlog = AccountLog()
+                newlog.account = str(username)
+                newlog.atype = '物流'
+                newlog.ltype = 1
+                newlog.note = '登陆'
+                newlog.content = '外卖人员登陆'
+                newlog.save()
                 return HttpResponse(encodejson(1, body), content_type="application/json")
             else:
                 return HttpResponse(encodejson(4, body), content_type="application/json")
@@ -368,6 +377,13 @@ def register(req):
                 newsender.save()
                 body["private_token"] = mytoken
                 is_send.delete()
+                newlog = AccountLog()
+                newlog.account = str(username)
+                newlog.atype = '物流'
+                newlog.ltype = 2
+                newlog.note = '注册'
+                newlog.content = '外卖人员注册'
+                newlog.save()
                 return HttpResponse(encodejson(1, body), content_type="application/json")
             else:
                 return HttpResponse(encodejson(12, body), content_type="application/json")
@@ -378,11 +394,15 @@ def register(req):
 
 @csrf_exempt
 def searchmeal(req):
-    iplist = ['127.0.0.1', 'localhost', '100.64.132.200', '125.71.229.18']
+    iplist = ['127.0.0.1', 'localhost', '100.64.132.200', '125.71.229.18', '121.40.210.250']
     body = {}
     meallist = []
     if req.method == 'GET':
         reqid = str(req.META['REMOTE_ADDR'])
+        newlog = SeachLog()
+        newlog.req_ip = reqid
+        newlog.req_param = str(req.META['QUERY_STRING'])
+        newlog.save()
         if reqid not in iplist:
             return HttpResponse(encodejson(9, body), content_type="application/json")
         searchstr = req.REQUEST.get('search')
@@ -451,6 +471,13 @@ def changepasswd(req):
             if currentuser.check_password(passwd):
                 currentuser.password = hashlib.md5(new_passwd).hexdigest()
                 currentuser.save()
+                newlog = AccountLog()
+                newlog.account = str(currentuser.phone)
+                newlog.atype = '物流'
+                newlog.ltype = 3
+                newlog.note = '改密'
+                newlog.content = '外卖人员更改密码'
+                newlog.save()
                 return HttpResponse(encodejson(1, body), content_type="application/json")
             else:
                 return HttpResponse(encodejson(4, body), content_type="application/json")
@@ -475,6 +502,13 @@ def forgetpasswd(req):
             currentuser.is_verify = True
             currentuser.verify_code = str(jres['verify_code'])
             currentuser.save()
+            newlog = AccountLog()
+            newlog.account = str(currentuser.phone)
+            newlog.atype = '物流'
+            newlog.ltype = 4
+            newlog.note = '忘密'
+            newlog.content = '外卖人员忘记密码'
+            newlog.save()
             return HttpResponse(encodejson(1, body), content_type="application/json")
         else:
             return HttpResponse(encodejson(7, body), content_type="application/json")

@@ -25,7 +25,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['121.41.169.114', 'www.alinone.cn', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -123,4 +123,5 @@ DAYIN_DIR = './static/dayin'
 STATIC_ROOT = '/home/rapospectre/PycharmProjects/AlinSite/static'
 QR_DIR = './qrimg'
 MUSIC_DIR = './static/music/'
+APK_DIR = './static/apk/'
 

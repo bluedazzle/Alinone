@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 import top.api
+import copy
+from QRcode.method import *
+from CronOrder.method import *
 from CronOrder.models import *
 # acc:18215605920
 # pass w976624
@@ -31,7 +34,7 @@ class Tao(object):
 
     def getshopid(self):
         top.setDefaultAppInfo(self.appkey, self.secret)
-        req=top.api.WaimaiShopListRequest()
+        req = top.api.WaimaiShopListRequest()
         req.page = 1
         req.page_size = 20
         try:
@@ -88,76 +91,82 @@ class Tao(object):
             self.errorhandle(e)
 
     def getpaddingorder(self):
+        orderid_list = []
         top.setDefaultAppInfo(self.appkey, self.secret)
         if self.shopid == '':
             self.getshopid()
-        req = top.api.TradeWaimaiGetRequest()
+        req = top.api.WaimaiOrderIndexGetRequest()
         req.store_id = self.shopid
-        req.is_all = 'true'
-        req.max_size = 20
+        req.page_size = 20
 
         # try:
         resp = req.getResponse(self.sessionkey)
         # resp = eval(self.gettest())
-        res = resp['trade_waimai_get_response']
+        res = resp['waimai_order_index_get_response']
         if str(res) != '{}':
             curusr_list = Merchant.objects.filter(id = self.merchantid)
             if curusr_list.count() == 0:
                 return None
             curusr = curusr_list[0]
-            auto_id = curusr.todaynum
+            auto_id = int(DayOrder.objects.filter(merchant = curusr, platform = int(1)).count()) + 1
             resp = res['result']
             res = resp['result_list']
             resp = res['takeout_third_order']
-            for item in resp:
-                orderid = item['id']
-                ifhave = DayOrder.objects.filter(order_id_old = str(orderid))
-                if ifhave.count() > 0:
+            for itm in resp:
+                orderid_list.append(copy.copy(itm['id']))
+                req = top.api.WaimaiOrderSingleGetRequest()
+                req.order_id = str(itm['id'])
+                resp = req.getResponse(self.sessionkey)
+                res = resp['waimai_order_single_get_response']
+                if str(res) != '{}':
+                    resp = res['result']
+                    orderid = resp['order_id']
+                    ifhave = DayOrder.objects.filter(order_id_old = str(orderid))
+                    if ifhave.count() > 0:
                 # print 'break'
                 # print auto_id + 1
-                    continue
-                newid = createAlinOrderNum(1, self.merchantid, auto_id)
-                qrres = createqr(1, newid)
-                neworder = DayOrder()
-                neworder.address = str(item['address'])
-                neworder.order_id_old = str(item['id'])
-                neworder.order_id_alin = newid
-                neworder.qr_path = qrres
-                neworder.pay = True
-                neworder.platform = 1
-                neworder.promotion = 'nothing'
-                neworder.real_price = float(str(item['total_pay']))
-                neworder.order_time = str(item['create_time'])
-                neworder.send_time = str(item['start_deliverytime'])
-                neworder.note = str(item['note'])
-                neworder.merchant = Merchant.objects.get(id = self.merchantid)
-                neworder.save()
-                curusr.todaynum += 1
-                curusr.save()
-                print item['address']
-                print item['id']
-                print item['total_pay']
-                print item['start_deliverytime']
-                print item['create_time']
-                print item['note']
-                sonres = item['user_address']
-                print sonres['mobile']
-                dishlist = item['goods_list']
-                dishs = dishlist['order_goods']
-                for itm in dishs:
-                    newdish = Dish()
-                    newdish.dish_count = str(itm['count'])
-                    newdish.dish_name = str(itm['name'])
-                    newdish.dish_price = str(itm['real_price'])
-                    newdish.order = DayOrder.objects.get(order_id_alin = newid)
-                    newdish.save()
-                    print itm['name']
-                    print itm['count']
-                    print itm['real_price']
-            return 'success'
-
+                        continue
+                    newid = createAlinOrderNum(1, self.merchantid, auto_id)
+                    qrres = createqr(1, newid)
+                    auto_id += 1
+                    neworder = DayOrder()
+                    neworder.address = str(resp['address'])
+                    neworder.order_id_old = str(resp['order_id'])
+                    neworder.order_id_alin = newid
+                    neworder.qr_path = qrres
+                    neworder.pay = True
+                    neworder.platform = 1
+                    neworder.promotion = 'nothing'
+                    neworder.real_price = float(str(resp['total_pay']))
+                    neworder.order_time = str(resp['create_time'])
+                    neworder.send_time = str(resp['start_deliverytime'])
+                    neworder.note = str(resp['note'])
+                    neworder.merchant = Merchant.objects.get(id = self.merchantid)
+                    neworder.save()
+                    curusr.save()
+                    # print resp['address']
+                    # print resp['id']
+                    # print resp['total_pay']
+                    # print resp['start_deliverytime']
+                    # print resp['create_time']
+                    # print resp['note']
+                    sonres = resp['user_address']
+                    print sonres['mobile']
+                    dishlist = resp['goods_list']
+                    dishs = dishlist['order_goods']
+                    for itm in dishs:
+                        newdish = Dish()
+                        newdish.dish_count = str(itm['count'])
+                        newdish.dish_name = str(itm['name'])
+                        newdish.dish_price = str(itm['real_price'])
+                        newdish.order = DayOrder.objects.get(order_id_alin = newid)
+                        newdish.save()
+                        # print itm['name']
+                        # print itm['count']
+                        # print itm['real_price']
+            return True
         else:
-            return 'no order'
+            return False
         # except Exception, e:
         #     print e
             # self.errorhandle(e)

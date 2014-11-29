@@ -1,5 +1,6 @@
 from CronOrder.ele import *
 from CronOrder.tdd import *
+from AlinLog.models import RunTimeLog
 
 class Alo(object):
     def __init__(self):
@@ -22,7 +23,7 @@ class Alo(object):
                 else:
                     mer.tdd_status = True
             elif mer.tao_account != '':
-                newtdd = Tao(merchantid = str(mer.id))
+                newtdd = Tao(session = str(mer.tao_sessionkey), merchantid = str(mer.id))
                 tres = newtdd.ensureorder(orderid)
                 if tres is None:
                     mer.tdd_status = False
@@ -41,7 +42,6 @@ class Alo(object):
                 elif res is False:
                     mer.ele_status = True
                 else:
-                    mer.todaynum = int(res)
                     mer.ele_status = True
             elif mer.ele_account != '':
                 newele = Ele(merchantid=str(mer.id))
@@ -53,7 +53,6 @@ class Alo(object):
                     mer.ele_status = True
                     self.edict[str(mer.id)] = newele
                 else:
-                    mer.todaynum = int(eres)
                     mer.ele_status = True
                     self.edict[str(mer.id)] = newele
         mer.save()
@@ -74,7 +73,7 @@ class Alo(object):
                 else:
                     mer.tdd_status = True
             elif mer.tao_account != '':
-                newtdd = Tao(merchantid = str(mer.id))
+                newtdd = Tao(session = str(mer.tao_sessionkey), merchantid = str(mer.id))
                 tres = newtdd.refuseorder(orderid)
                 if tres is None:
                     mer.tdd_status = False
@@ -93,7 +92,6 @@ class Alo(object):
                 elif res is False:
                     mer.ele_status = True
                 else:
-                    mer.todaynum = int(res)
                     mer.ele_status = True
             elif mer.ele_account != '':
                 newele = Ele(merchantid=str(mer.id))
@@ -105,7 +103,6 @@ class Alo(object):
                     mer.ele_status = True
                     self.edict[str(mer.id)] = newele
                 else:
-                    mer.todaynum = int(eres)
                     mer.ele_status = True
                     self.edict[str(mer.id)] = newele
         mer.save()
@@ -116,22 +113,22 @@ class Alo(object):
         try:
             mer.netspider_time = datetime.datetime.now()
             print('%s is online' % mer.name)
-            if str(merchantid) in self.tdict and self.tdict[str(merchantid)] is not None:
-                tddcat = self.tdict[str(merchantid)]
-                tres = tddcat.getpaddingorder()
-                if tres is None:
-                    mer.tdd_status = False
-                    self.tdict[str(mer.id)] = None
-                else:
-                    mer.tdd_status = True
-            elif mer.tao_account != '':
-                newtdd = Tao(merchantid = str(mer.id))
-                tres = newtdd.getpaddingorder()
-                if tres is None:
-                    mer.tdd_status = False
-                else:
-                    mer.tdd_status = True
-                    self.tdict[str(mer.id)] = newtdd
+            # if str(merchantid) in self.tdict and self.tdict[str(merchantid)] is not None:
+            #     tddcat = self.tdict[str(merchantid)]
+            #     tres = tddcat.getpaddingorder()
+            #     if tres is None:
+            #         mer.tdd_status = False
+            #         self.tdict[str(mer.id)] = None
+            #     else:
+            #         mer.tdd_status = True
+            # elif mer.tao_account != '':
+            #     newtdd = Tao(session = str(mer.tao_sessionkey), merchantid = str(mer.id))
+            #     tres = newtdd.getpaddingorder()
+            #     if tres is None:
+            #         mer.tdd_status = False
+            #     else:
+            #         mer.tdd_status = True
+            #         self.tdict[str(mer.id)] = newtdd
             if str(merchantid) in self.edict and self.edict[str(merchantid)] is not None:
                 elecat = self.edict[str(merchantid)]
                 res = elecat.catcheorder()
@@ -141,7 +138,6 @@ class Alo(object):
                 elif res is False:
                     mer.ele_status = True
                 else:
-                    mer.todaynum = int(res)
                     mer.ele_status = True
             elif mer.ele_account != '':
                 newele = Ele(merchantid=str(mer.id))
@@ -152,7 +148,6 @@ class Alo(object):
                     mer.ele_status = True
                     self.edict[str(mer.id)] = newele
                 else:
-                    mer.todaynum = int(eres)
                     mer.ele_status = True
                     self.edict[str(mer.id)] = newele
             mer.save()

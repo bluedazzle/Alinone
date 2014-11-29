@@ -7,6 +7,7 @@ from django.template import RequestContext
 from django.core.paginator import Paginator
 from django.core.paginator import PageNotAnInteger
 from django.core.paginator import EmptyPage
+from AlinLog.models import AccountLog
 from merchant_page.models import *
 from CronOrder.Aaps import *
 from CronOrder.ALO import *
@@ -32,6 +33,13 @@ def login_in(request):
                 merchant.update_time = datetime.datetime.now()
                 merchant.is_online = True
                 merchant.save()
+                newlog = AccountLog()
+                newlog.atype = '商家'
+                newlog.content = '商家登陆'
+                newlog.ltype = 11
+                newlog.note = '登陆'
+                newlog.account = str(user_name)
+                newlog.save()
                 return HttpResponseRedirect("/merchant/operate_new")
             else:
                 return render_to_response('login_page.html', {'flag': 1}, context_instance=RequestContext(request))
@@ -51,6 +59,13 @@ def login_out(request):
     merchant = Merchant.objects.get(alin_account=user_name)
     merchant.is_online = False
     merchant.save()
+    newlog = AccountLog()
+    newlog.atype = '商家'
+    newlog.content = '商家登出'
+    newlog.ltype = 12
+    newlog.note = '登出'
+    newlog.account = str(user_name)
+    newlog.save()
     del request.session['username']
     return HttpResponseRedirect("login_in")
 
@@ -93,6 +108,13 @@ def forget_password_verify(request):
             # print 'aa'
             req = createverfiycode(phone)
             print req
+            newlog = AccountLog()
+            newlog.atype = '商家'
+            newlog.content = '商家忘记密码'
+            newlog.ltype = 13
+            newlog.note = '忘密'
+            newlog.account = str(phone)
+            newlog.save()
             return HttpResponse(json.dumps("OK"), content_type="application/json")
         else:
             return HttpResponse(json.dumps("False"), content_type="application/json")
@@ -130,6 +152,13 @@ def register(request):
                     qr_bind = createqr(2, newmerchant.id)
                     request.session['qr_bind'] = qr_bind
                     phone_verify.delete()
+                    newlog = AccountLog()
+                    newlog.atype = '商家'
+                    newlog.content = '商家注册'
+                    newlog.ltype = 14
+                    newlog.note = '注册'
+                    newlog.account = str(phone)
+                    newlog.save()
                     return HttpResponseRedirect("/merchant/operate_new")
             else:
                 return render_to_response('register.html', {'phone': phone, 'merchant_name': merchant_name,
@@ -181,6 +210,13 @@ def change_password(request):
             password = hashlib.md5(new_password).hexdigest()
             merchant.password = password
             merchant.save()
+            newlog = AccountLog()
+            newlog.atype = '商家'
+            newlog.content = '商家更改密码'
+            newlog.ltype = 14
+            newlog.note = '改密'
+            newlog.account = str(phone)
+            newlog.save()
             return render_to_response('change_password.html', {'success': 'T'}, context_instance=RequestContext(request))
         else:
             return render_to_response('change_password.html', context_instance=RequestContext(request))
@@ -207,6 +243,13 @@ def change_name(request):
                                                                'new_name': new_name}, context_instance=RequestContext(request))
             merchant.name = new_name
             merchant.save()
+            newlog = AccountLog()
+            newlog.atype = '商家'
+            newlog.content = '商家更改名称'
+            newlog.ltype = 15
+            newlog.note = '改名'
+            newlog.account = str(phone)
+            newlog.save()
             return render_to_response('change_name.html', {'success': 'T', 'new_user_name': new_name}, context_instance=RequestContext(request))
         else:
             return render_to_response('change_name.html', {'phone': phone, 'new_name': new_name}, context_instance=RequestContext(request))
@@ -425,6 +468,11 @@ def operate_pingtai(request):
     merchant_id = request.session['username']
     merchant = Merchant.objects.get(alin_account=merchant_id)
     merchant.update_time = datetime.datetime.now()
+    if request.method == 'GET':
+        if request.GET.has_key('top_session'):
+            tdd_session = request.REQUEST.get('top_session')
+            merchant.tao_sessionkey = str(tdd_session)
+            merchant.tao_account = '已绑定'
     merchant.save()
     items = []
     if merchant.tao_account:
@@ -560,6 +608,8 @@ def platform_delete(request, name):
     if name == '1':
         merchant.tao_account = ''
         merchant.tao_passwd = ''
+        merchant.tao_sessionkey = ''
+        merchant.tao_refreshkey = ''
         merchant.save()
     elif name == '3':
         merchant.mei_account = ''

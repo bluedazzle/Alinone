@@ -18,9 +18,10 @@
             {% csrf_token %}
             <div class="input-group" style="margin-top:40px;margin-left:140px;width: 50%;">
                 <span class="input-group-addon" style=" font-size:17px;width: 30%;">平台</span>
-                <select class="form-control" name="platform" id="platform">
-                        <option value="1">淘点点</option>
-                        <option value="3">美团</option>
+                <select class="form-control" name="platform" id="platform" onchange="schange(this)">
+                    <option value="0"></option>
+                        <option value="1" >淘点点</option>
+                        <option value="3" disabled>美团</option>
                         <option value="2">饿了么</option>
                 </select>
             </div>
@@ -35,6 +36,13 @@
         </form>
             <button class="btn btn-primary" style="font-size: 18px; margin-top: 30px;margin-bottom: -5px;" role="button" id="submit">确认</button>
             <a role="button" href="operate_pingtai" class="btn btn-primary"style="font-size: 18px; margin-top: 30px;margin-bottom: -5px; margin-left: 30px;">返回</a>
+        <script>
+            function schange(obj){
+                if(obj.value == "1"){
+                    window.location.href="http://container.open.taobao.com/container?appkey=23031270&encode=utf-8";
+                }
+            }
+        </script>
         <script>
             $('#submit').click(function(){
                 if($('#account').val() && $('#password').val()){

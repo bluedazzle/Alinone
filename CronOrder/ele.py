@@ -7,6 +7,7 @@ from CronOrder.method import *
 from QRcode.method import *
 from CronOrder.NetSpider import *
 from ProxyWork.method import *
+from AlinLog.models import RunTimeLog
 import datetime
 import time
 import simplejson
@@ -29,15 +30,28 @@ class Ele(object):
             res = self.loginele()
             if res is None or res is False:
                 return None
-        html = self.net.GetResFromRequest('GET', 'http://napos.ele.me/dashboard/index/list/unprocessed_waimai', 'utf-8', use_proxy=True)
-        # # print html
+        cur_list = Merchant.objects.filter(id = self.merchantid)
+        if cur_list.count() == 0:
+            return None
+        curmet = cur_list[0]
+        tn = str(time.time())[0:10] + '000'
+        requrl = 'http://napos.ele.me/order/list?list=unprocessed_waimai&t=' + tn
+        html = self.net.GetResFromRequest('GET', requrl, 'utf-8', use_proxy=True)
+        # print html
         # html = ''
         # with open('abc.txt', 'r') as f1:
         #     line = f1.readline()
         #     while line:
         #         html += line
         #         line = f1.readline()
+        # print html
         if html is None:
+            newlog = RunTimeLog()
+            newlog.content = '爬虫抓单失败'
+            newlog.status = False
+            newlog.ltype = 18
+            newlog.merchant = curmet
+            newlog.save()
             return None
         soup = BeautifulSoup(html)
         intro = soup.find('ul', attrs={'id': 'list_items'})
@@ -45,17 +59,13 @@ class Ele(object):
             notlogin = soup.find('label', attrs={'for': 'tab1'})
             if notlogin is not None:
                 self.cookie = None
-            print 'no new orders'
+            print 'no new orders, login failed'
             return False
-        cur_list = Merchant.objects.filter(id = self.merchantid)
-        if cur_list.count() == 0:
-            return None
-        curmet = cur_list[0]
         res = intro.findAll('li')
         if len(res) == 0:
             print 'no new orders'
             return False
-        thiscount = curmet.todaynum
+        thiscount = int(DayOrder.objects.filter(merchant = curmet).count()) + 1
         # print 'start: ' + str(thiscount)
         for item in res:
             neworder = DayOrder()
@@ -117,7 +127,7 @@ class Ele(object):
                 newdish.dish_price = float(dishprice[i].string)
                 newdish.order = DayOrder.objects.get(order_id_alin = newid)
                 newdish.save()
-        return thiscount
+        return True
 
 
     def iflogin(self):
@@ -130,11 +140,23 @@ class Ele(object):
         self.net.Referer = 'http://napos.ele.me/login'
         dip = distriproxy(self.merchantid)
         if dip is None:
+            newlog = RunTimeLog()
+            newlog.merchant = Merchant.objects.get(id = self.merchantid)
+            newlog.content = '无可用代理ip,爬虫停止'
+            newlog.ltype = 10
+            newlog.status = False
+            newlog.save()
             return None
         self.net.Proxy = dip
         curmet_list = Merchant.objects.filter(id = self.merchantid)
         if curmet_list.count() == 0:
             print 'no mer'
+            newlog = RunTimeLog()
+            newlog.content = '无商家信息,爬虫停止'
+            newlog.err_message = self.merchantid
+            newlog.ltype = 11
+            newlog.status = False
+            newlog.save()
             return None
         curmet = curmet_list[0]
         user = str(curmet.ele_account)
@@ -146,17 +168,23 @@ class Ele(object):
         self.password = de_pass
         html = self.net.GetResFromRequest('POST', 'http://napos.ele.me/auth/doLogin', 'utf-8', postdic, use_proxy=True)
         if html is None:
-            delofflineproxy(self.net.Proxy)
+            check_proxy_times(self.net.Proxy)
             res = self.loginele()
             return res
         else:
+            reset_proxy_times(self.net.Proxy)
             res_json = simplejson.loads(html)
             if res_json['success'] is False:
                 errmsg = str(res_json['message']).decode('unicode_escape')
                 curmet.ele_message = errmsg
                 curmet.ele_status = False
                 curmet.save()
-                print 'fail'
+                newlog = RunTimeLog()
+                newlog.content = '饿了么登陆失败'
+                newlog.merchant = curmet
+                newlog.err_message = errmsg
+                newlog.ltype = 15
+                newlog.save()
                 return False
             elif res_json['success'] is True:
                 if self.net.SearchCookie('SSID') == 'nothing find':
@@ -180,6 +208,13 @@ class Ele(object):
         requrl = 'http://napos.ele.me/order/processOrder/id/' + str(order) + '/category/1'
         html = self.net.GetResFromRequest('GET', requrl, 'utf-8', use_proxy=True)
         if str(html) == '0':
+            newlog = RunTimeLog()
+            newlog.content = '确认饿了没订单失败'
+            newlog.status = False
+            newlog.err_message = str(order)
+            newlog.ltype = 16
+            newlog.merchant = curmet_list[0]
+            newlog.save()
             return False
         return True
 
@@ -195,5 +230,12 @@ class Ele(object):
         html = self.net.GetResFromRequest('GET', requrl, 'utf-8', use_proxy=True)
         print html
         if str(html) == '0':
+            newlog = RunTimeLog()
+            newlog.content = '拒绝饿了么订单失败'
+            newlog.ltype = 17
+            newlog.err_message = str(order)
+            newlog.status = False
+            newlog.merchant = curmet_list[0]
+            newlog.save()
             return False
         return True

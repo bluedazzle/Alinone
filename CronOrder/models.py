@@ -129,7 +129,7 @@ class Merchant(AbstractBaseUser):
 
     is_online = models.BooleanField(default=True)
     is_open = models.BooleanField(default=False)
-    todaynum = models.IntegerField(default=0)
+    todaynum = models.IntegerField(default=1)
 
     purchase_type = models.IntegerField(default=0)
     deadtime = models.DateTimeField(blank=True, null=True)
@@ -163,10 +163,10 @@ class Merchant(AbstractBaseUser):
 
 class DayOrder(models.Model):
     order_id_alin = models.CharField(max_length=22, unique=True)
-    order_id_old = models.CharField(max_length=20)
+    order_id_old = models.CharField(max_length=30)
     order_time = models.DateTimeField(max_length=30)
     send_time = models.DateTimeField(max_length=30)
-    phone = models.CharField(max_length=13)
+    phone = models.CharField(max_length=52)
     pay = models.BooleanField(default=False)
     address = models.CharField(max_length=50)
     platform = models.IntegerField(max_length=1)
@@ -194,10 +194,10 @@ class Dish(models.Model):
 
 class TotalOrder(models.Model):
     order_id_alin = models.CharField(max_length=22, unique=True)
-    order_id_old = models.CharField(max_length=20)
+    order_id_old = models.CharField(max_length=30)
     order_time = models.DateTimeField(max_length=30)
     send_time = models.DateTimeField(max_length=30)
-    phone = models.CharField(max_length=13)
+    phone = models.CharField(max_length=52)
     pay = models.BooleanField(default=False)
     address = models.CharField(max_length=50)
     platform = models.IntegerField(max_length=1)
