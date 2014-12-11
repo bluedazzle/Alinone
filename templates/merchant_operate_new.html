@@ -5,16 +5,111 @@
              <p class="text-center" style="font-size:21px;">未处理订单</p>
          </div>
     <div class="panel-body">
+            <button type="button" class=" btn btn-primary btn-lg" data-toggle="modal" style="margin-left: 80%;margin-bottom: 2%" data-target="#myModal">
+    添加订单
+    </button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">添加订单</h4>
+      </div>
+      <div class="modal-body">
+        <div class="input-group" style="margin-top:40px;margin-left:25%;width: 50%;">
+            <span class="input-group-addon" style=" font-size:17px;width: 30%;">手机号</span>
+            <input type="text" class="form-control" id='phone' name="phone">
+        </div>
+        <div class="input-group" style="margin-left:25%;width: 50%;">
+            <span class="input-group-addon" style=" font-size:17px;width: 30%;">金额</span>
+            <input type="text" class="form-control" placeholder="输入最多带一位小数的数字" onkeyup="value=value.replace(/[^\d{1,}\.\d|\d{1,}]/g,'')" id='money' name="money">
+        </div>
+        <div class="input-group" style="margin-left:25%;width: 50%;">
+            <span class="input-group-addon" style=" font-size:17px;width: 30%;">付款</span>
+            <div>
+                <div class="radio" style="float: left; margin-left: 10px;">
+                <label>
+                <input type="radio" name="optionsRadios" id="oRadio1" value="1" checked>
+                已付款
+                </label>
+            </div>
+            <div class="radio" style="float: right; margin-top: 10px;">
+                <label>
+                <input type="radio" name="optionsRadios" id="oRadio2" value="0">
+                未付款
+                </label>
+            </div>
+            </div>
+        </div>
+
+        <div class="input-group" style="margin-left:25%;width: 50%;margin-bottom: 0">
+            <span class="input-group-addon" style="font-size:17px;width: 30%%;">地址</span>
+            <input type="text" class="form-control" id='address' name="address">
+        </div>
+        <div class="input-group" style="margin-left:25%;width: 50%;margin-bottom: 0">
+            <span class="input-group-addon" style="font-size:17px;width: 30%%;">平台</span>
+            <select class="form-control" name="platform" id="platform">
+                    <option value="3">美团</option>
+                        <option value="1" >淘点点</option>
+                        <option value="2">饿了么</option>
+                        <option value="4">其他</option>
+            </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary" id="submit">提交</button>
+      </div>
+        <script>
+            $('#submit').click(function(){
+                if($('#phone').val().length==11 && $('#money').val() && $('#address').val()
+                        && $('#platform').val()){
+                    var phone = $('#phone').val();
+                    var money = $('#money').val();
+                    var address = $('#address').val();
+                    var platform = $('#platform').val();
+                    var ifcharge = document.getElementsByName("optionsRadios");
+                    var purchase = 0;
+                    radio = ifcharge[0];
+                    if (radio.checked === true && radio.value === "1" ){
+                        purchase = 1;
+                    }
+                    $.ajax({
+                        type: 'GET',
+                        url: 'add_order',
+                        data: {'phone':phone,
+                               'money':money,
+                               'ifcharge':purchase,
+                               'address':address,
+                               'platform':platform},
+                        success: function(data){
+                            if(data == 'T') {
+                                window.location.href = 'operate_get'
+                            }else {
+                                alert('添加订单失败!')
+                            }
+                        },
+                        dataType: 'json'
+                    });}
+            })
+        </script>
+
+    </div>
+  </div>
+</div>
        {% if not items  %}
         <h3 style="text-align: center;">您未收到任何订单</h3>
        {% else %}
              <table class="table table-bordered text-center">
                  <tr>
                      <th>订单号</th>
-                     <th>下单时间</th>
+                     <th>送达时间</th>
                      <th>联系方式</th>
                      <th>地址</th>
                      <th style="min-width: 80px;">订餐平台</th>
+                     <th>平台流水号</th>
                      <th>付款</th>
                      <th>菜单</th>
                      <th style="min-width: 170px;">
@@ -26,12 +121,13 @@
                  {%for item in items%}
                  <tr>
                      <td>{{ item.order_id_alin }}</td>
-                     <td>{{ item.order_time|date:"Y-m-d H:i:s" }}</td>
+                     <td>{{ item.send_time|date:"Y-m-d H:i:s" }}</td>
                      <td>{{ item.phone }}</td>
                      <td>
                          {{ item.address }}
                      </td>
                      <td>{{ item.platform }}</td>
+                     <td>{{ item.plat_num }}</td>
                      {% if item.pay == True %}
                      <td>{{ item.real_price }}元(已付)</td>
                      {% else %}

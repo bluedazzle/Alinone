@@ -18,20 +18,22 @@
              <table class="table table-bordered text-center">
                  <tr>
                      <th>订单号</th>
-                     <th>下单时间</th>
+                     <th>送达时间</th>
                      <th>联系方式</th>
                      <th>地址</th>
                      <th>订餐平台</th>
+                     <th>平台流水号</th>
                      <th>付款</th>
                      <th>菜单</th>
                  </tr>
                  {%for item in items%}
                  <tr>
                      <td>{{ item.order_id_alin }}</td>
-                     <td>{{ item.order_time|date:"Y-m-d H:i:s" }}</td>
+                     <td>{{ item.send_time|date:"Y-m-d H:i:s" }}</td>
                      <td>{{ item.phone }}</td>
                      <td>{{ item.address }}</td>
                      <td>{{ item.platform }}</td>
+                     <td>{{ item.plat_num }}</td>
                      <td>{{ item.real_price }}元</td>
                      <td>
                          <div class="btn-group dropdown">

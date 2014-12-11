@@ -70,6 +70,12 @@ class Sender(AbstractBaseUser):
     active_time = models.DateTimeField(max_length=30, blank=True, null=True)
     verify_code = models.CharField(max_length=6, blank=True, null=True)
     is_verify = models.BooleanField(default=False)
+    status = models.CharField(max_length=10, null=True, blank=True, default='')
+    today_sends = models.IntegerField(max_length=5, null=True, blank=True, default=0)
+    offline_num = models.IntegerField(max_length=5, null=True, blank=True, default=0)
+    online_num = models.IntegerField(max_length=5, null=True, blank=True, default=0)
+    offline_money = models.FloatField(max_length=10, null=True, blank=True, default=0)
+    online_money = models.FloatField(max_length=10, null=True, blank=True, default=0)
 
     USERNAME_FIELD = 'phone'
     REQUIRED_FIELDS = ['phone']
@@ -179,6 +185,7 @@ class DayOrder(models.Model):
     bind_sender = models.ForeignKey(Sender, blank=True, null=True, related_name="order")
     finish_by = models.CharField(max_length=20, blank=True, null=True)
     qr_path = models.CharField(max_length=50, null=True, blank=True)
+    plat_num = models.CharField(max_length=10, null=True, blank=True)
 
     def __unicode__(self):
         return self.order_id_alin

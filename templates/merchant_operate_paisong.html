@@ -37,21 +37,23 @@
              <table class="table table-bordered text-center">
                  <tr>
                      <th>订单号</th>
-                     <th>下单时间</th>
+                     <th>送达时间</th>
                      <th>联系方式</th>
                      <th>地址</th>
                      <th>订餐平台</th>
+                     <th>平台流水号</th>
                      <th>付款</th>
                      <th>订单详情</th>
-
+                     <th>操作</th>
                  </tr>
                  {% for item in orders %}
                  <tr>
                      <td>{{ item.order_id_alin }}</td>
-                     <td>{{ item.order_time|date:"Y-m-d H:i:s" }}</td>
+                     <td>{{ item.send_time|date:"Y-m-d H:i:s" }}</td>
                      <td>{{ item.phone }}</td>
                      <td>{{ item.address }}</td>
                      <td>{{ item.platform }}</td>
+                     <td>{{ item.plat_num }}</td>
                      {% if item.pay == True %}
                      <td>{{ item.real_price }}元(已付)</td>
                      {% else %}
@@ -67,6 +69,7 @@
                                  {% endfor %}
                              <li><img src="/qrimg/{{ item.qr_path }}" alt="qrcode missing" style="width: 100px;height: 100px;"/></li>
                              </ul>
+                      <td><a target=\"view_window\" href="http://www.chafanbao.com/search/result?searchtext={{ item.phone }}" class="btn btn-primary btn-sm">追踪</a></td>
                          </div>
                      </td>
                  </tr>

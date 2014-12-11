@@ -1,339 +1,5 @@
-<html>
-<head>
-  <meta http-equiv="Content-type" content="text/html" />
-  <meta name="title" content="饿了么餐厅后台管理系统" />
-<meta name="language" content="zh" />
-  <title>饿了么餐厅后台管理系统</title>
-  <meta charset="utf-8">
 
-  
-  <link rel="stylesheet" href="http://static10.elemecdn.com/napos_old/css/public/napos_201410212029.css">
-    <link rel="apple-touch-icon-precomposed" href="http://static10.elemecdn.com/napos_old/apple-touch-icon.png?v=2" />
-  <link rel="icon" href="/favicon.ico?v=2" type="image/x-icon" />
-  <link rel="shortcut icon" href="/favicon.ico?v=2" type="image/x-icon" />
-  
-<script>
-  var NAPOS = NAPOS || {};
-  NAPOS.staticUrl = 'http://static10.elemecdn.com/napos_old';
-  NAPOS.dineEnabled = Boolean(1);
-  NAPOS.now = 1417243171;
-  NAPOS.restaurant = {"id":63997,"name":"\u602a\u8700\u9ecd\u8fde\u9501\u5feb\u9910","nameForUrl":"cd-gss","phone":"18328419287","address":"\u9f99\u6e56\u65f6\u4ee3\u5929\u8857","paperWidth":"58","waimaiNumPrintCopies":1,"tangchiNumPrintCopies":1};
-  NAPOS.naposClientSettings = {"version":"3.0","print":{"printSeparately":false,"autoPrintTangchi":false,"printer":[{"name":"GP-5890X Series","enable":true,"width":"58mm","repeatWaimai":2,"repeatTangchi":1},{"name":"GP-5860 Series","enable":false,"width":"58mm","repeatWaimai":1,"repeatTangchi":1}]},"audioFileIndex":1};
-  NAPOS.invalidOrderType = {"0":"\u5176\u4ed6","1":"\u5047\u8ba2\u5355","2":"\u91cd\u590d\u8ba2\u5355","4":"\u8054\u7cfb\u4e0d\u4e0a\u7528\u6237","5":"\u7f8e\u98df\u5df2\u552e\u5b8c","6":"\u9910\u5385\u5df2\u6253\u70ca","7":"\u4e0d\u5728\u914d\u9001\u8303\u56f4","8":"\u9910\u5385\u592a\u5fd9"};
-</script>
-
-
-
-  
-  <script src="http://static10.elemecdn.com/napos_old/js/napos_cdn_detect.js"></script>
-  <script type="text/javascript">
-    (function() {
-      if (!window.CDNReady) {
-        var ajax = new XMLHttpRequest();
-        ajax.open('GET', '/auth/cdnDown');
-        ajax.onreadystatechange = function() {
-          if (ajax.readyState == 4) {
-            window.location.reload();
-          }
-        };
-        ajax.send(null);
-      }
-    })();
-  </script>
-
-      <script src="http://static10.elemecdn.com/napos_old/js/public/naposhead_201410212029.js" type="text/javascript"></script>
-    <script src="http://static10.elemecdn.com/melody/js/sea.js" type="text/javascript"></script>
-  <script type="text/javascript">
-    seajs.config({base: 'modules', map: [['.js', '.js?v=201410212029']]});
-    seajs.use('euphony/index');
-  </script>
-</head>
-<body>
-    
-  
-      <div class="top_notification_banner">
-      
-                        <a href="/help/punishmentNotice">餐厅违规处罚通告[11月05日]</a> |
-          <a href="/help/fakeOrderPunishment">饿了么发动全体用户举报刷单，堂吃冒充外卖骗补贴等违规行为。一旦发现，下线商家所有活动，冻结补贴款，并根据金额以商业诈骗追究法律责任。</a>
-                  </div>
-  
-  <header>
-    <div id="header">
-      <div id="searchbox" >
-        <form id="searchform">
-          <input autocomplete="off" type="search" class="i_magnifying_glass" name="query" id="search" placeholder="输入流水号，订单号，手机号搜索">
-        </form>
-      </div>
-      <div id="pageoptions">
-
-  <ul>
-    <li>
-      <a href="/logout">退出</a>
-    </li>
-    <li>
-      <a href="#" class="wl_config" id="open_status">
-        <span class="status_0">接受预定</span>
-      </a>
-    </li>
-    <li id="rest_info">
-      <span>怪蜀黍连锁快餐</span>
-          </li>
-  </ul>
-
-  <div id="option-container">
-    <h3>更改营业状态</h3>
-    <ul id="status_config">
-              <li class="selected">
-          <a href="" status="0">
-            <span class="status_0">营业中</span>
-          </a>
-          <div>正常营业状态，可以接受新订单</div>
-        </li>
-              <li >
-          <a href="" status="2">
-            <span class="status_2">暂时关闭</span>
-          </a>
-          <div>网站上会显示餐厅暂时关闭，之前接受的订单依然会正常处理</div>
-        </li>
-              <li >
-          <a href="" status="3">
-            <span class="status_3">电话订餐</span>
-          </a>
-          <div>当网络不好的时候切换到此状态，用户直接通过拨打电话下单</div>
-        </li>
-              <li >
-          <a href="" status="4">
-            <span class="status_4">假期不营业</span>
-          </a>
-          <div>适用于较长时间停止提供服务（暑假、寒假等），不接受任何订单</div>
-        </li>
-          </ul>
-  </div>
-
-</div>
-
-      <div id="noticeContainer">
-                  <div id="noticebox" class="status hidden" style="display:none">
-            <span></span>
-          </div>
-              </div>
-      <div id="today_stat"><a href="/stat">今日: 共 32 张订单，430.5 元</a> | </div>
-      <div id="fav_numbers"> <a href="/stat/collector">46 位用户收藏本店</a> |</div>
-          </div>
-  </header>
-
-  <nav>
-  <ul id="nav">
-
-    
-    <li class="i_shopping_cart">
-      <a title="外卖订单" rel="tipsy"
-         class="active"         href="/dashboard/index/list/unprocessed_waimai">
-        <span>
-          外卖
-                      <span class="hidden" id="waimai_notifier"></span>
-                  </span>
-      </a>
-    </li>
-
-    <li class="i_tangchi">
-      <a title="堂吃订单" rel="tipsy"
-                  href="/dashboard/index/list/uncashed_tangchi">
-        <span>
-          堂吃
-                      <span class="hidden" id="tangchi_notifier"></span>
-                  </span>
-      </a>
-    </li>
-
-    
-    <li class="i_order_list">
-      <a title="订单中心" rel="tipsy"
-                  href="/order/center">
-        <span>订单</span>
-      </a>
-    </li>
-
-    
-    <li class="i_charge_back">
-      <a title="退单中心" rel="tipsy"
-                  href="/refund">
-        <span>
-          退单
-                      <span class="hidden" id="refund_notifier"></span>
-                  </span>
-      </a>
-    </li>
-
-    
-    <li class="i_speech_bubble">
-      <a title="用户留言" rel="tipsy"
-                  href="/dashboard/index/list/unreplied">
-        <span>
-          留言
-                      <span class="hidden" id="comment_notifier"></span>
-                  </span>
-      </a>
-    </li>
-
-    <li class="i_graph">
-      <a title="统计数据" rel="tipsy"
-                  href="/stat">
-        <span>统计</span>
-      </a>
-    </li>
-
-    <li class="i_cog_3">
-      <a title="网店管理" rel="tipsy"
-                  href="/setting/editInfo">
-        <span>管理</span>
-      </a>
-    </li>
-
-    <li class="i_account">
-      <a title="账户中心" rel="tipsy"
-                  href="/account">
-        <span>账户</span>
-      </a>
-    </li>
-
-    <li class="i_fish">
-      <a title="菜单管理" rel="tipsy"
-                  href="/menu">
-        <span>菜单</span>
-      </a>
-    </li>
-
-    <li class="i_recruitment">
-      <a title="招聘外送员" rel="tipsy"
-                  href="/recruitment">
-        <span>招聘</span>
-      </a>
-    </li>
-
-  </ul>
-</nav>
-
-  <section id="content" >
-  <div class="g5" id="order_edit">
-  <div id="order_edit_container">
-    <h2>点单</h2>
-
-    <div id="order_tb_head">
-      <table>
-        <thead>
-          <tr>
-            <th class="name-column">菜品</th>
-            <th class="quantity-column">数量</th>
-            <th class="price-column">小计</th>
-          </tr>
-        </thead>
-      </table>
-    </div>
-
-    <div id="order_table_container">
-      <div id="order_tb_body">
-        <table id="order_table">
-          <tbody>
-          </tbody>
-        </table>
-      </div>
-      <div id="order_tb_foot">
-        <table>
-          <tfoot>
-            <tr>
-              <th class="name-column">合计</th>
-              <th class="quantity-column"></th>
-              <th class="price-column"></th>
-            </tr>
-          </tfoot>
-        </table>
-        <a href="#" class="empty button warning clear_cart">清空表格</a>
-      </div>
-    </div>
-
-    <a href="#" class="cancel-button">cancel</a>
-
-    <div id="order_button">
-      <ul id="switch">
-                  <li><a href="" class="switcher waimai active">外卖</a></li><li><a href="" class="switcher tangchi">堂吃</a></li>
-              </ul>
-      <h3 id="category_result" class="hidden">#3号  堂吃单</h3>
-    </div>
-
-    <div id="customer_edit">
-      <form action="">
-        <div id="order_input">
-                      <section class="phone"><label for="phone">电话</label>
-              <input type="text" name="phone" id="phone" class="text">
-            </section>
-            <section class="address"><label for="address">地址</label>
-              <input type="text" name="address" id="address" class="text">
-            </section>
-            <section class="people hidden"><label for="people">人数</label>
-              <input type="text" name="people" id="people" class="text">
-            </section>
-            <section class="table hidden"><label for="table">桌号</label>
-              <input type="text" name="table" id="table" class="text">
-            </section>
-                    <section class="description">
-            <label for="description">备注</label>
-            <input type="text" name="description" id="description" class="text">
-          </section>
-        </div>
-
-        <div id="order_result" class="hidden">
-          <table class="tangchi">
-            <tr id="phone_result">
-              <td>电话</td>
-              <td></td>
-            </tr>
-            <tr id="address_result">
-              <td>地址</td>
-              <td></td>
-            </tr>
-            <tr id="people_result">
-              <td>人数</td>
-              <td></td>
-            </tr>
-            <tr id="table_result">
-              <td>桌号</td>
-              <td></td>
-            </tr>
-            <tr id="description_result">
-              <td>备注</td>
-              <td></td>
-            </tr>
-            </table>
-        </div>
-
-        <br class="clear" />
-
-        <section id="order_action">
-          <div class="before_process">
-            <a href="#" class="print button success" id="make_order">确认下单</a>
-            <a href="#" class="ml10 process button warning cancel_order" id="cancel_order">取消下单</a>
-          </div>
-          <div class="after_process hidden">
-            <a href="#" class="edit button hidden" id="">编辑</a>
-            <a href="#" class="cashBtn button success" id="">收银</a>
-            <a href="#" class="button make_order_ok" id="">完成</a  >
-            <a href="#" class="print button success hidden" id="">打印订单</a>
-            <a href="#" class="process button warning" id="setinvalid_order">无效</a>
-          </div>
-        </section>
-
-      </form>
-    </div>  <!-- end of customer_edit -->
-  </div><!-- end of order_edit_container -->
-
-  <div class="height_holder"></div>
-</div><!-- end of order_edit -->
-
-<div class="g5 list_panel" id="list_panel">
-  <!-- The title of this list -->
-      
-  <h2>待处理外卖 (0)</h2>
+  <h2>待处理外卖 (1)</h2>
   <label style="position: absolute; top: 15px; right: 10px;">
     <input type="checkbox" class="combinePrintProcess">
     合并打印和处理按钮
@@ -342,1089 +8,177 @@
 
 <div id="list_container">
       <ul id="list_items">
+                <li orderId="12160593469100097"
+    CategoryId="1"
+    id="list-12160593469100097"
+    class="new"
+    createdAt="1417499055"
+    online-pay="">
+
+  <span class="process_num">11</span>
+
+          <div class="list_notice notice"><a rel="tipsy" explain="该订单是预订单，送达时间：2014-12-02 17:15:00" >预订单</a></div>
+        <div class="list_notice notice"><a rel="tipsy" explain="该订单来自移动设备" >移动端用户</a></div>
+        <br class="clear">
+  
+  <div class="list_time">4秒前</div>
+  <!-- output class tag according to order category -->
+  <div class="list_content">
+
+    <p class="list_price">￥6</p>
+
+          <p class="list_customer waimai">电话：18215606355</p>
+      <p class="list_addr">地址: 科研楼c258</p>
+          
+    
+    <hr />
+
+    <p class="list_details">
+      卤鸡腿 1份/珍珠大米饭 1份    </p>
+
+  </div>
+
+  <div class="hidden" id="order_detail_12160593469100097">
+
+          <div class="slide_notice notice"><span>预订单:</span><span class="memo_detail">该订单是预订单，送达时间：2014-12-02 17:15:00</span></div>
+        <div class="slide_notice notice"><span>移动端用户:</span><span class="memo_detail">该订单来自移动设备</span></div>
+      
+
+  <div class="order_content new" online-pay="">
+    <span class="process_num">11</span>
+    <div class="list_time"></div>
+    <div class="order_detail">
+      <div>
+        <p><span class="info_name">订单流水号:</span><span class="info_content">11</span></p>
+        <p><span class="info_name">订单编号:</span><span class="info_content">12160593469100097</span></p>
+        <p>
+          <span class="info_name">订单状态:</span>
+          <span class="info_content">等待餐厅确认</span>
+        </p>
+      </div>
+      <div>
+        <p><span class="info_name">订单类型:</span><span class="info_content">饿了么订单</span></p>
+        <p><span class="info_name">订单时间:</span><span class="info_content">2014-12-02 13:44:15</span></p>
+        <p><span class="info_name">订单备注:</span><span class="info_content"></span></p>
+      </div>
+      <div class="customer">
+                  <p><span class="info_name">顾客电话:</span><span class="info_content">18215606355</span></p>
+          <p><span class="info_name">顾客地址:</span><span class="info_content">科研楼c258</span></p>
+              </div>
+              <div class="list_source">
+          <span class="eleme">饿</span>
+        </div>
+          </div> <!-- order_content new -->
+  </div>
+
+  <hr />
+
+  <div class="menu_detail">
+    <div class="order_action">
+
+    <a href="#" class="print button success action notcombined hidden" orderId="12160593469100097">打印</a>
+                        <a class="process button success print orderProcessBtn combined hidden"
+             categoryId="1"
+             orderId="12160593469100097"
+             rel="order12160593469100097"
+             dayNumber="11"
+             href="/order/processOrder/id/12160593469100097/category/1">打印并处理</a>
+          <a class="process button orderProcessBtn notcombined hidden"
+             categoryId="1"
+             orderId="12160593469100097"
+             rel="order12160593469100097"
+             dayNumber="11"
+             href="/order/processOrder/id/12160593469100097/category/1">处理</a>
+          <a class="setInvalid button warning orderProcessBtn"
+             categoryId="1"
+             orderId="12160593469100097"
+             rel="order12160593469100097"
+             dayNumber="11"
+             href="/order/setInvalid/id/12160593469100097/category/1">无效</a>
+                                  <a class="copy2 button orderProcessBtn" data-order-text="怪蜀黍连锁快餐[12月2日 No.11][!!预定单:17点15分送到!!] 科研楼c258[18215606355] 卤鸡腿 1份/珍珠大米饭 1份/共6元">复制</a>
+      
+      
+                      <a class="button more_user_info fr mr10" href="/order/getUserInfo/userId/1958315/phone/18215606355" target="_blank">顾客订单记录</a>
+          </div>
+
+    <div class="menu_content">
+        <table class="item_table">
+    <thead>
+      <tr>
+              <th>美食篮子</th>
+              <th>单价</th>
+        <th>数量</th>
+        <th>总价</th>
+      </tr>
+    </thead>
+    <tbody>
+              <tr>
+          <td class="item_name"><span class="dishname">卤鸡腿</span></td>
+          <td class="item_price">4</td>
+          <td class="item_quantity">1</td>
+          <td class="item_total_price">4</td>
+        </tr>
+                      <tr>
+          <td class="item_name"><span class="dishname">珍珠大米饭</span></td>
+          <td class="item_price">2</td>
+          <td class="item_quantity">1</td>
+          <td class="item_total_price">2</td>
+        </tr>
+                  </tbody>
+    <tfoot>
+      <tr>
+        <th colspan="3">小计</th>
+        <th>6</th>
+      </tr>
+    </tfoot>
+  </table>
+
+
+    </div><!-- end of menu_content -->
+          <div id="customer_detail" class=""></div>
+    
+    <div class="height_holder"></div>
+  </div><!-- end of menu_detail -->
+
+  <div id="order_json_data" class="hidden">
+    {"id":"12160593469100097","total":6,"items":[{"entity_id":9119708,"name":"\u5364\u9e21\u817f","price":4,"parent_entity_id":0,"group_id":1,"quantity":1,"entity_category_id":1},{"entity_id":11195256,"name":"\u73cd\u73e0\u5927\u7c73\u996d","price":2,"parent_entity_id":0,"group_id":1,"quantity":1,"entity_category_id":1}],"isWaimai":true,"isTangchi":false,"isBook":true,"deliverTime":"17\u70b915\u5206","restaurantNumber":11,"createdAt":"2014-12-02 13:44:15","table":"","people":"","phone":"18215606355","address":"\u79d1\u7814\u697cc258","description":"","isFollower":false,"isOnlinePayment":false,"invoice":"","isTimeEnsure":false,"timeEnsureText":"","refundStatus":0,"refundStatusText":"\u672a\u7533\u8bf7\u9000\u5355"}  </div>
+
+</div>
+
+
+  <div class="button_container">
+    <a href="#" class="print button success action notcombined hidden" orderId="12160593469100097">&nbsp;打印&nbsp;</a>
+
+                  <a class="process button success print orderProcessBtn combined hidden"
+           categoryId="1"
+           orderId="12160593469100097"
+           rel="order12160593469100097"
+           dayNumber="11"
+           href="/order/processOrder/id/12160593469100097/category/1">打印并处理</a>
+        <a class="process button orderProcessBtn notcombined hidden"
+           categoryId="1"
+           orderId="12160593469100097"
+           rel="order12160593469100097"
+           dayNumber="11"
+           href="/order/processOrder/id/12160593469100097/category/1">处理</a>
+        <a class="setInvalid button warning orderProcessBtn"
+           categoryId="1"
+           orderId="12160593469100097"
+           rel="order12160593469100097"
+           dayNumber="11"
+           href="/order/setInvalid/id/12160593469100097/category/1">无效</a>
+                        <a class="copy button orderProcessBtn" data-order-text="怪蜀黍连锁快餐[12月2日 No.11][!!预定单:17点15分送到!!] 科研楼c258[18215606355] 卤鸡腿 1份/珍珠大米饭 1份/共6元">复制</a>
+    
+    
+      </div>
+</li>
+
+<script>
+  var NAPOS = NAPOS || {};
+  NAPOS.orders = NAPOS.orders || {};
+  NAPOS.orders[12160593469100097] = {"id":"12160593469100097","total":6,"items":[{"entity_id":9119708,"name":"\u5364\u9e21\u817f","price":4,"parent_entity_id":0,"group_id":1,"quantity":1,"entity_category_id":1},{"entity_id":11195256,"name":"\u73cd\u73e0\u5927\u7c73\u996d","price":2,"parent_entity_id":0,"group_id":1,"quantity":1,"entity_category_id":1}],"isWaimai":true,"isTangchi":false,"isBook":true,"deliverTime":"17\u70b915\u5206","restaurantNumber":11,"createdAt":"2014-12-02 13:44:15","table":"","people":"","phone":"18215606355","address":"\u79d1\u7814\u697cc258","description":"","isFollower":false,"isOnlinePayment":false,"invoice":"","isTimeEnsure":false,"timeEnsureText":"","refundStatus":0,"refundStatusText":"\u672a\u7533\u8bf7\u9000\u5355"};
+</script>
           </ul>
   </div>
 
 <div class="height_holder"></div>
-  </div>
-
-  <div class="" id="operation_panel">
-    <div id="menu_panel">
-
-      <div id="menu_title">
-        <form id="menusearch">
-          <input type="search" autocomplete="off" name="query" id="search" placeholder="输入菜单拼音进行筛选">
-        </form>
-        <h2>菜单</h2>
-      </div>
-
-      <div id="menu_filter">
-                  <button categoryId="897964" id="category-897964">5元管饱（在线支付再减4元）</button>
-                  <button categoryId="834233" id="category-834233">今日推荐</button>
-                  <button categoryId="473560" id="category-473560">盖浇</button>
-                  <button categoryId="473559" id="category-473559">蜀黍套餐</button>
-                  <button categoryId="473558" id="category-473558">蜀黍小炒</button>
-              </div>
-
-      <hr>
-
-      <div id="menu_container">
-                                            <button disabled="disabled"
-                      foodId="10884373"
-                      id="food-10884373"
-                      categoryId="897964"
-                      searchtext="tudoupaigugaijiao 土豆排骨盖浇"
-                      title="土豆排骨盖浇">土豆排骨盖浇<br/><span class="soldout">已售完</span></button>
-                                                <button disabled="disabled"
-                      foodId="10884380"
-                      id="food-10884380"
-                      categoryId="897964"
-                      searchtext="fanqiechaodangaijiao 番茄炒蛋盖浇"
-                      title="番茄炒蛋盖浇">番茄炒蛋盖浇<br/><span class="soldout">已售完</span></button>
-                                                                  <button foodId="11102583"
-                      id="food-11102583"
-                      categoryId="834233"
-                      searchtext="【shuizhuroupian】 【水煮肉片】"
-                      title="【水煮肉片】">【水煮肉片】<br/><span class="price">20元</span></button>
-                                                <button foodId="10216382"
-                      id="food-10216382"
-                      categoryId="834233"
-                      searchtext="shushutuipaifan 蜀黍腿排饭"
-                      title="蜀黍腿排饭">蜀黍腿排饭<br/><span class="price">13元</span></button>
-                                                <button foodId="10798614"
-                      id="food-10798614"
-                      categoryId="834233"
-                      searchtext="tuodandejipaifan 脱单的鸡排饭"
-                      title="脱单的鸡排饭">脱单的鸡排饭<br/><span class="price">15元</span></button>
-                                                <button foodId="10216477"
-                      id="food-10216477"
-                      categoryId="834233"
-                      searchtext="kaoyafan 烤鸭饭"
-                      title="烤鸭饭">烤鸭饭<br/><span class="price">16元</span></button>
-                                                                  <button foodId="6168051"
-                      id="food-6168051"
-                      categoryId="473560"
-                      searchtext="tudoupaigugaijiao 土豆排骨盖浇"
-                      title="土豆排骨盖浇">土豆排骨盖浇<br/><span class="price">10元</span></button>
-                                                <button foodId="6168052"
-                      id="food-6168052"
-                      categoryId="473560"
-                      searchtext="hongshaorougaijiao 红烧肉盖浇"
-                      title="红 烧肉盖浇">红烧肉盖浇<br/><span class="price">10元</span></button>
-                                                <button foodId="9195740"
-                      id="food-9195740"
-                      categoryId="473560"
-                      searchtext="fanqiechaodangaijiao 番茄炒蛋盖浇"
-                      title="番茄炒蛋盖浇">番茄炒蛋盖浇<br/><span class="price">10元</span></button>
-                                                                  <button foodId="6168048"
-                      id="food-6168048"
-                      categoryId="473559"
-                      searchtext="nimeichiguodeganguoxiajiao 你没吃过的干锅虾饺"
-                      title="你没吃过的干锅虾饺">你没吃过的干锅虾饺<br/><span class="price">18元</span></button>
-                                                <button disabled="disabled"
-                      foodId="6168033"
-                      id="food-6168033"
-                      categoryId="473559"
-                      searchtext="ganbianji 干煸鸡"
-                      title="干煸鸡">干煸鸡<br/><span class="soldou      t">已售完</span></button>
-                                                <button foodId="6168037"
-                      id="food-6168037"
-                      categoryId="473559"
-                      searchtext="gongfujituifan 功夫鸡腿饭"
-                      title="功夫鸡腿饭">功夫鸡腿饭<br/><span class="price">13元</span></button>
-                                                <button foodId="6168041"
-                      id="food-6168041"
-                      categoryId="473559"
-                      searchtext="buxiezuoyedehongshaorou 不写作业的红烧肉"
-                      title="不写作业的红烧肉">不写作业的红烧肉<br/><span class="price">14元</span></button>
-                                                <button foodId="6168043"
-                      id="food-6168043"
-                      categoryId="473559"
-                      searchtext="yaoyiyaotudoupaigu 摇一摇土豆排骨"
-                      title="摇一摇土豆排骨">摇一摇土豆排骨<br/><span class="price">14元</span></button>
-                                                <button foodId="6168049"
-                      id="food-6168049"
-                      categoryId="473559"
-                      searchtext="qiexingqiezhenxidexiaochaorou 且行且珍惜的小炒肉"
-                      title="且行且珍惜的小炒肉">且行且珍惜的小炒肉<br/><span class="price">14元</span></button>
-                                                <button foodId="9195716"
-                      id="food-9195716"
-                      categoryId="473559"
-                      searchtext="suantiandefanqiechaodan 酸甜的番茄炒蛋"
-                      title="酸甜的番茄炒蛋">酸甜的番茄炒蛋<br/><span class="price">12元</span></button>
-                                                <button foodId="8568430"
-                      id="food-8568430"
-                      categoryId="473559"
-                      searchtext="kaoyafan 烤鸭饭"
-                      title="烤鸭饭">烤鸭饭<br/><span class="price">16元</span></button>
-                                                <button disabled="disabled"
-                      foodId="10990143"
-                      id="food-10990143"
-                      categoryId="473559"
-                      searchtext="mapodoufu 麻婆豆腐"
-                      title="麻婆豆腐">麻婆豆腐<br/><span class="soldout">已售完</span></button>
-                                                                  <button foodId="6405647"
-                      id="food-6405647"
-                      categoryId="473558"
-                      searchtext="【nimeichiguodeganguoxiajiao】 【你没吃过的干锅虾饺】"
-                      title="【你没吃过的干锅虾饺】">【你没吃过的干锅虾..<br/><span class="price">20元</span></button>
-                                                <button foodId="6405637"
-                      id="food-6405637"
-                      categoryId="473558"
-                      searchtext="【qiexingqiezhenxidexiaochaorou】 【且行且珍惜的小炒肉】"
-                      title="【且行且珍惜的小炒肉】">【且行且珍惜的小炒..<br/><span class="price">16元</span></button>
-                                                <button foodId="6405808"
-                      id="food-6405808"
-                      categoryId="473558"
-                      searchtext="【yaoyiyaotudoupaigu】 【摇一摇土豆排骨】"
-                      title="【摇一摇土豆排骨】">【摇一摇土豆排骨】<br/><span class="price">16元</span></button>
-                                                <button disabled="disabled"
-                      foodId="6405847"
-                      id="food-6405847"
-                      categoryId="473558"
-                      searchtext="【ganbianji】 【干煸鸡】"
-                      title="【干煸鸡】">【干煸鸡】<br/><span class="soldout">已售完</span></button>
-                                                <button foodId="6405948"
-                      id="food-6405948"
-                      categoryId="473558"
-                      searchtext="【hongshaorou】 【红烧肉】"
-                      title="【红烧肉】">【红烧肉】<br/><span class="price">16元</span></button>
-                                                <button foodId="9195683"
-                      id="food-9195683"
-                      categoryId="473558"
-                      searchtext="【fanqiechaodan】   【番茄炒蛋】"
-                      title="【番茄炒蛋】">【番茄炒蛋】<br/><span class="price">14元</span></button>
-                                                <button foodId="11195256"
-                      id="food-11195256"
-                      categoryId="473558"
-                      searchtext="zhenzhudamifan 珍珠大米饭"
-                      title="珍珠大米饭">珍珠大米饭<br/><span class="price">2元</span></button>
-                                                <button foodId="9119708"
-                      id="food-9119708"
-                      categoryId="473558"
-                      searchtext="lujitui 卤鸡腿"
-                      title="卤鸡腿">卤鸡腿<br/><span class="price">4元</span></button>
-                                                <button disabled="disabled"
-                      foodId="11116102"
-                      id="food-11116102"
-                      categoryId="473558"
-                      searchtext="rousongbing{2ge} 肉松饼{2个}"
-                      title="肉松饼{2个}">肉松饼{2个}<br/><span class="soldout        ">已售完</span></button>
-                                                <button foodId="9119717"
-                      id="food-9119717"
-                      categoryId="473558"
-                      searchtext="kelelaguan 可乐拉罐"
-                      title="可乐拉罐">可乐拉罐<br/><span class="price">2.5元</span></button>
-                                                <button disabled="disabled"
-                      foodId="10990161"
-                      id="food-10990161"
-                      categoryId="473558"
-                      searchtext="【mapodoufu】 【麻婆豆腐】"
-                      title="【麻婆豆腐】">【麻婆豆腐】<br/><span class="soldout">已售完</span></button>
-                                    </div>
-
-    </div>
-  </div>
-
-<div id="slide_container" style="display:block;">
-  <div id="slide_panel">
-    <div id="slide_content">
-
-      <div class="order_content new">
-        <span class="process_num"></span>
-        <div class="list_time"></div>
-        <div class="order_detail">
-          <div>
-            <p><span class="info_name">订单流水号:</span><span class="info_content"></span></p>
-            <p><span class="info_name">订单编号:</span><span class="info_content"></span></p>
-            <p><span class="info_name">订单状态:</span><span class="info_content"></span></p>
-          </div>
-          <div>
-            <p><span class="info_name">订单类型:</span><span class="info_content"></span></p>
-            <p><span class="info_name">订单时间:</span><span class="info_content"></span></p>
-            <p><span class="info_name">订单备注:</span><span class="info_content"></span></p>
-          </div>
-          <div class="customer">
-            <p><span class="info_name">顾客电话:</span><span class="info_content"></span></p>
-            <p><span class="info_name">顾客地址:</span><span class="info_content"></span></p>
-          </div>
-          <div class="list_source">
-            <span class="eleme">饿</span>
-          </div>
-        </div> <!-- order_content new -->
-      </div>
-
-      <hr />
-
-      <div class="menu_detail">
-        <div class="order_action">
-          <a href="#" class="print button action">打印</a>
-          <a href="#" class="process button success">处理</a>
-          <a href="#" class="cancel button warning">无效</a>
-        </div>
-
-        <div class="menu_content">
-          <table id="order_table">
-            <thead>
-              <tr>
-                <th>菜单</th>
-                <th>单价</th>
-                <th>数量</th>
-                <th>总价</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <th colspan="3">合计</th>
-                <th></th>
-              </tr>
-            </tfoot>
-          </table>
-        </div><!-- end of menu_content -->
-
-        <div id="customer_detail">
-          <h3>顾客信息</h3>
-          <p>
-            <span class="info_name">电话:</span>
-            <span class="info_content"></span>,
-            <span class="info_content"></span>
-          </p>
-          <p>
-            <span class="info_name">地址:</span>
-            <span class="info_content"></span>,
-            <span class="info_content"></span>
-          </p>
-          <p>
-            <span class="info_name">历史消费:</span>
-            <span class="info_content"></span>
-            <span class="info_content"></span>
-          </p>
-          <p>
-            <span class="info_name">上次消费:</span>
-            <span class="info_content"></span>
-            <span class="info_content"></span>
-          </p>
-        </div>
-      </div><!-- end of menu_detail -->
-    </div>
-
-    <a href="#" class="cancel-button">cancel</a>
-  </div>
-</div>
-
-
-<div id="cash_dialog" title="收银">
-  <div class="dialog_content">
-    <table>
-      <tr>
-        <td>应收账款</td>
-        <td><span class="deserved"></span></td>
-      </tr>
-      <tr>
-        <td>已收账款</td>
-        <td>
-          <input type="text" name="total" class="total" />
-        </td>
-      </tr>
-      <tr>
-        <td>找零</td>
-        <td><span class="charge"></span></td>
-      </tr>
-      <tr>
-        <td colspan="2">
-          <div class="cash-keypad keypad-popup-placeholder">
-          </div>
-        </td>
-      </tr>
-    </table>
-
-    <div class="cash_button">
-      <a class="print button success completeCashBtn" href="#">完成收银</a>
-      <a class="process button warning cancelCash" href="#">取消收银</a>
-    </div>
-  </div>
-</div>
-
-<script>
-  var NAPOS = NAPOS || {};
-  try{
-    NAPOS.foods = {"10884373":{"id":10884373,"name":"\u571f\u8c46\u6392\u9aa8\u76d6\u6d47","categoryId":897964,"pinyinName":"tudoupaigugaijiao","price":10},"10884380":{"id":10884380,"name":"\u756a\u8304\u7092\u86cb\u76d6\u6d47","categoryId":897964,"pinyinName":"fanqiechaodangaijiao","price":10},"11102583":{"id":11102583,"name":"\u3010\u6c34\u716e\u8089\u7247\u3011","categoryId":834233,"pinyinName":"\u3010shuizhuroupian\u3011","price":20},"10216382":{"id":10216382,"name":"\u8700\u9ecd\u817f\u6392\u996d","categoryId":834233,"pinyinName":"shushutuipaifan","price":13},"10798614":{"id":10798614,"name":"\u8131\u5355\u7684\u9e21\u6392\u996d","categoryId":834233,"pinyinName":"tuodandejipaifan","price":15},"10216477":{"id":10216477,"name":"\u70e4\u9e2d\u996d","categoryId":834233,"pinyinName":"kaoyafan","price":16},"6168051":{"id":6168051,"name":"\u571f\u8c46\u6392\u9aa8\u76d6\u6d47","categoryId":473560,"pinyinName":"tudoupaigugaijiao","price":10},"6168052":{"id":6168052,"name":"\u7ea2\u70e7\u8089\u76d6\u6d47","categoryId":473560,"pinyinName":"hongshaorougaijiao","price":10},"9195740":{"id":9195740,"name":"\u756a\u8304\u7092\u86cb\u76d6\u6d47","categoryId":473560,"pinyinName":"fanqiechaodangaijiao","price":10},"6168048":{"id":6168048,"name":"\u4f60\u6ca1\u5403\u8fc7\u7684\u5e72\u9505\u867e\u997a","categoryId":473559,"pinyinName":"nimeichiguodeganguoxiajiao","price":18},"6168033":{"id":6168033,"name":"\u5e72\u7178\u9e21","categoryId":473559,"pinyinName":"ganbianji","price":14},"6168037":{"id":6168037,"name":"\u529f\u592b\u9e21\u817f\u996d","categoryId":473559,"pinyinName":"gongfujituifan","price":13},"6168041":{"id":6168041,"name":"\u4e0d\u5199\u4f5c\u4e1a\u7684\u7ea2\u70e7\u8089","categoryId":473559,"pinyinName":"buxiezuoyedehongshaorou","price":14},"6168043":{"id":6168043,"name":"\u6447\u4e00\u6447\u571f\u8c46\u6392\u9aa8","categoryId":473559,"pinyinName":"yaoyiyaotudoupaigu","price":14},"6168049":{"id":6168049,"name":"\u4e14\u884c\u4e14\u73cd\u60dc\u7684\u5c0f\u7092\u8089","categoryId":473559,"pinyinName":"qiexingqiezhenxidexiaochaorou","price":14},"9195716":{"id":9195716,"name":"\u9178\u751c\u7684\u756a\u8304\u7092\u86cb","categoryId":473559,"pinyinName":"suantiandefanqiechaodan","price":12},"8568430":{"id":8568430,"name":"\u70e4\u9e2d\u996d","categoryId":473559,"pinyinName":"kaoyafan","price":16},"10990143":{"id":10990143,"name":"\u9ebb\u5a46\u8c46\u8150","categoryId":473559,"pinyinName":"mapodoufu","price":13},"6405647":{"id":6405647,"name":"\u3010\u4f60\u6ca1\u5403\u8fc7\u7684\u5e72\u9505\u867e\u997a\u3011","categoryId":473558,"pinyinName":"\u3010nimeichiguodeganguoxiajiao\u3011","price":20},"6405637":{"id":6405637,"name":"\u3010\u4e14\u884c\u4e14\u73cd\u60dc\u7684\u5c0f\u7092\u8089\u3011","categoryId":473558,"pinyinName":"\u3010qiexingqiezhenxidexiaochaorou\u3011","price":16},"6405808":{"id":6405808,"name":"\u3010\u6447\u4e00\u6447\u571f\u8c46\u6392\u9aa8\u3011","categoryId":473558,"pinyinName":"\u3010yaoyiyaotudoupaigu\u3011","price":16},"6405847":{"id":6405847,"name":"\u3010\u5e72\u7178\u9e21\u3011","categoryId":473558,"pinyinName":"\u3010ganbianji\u3011","price":16},"6405948":{"id":6405948,"name":"\u3010\u7ea2\u70e7\u8089\u3011","categoryId":473558,"pinyinName":"\u3010hongshaorou\u3011","price":16},"9195683":{"id":9195683,"name":"\u3010\u756a\u8304\u7092\u86cb\u3011","categoryId":473558,"pinyinName":"\u3010fanqiechaodan\u3011","price":14},"11195256":{"id":11195256,"name":"\u73cd\u73e0\u5927\u7c73\u996d","categoryId":473558,"pinyinName":"zhenzhudamifan","price":2},"9119708":{"id":9119708,"name":"\u5364\u9e21\u817f","categoryId":473558,"pinyinName":"lujitui","price":4},"11116102":{"id":11116102,"name":"\u8089\u677e\u997c{2\u4e2a}","categoryId":473558,"pinyinName":"rousongbing{2ge}","price":3.5},"9119717":{"id":9119717,"name":"\u53ef\u4e50\u62c9\u7f50","categoryId":473558,"pinyinName":"kelelaguan","price":2.5},"10990161":{"id":10990161,"name":"\u3010\u9ebb\u5a46\u8c46\u8150\u3011","categoryId":473558,"pinyinName":"\u3010mapodoufu\u3011","price":15}};
-  }catch(e){
-    alert("dashboard/index error:"+e.toString());
-  }
-  NAPOS.dineEnabled = true;
-  NAPOS.list = NAPOS.list || {};
-  NAPOS.list.LAST = "unprocessed_waimai",
-  NAPOS.list.CURRENT = "unprocessed_waimai"/*current list*/
-  NAPOS.now = 1417243171;
-  NAPOS.autoPrintTangchi = 1;
-  NAPOS.restaurant = {"id":63997,"name":"\u602a\u8700\u9ecd\u8fde\u9501\u5feb\u9910","nameForUrl":"cd-gss","phone":"18328419287","address":"\u9f99\u6e56\u65f6\u4ee3\u5929\u8857","paperWidth":"58","waimaiNumPrintCopies":1,"tangchiNumPrintCopies":1};
-</script>
-
-<script type="text/x-jquery-tmpl" id="template-order-table-tbody">
-  {{each(key, value) list}}
-  <tr>
-    {{if value.id == ""}}
-      <td >${value.name}</td> <td class="item_quantity">${value.quantity}</td> <td>${value.total}</td>
-    {{else}}
-      {{if showActionFoodId != "" && showActionFoodId == value.id}}
-      <td >${value.name}</td> <td class="item_quantity"><a href="#" class="minus show" foodId=${value.id}></a>${value.quantity}<a href="" class="add show" foodId=${value.id}></a></td> <td>${value.total}</td>
-      {{else}}
-      <td >${value.name}</td> <td class="item_quantity"><a href="#" class="minus" foodId=${value.id}></a>${value.quantity}<a href="" class="add" foodId=${value.id}></a></td> <td>${value.total}</td>
-      {{/if}}
-    {{/if}}
-  </tr>
-  {{/each}}
-</script>
-  </section>
-
-  <footer>Copyright by ele.me 2011</footer>
-
-  <div id="user_info_dialog" title="顾客订单记录">
-    <div class="dialog_content">
-    </div>
-  </div>
-
-  <object id="naposplugin" type="application/x-napos">
-    <param name="onload" value="pluginLoaded" />
-  </object>
-
-  <script>
-    var NAPOS = NAPOS || {};
-    NAPOS.ma = 'dashboard/index';
-    NAPOS.dada = {"status":-1};
-  </script>
-
-  
-      <script src="http://static10.elemecdn.com/napos_old/js/public/naposfoot_201410212029.js"></script>
-  
-</body>
-</html>
-
-no new orders
-/usr/local/lib/python2.7/site-packages/Django-1.7c2-py2.7.egg/django/db/models/fields/__init__.py:1277: RuntimeWarning: DateTimeField Merchant.netspider_time received a naive datetime (2014-11-29 14:47:54.926957) while time zone support is active.
-  RuntimeWarning)
-
-root@rapospectre-HP:~/PycharmProjects/AlinSite# python manage.py test
-IECC is online
-<cookielib.CookieJar[<Cookie SID=nGOtqo1Yo5AOUyZiYXSB2mySTRowzfuEq7VA for .ele.me/>, <Cookie fixed_cid=80f36c8b0203c05e92bda1ae87802016 for .ele.me/>, <Cookie temp_cid=ebaf43c4a87a9e6d5d1f75a3ec2fef00 for .ele.me/>, <Cookie SSID=Hn2cgEBKlxtngrW6z01PUNjQzYzQyZTl5AjL for .napos.ele.me/>]>
-succ
-<!doctype html>
-<html>
-<head>
-  <meta http-equiv="Content-type" content="text/html" />
-  <meta name="title" content="饿了么餐厅后台管理系统" />
-<meta name="language" content="zh" />
-  <title>饿了么餐厅后台管理系统</title>
-  <meta charset="utf-8">
-
-  
-  <link rel="stylesheet" href="http://static10.elemecdn.com/napos_old/css/public/napos_201410212029.css">
-    <link rel="apple-touch-icon-precomposed" href="http://static10.elemecdn.com/napos_old/apple-touch-icon.png?v=2" />
-  <link rel="icon" href="/favicon.ico?v=2" type="image/x-icon" />
-  <link rel="shortcut icon" href="/favicon.ico?v=2" type="image/x-icon" />
-  
-<script>
-  var NAPOS = NAPOS || {};
-  NAPOS.staticUrl = 'http://static10.elemecdn.com/napos_old';
-  NAPOS.dineEnabled = Boolean(1);
-  NAPOS.now = 1417243171;
-  NAPOS.restaurant = {"id":63997,"name":"\u602a\u8700\u9ecd\u8fde\u9501\u5feb\u9910","nameForUrl":"cd-gss","phone":"18328419287","address":"\u9f99\u6e56\u65f6\u4ee3\u5929\u8857","paperWidth":"58","waimaiNumPrintCopies":1,"tangchiNumPrintCopies":1};
-  NAPOS.naposClientSettings = {"version":"3.0","print":{"printSeparately":false,"autoPrintTangchi":false,"printer":[{"name":"GP-5890X Series","enable":true,"width":"58mm","repeatWaimai":2,"repeatTangchi":1},{"name":"GP-5860 Series","enable":false,"width":"58mm","repeatWaimai":1,"repeatTangchi":1}]},"audioFileIndex":1};
-  NAPOS.invalidOrderType = {"0":"\u5176\u4ed6","1":"\u5047\u8ba2\u5355","2":"\u91cd\u590d\u8ba2\u5355","4":"\u8054\u7cfb\u4e0d\u4e0a\u7528\u6237","5":"\u7f8e\u98df\u5df2\u552e\u5b8c","6":"\u9910\u5385\u5df2\u6253\u70ca","7":"\u4e0d\u5728\u914d\u9001\u8303\u56f4","8":"\u9910\u5385\u592a\u5fd9"};
-</script>
-
-
-
-  
-  <script src="http://static10.elemecdn.com/napos_old/js/napos_cdn_detect.js"></script>
-  <script type="text/javascript">
-    (function() {
-      if (!window.CDNReady) {
-        var ajax = new XMLHttpRequest();
-        ajax.open('GET', '/auth/cdnDown');
-        ajax.onreadystatechange = function() {
-          if (ajax.readyState == 4) {
-            window.location.reload();
-          }
-        };
-        ajax.send(null);
-      }
-    })();
-  </script>
-
-      <script src="http://static10.elemecdn.com/napos_old/js/public/naposhead_201410212029.js" type="text/javascript"></script>
-    <script src="http://static10.elemecdn.com/melody/js/sea.js" type="text/javascript"></script>
-  <script type="text/javascript">
-    seajs.config({base: 'modules', map: [['.js', '.js?v=201410212029']]});
-    seajs.use('euphony/index');
-  </script>
-</head>
-<body>
-    
-  
-      <div class="top_notification_banner">
-      
-                        <a href="/help/punishmentNotice">餐厅违规处罚通告[11月05日]</a> |
-          <a href="/help/fakeOrderPunishment">饿了么发动全体用户举报刷单，堂吃冒充外卖骗补贴等违规行为。一旦发现，下线商家所有活动，冻结补贴款，并根据金额以商业诈骗追究法律责任。</a>
-                  </div>
-  
-  <header>
-    <div id="header">
-      <div id="searchbox" >
-        <form id="searchform">
-          <input autocomplete="off" type="search" class="i_magnifying_glass" name="query" id="search" placeholder="输入流水号，订单号，手机号搜索">
-        </form>
-      </div>
-      <div id="pageoptions">
-
-  <ul>
-    <li>
-      <a href="/logout">退出</a>
-    </li>
-    <li>
-      <a href="#" class="wl_config" id="open_status">
-        <span class="status_0">接受预定</span>
-      </a>
-    </li>
-    <li id="rest_info">
-      <span>怪蜀黍连锁快餐</span>
-          </li>
-  </ul>
-
-  <div id="option-container">
-    <h3>更改营业状态</h3>
-    <ul id="status_config">
-              <li class="selected">
-          <a href="" status="0">
-            <span class="status_0">营业中</span>
-          </a>
-          <div>正常营业状态，可以接受新订单</div>
-        </li>
-              <li >
-          <a href="" status="2">
-            <span class="status_2">暂时关闭</span>
-          </a>
-          <div>网站上会显示餐厅暂时关闭，之前接受的订单依然会正常处理</div>
-        </li>
-              <li >
-          <a href="" status="3">
-            <span class="status_3">电话订餐</span>
-          </a>
-          <div>当网络不好的时候切换到此状态，用户直接通过拨打电话下单</div>
-        </li>
-              <li >
-          <a href="" status="4">
-            <span class="status_4">假期不营业</span>
-          </a>
-          <div>适用于较长时间停止提供服务（暑假、寒假等），不接受任何订单</div>
-        </li>
-          </ul>
-  </div>
-
-</div>
-
-      <div id="noticeContainer">
-                  <div id="noticebox" class="status hidden" style="display:none">
-            <span></span>
-          </div>
-              </div>
-      <div id="today_stat"><a href="/stat">今日: 共 32 张订单，430.5 元</a> | </div>
-      <div id="fav_numbers"> <a href="/stat/collector">46 位用户收藏本店</a> |</div>
-          </div>
-  </header>
-
-  <nav>
-  <ul id="nav">
-
-    
-    <li class="i_shopping_cart">
-      <a title="外卖订单" rel="tipsy"
-         class="active"         href="/dashboard/index/list/unprocessed_waimai">
-        <span>
-          外卖
-                      <span class="hidden" id="waimai_notifier"></span>
-                  </span>
-      </a>
-    </li>
-
-    <li class="i_tangchi">
-      <a title="堂吃订单" rel="tipsy"
-                  href="/dashboard/index/list/uncashed_tangchi">
-        <span>
-          堂吃
-                      <span class="hidden" id="tangchi_notifier"></span>
-                  </span>
-      </a>
-    </li>
-
-    
-    <li class="i_order_list">
-      <a title="订单中心" rel="tipsy"
-                  href="/order/center">
-        <span>订单</span>
-      </a>
-    </li>
-
-    
-    <li class="i_charge_back">
-      <a title="退单中心" rel="tipsy"
-                  href="/refund">
-        <span>
-          退单
-                      <span class="hidden" id="refund_notifier"></span>
-                  </span>
-      </a>
-    </li>
-
-    
-    <li class="i_speech_bubble">
-      <a title="用户留言" rel="tipsy"
-                  href="/dashboard/index/list/unreplied">
-        <span>
-          留言
-                      <span class="hidden" id="comment_notifier"></span>
-                  </span>
-      </a>
-    </li>
-
-    <li class="i_graph">
-      <a title="统计数据" rel="tipsy"
-                  href="/stat">
-        <span>统计</span>
-      </a>
-    </li>
-
-    <li class="i_cog_3">
-      <a title="网店管理" rel="tipsy"
-                  href="/setting/editInfo">
-        <span>管理</span>
-      </a>
-    </li>
-
-    <li class="i_account">
-      <a title="账户中心" rel="tipsy"
-                  href="/account">
-        <span>账户</span>
-      </a>
-    </li>
-
-    <li class="i_fish">
-      <a title="菜单管理" rel="tipsy"
-                  href="/menu">
-        <span>菜单</span>
-      </a>
-    </li>
-
-    <li class="i_recruitment">
-      <a title="招聘外送员" rel="tipsy"
-                  href="/recruitment">
-        <span>招聘</span>
-      </a>
-    </li>
-
-  </ul>
-</nav>
-
-  <section id="content" >
-  <div class="g5" id="order_edit">
-  <div id="order_edit_container">
-    <h2>点单</h2>
-
-    <div id="order_tb_head">
-      <table>
-        <thead>
-          <tr>
-            <th class="name-column">菜品</th>
-            <th class="quantity-column">数量</th>
-            <th class="price-column">小计</th>
-          </tr>
-        </thead>
-      </table>
-    </div>
-
-    <div id="order_table_container">
-      <div id="order_tb_body">
-        <table id="order_table">
-          <tbody>
-          </tbody>
-        </table>
-      </div>
-      <div id="order_tb_foot">
-        <table>
-          <tfoot>
-            <tr>
-              <th class="name-column">合计</th>
-              <th class="quantity-column"></th>
-              <th class="price-column"></th>
-            </tr>
-          </tfoot>
-        </table>
-        <a href="#" class="empty button warning clear_cart">清空表格</a>
-      </div>
-    </div>
-
-    <a href="#" class="cancel-button">cancel</a>
-
-    <div id="order_button">
-      <ul id="switch">
-                  <li><a href="" class="switcher waimai active">外卖</a></li><li><a href="" class="switcher tangchi">堂吃</a></li>
-              </ul>
-      <h3 id="category_result" class="hidden">#3号  堂吃单</h3>
-    </div>
-
-    <div id="customer_edit">
-      <form action="">
-        <div id="order_input">
-                      <section class="phone"><label for="phone">电话</label>
-              <input type="text" name="phone" id="phone" class="text">
-            </section>
-            <section class="address"><label for="address">地址</label>
-              <input type="text" name="address" id="address" class="text">
-            </section>
-            <section class="people hidden"><label for="people">人数</label>
-              <input type="text" name="people" id="people" class="text">
-            </section>
-            <section class="table hidden"><label for="table">桌号</label>
-              <input type="text" name="table" id="table" class="text">
-            </section>
-                    <section class="description">
-            <label for="description">备注</label>
-            <input type="text" name="description" id="description" class="text">
-          </section>
-        </div>
-
-        <div id="order_result" class="hidden">
-          <table class="tangchi">
-            <tr id="phone_result">
-              <td>电话</td>
-              <td></td>
-            </tr>
-            <tr id="address_result">
-              <td>地址</td>
-              <td></td>
-            </tr>
-            <tr id="people_result">
-              <td>人数</td>
-              <td></td>
-            </tr>
-            <tr id="table_result">
-              <td>桌号</td>
-              <td></td>
-            </tr>
-            <tr id="description_result">
-              <td>备注</td>
-              <td></td>
-            </tr>
-            </table>
-        </div>
-
-        <br class="clear" />
-
-        <section id="order_action">
-          <div class="before_process">
-            <a href="#" class="print button success" id="make_order">确认下单</a>
-            <a href="#" class="ml10 process button warning cancel_order" id="cancel_order">取消下单</a>
-          </div>
-          <div class="after_process hidden">
-            <a href="#" class="edit button hidden" id="">编辑</a>
-            <a href="#" class="cashBtn button success" id="">收银</a>
-            <a href="#" class="button make_order_ok" id="">完成</a  >
-            <a href="#" class="print button success hidden" id="">打印订单</a>
-            <a href="#" class="process button warning" id="setinvalid_order">无效</a>
-          </div>
-        </section>
-
-      </form>
-    </div>  <!-- end of customer_edit -->
-  </div><!-- end of order_edit_container -->
-
-  <div class="height_holder"></div>
-</div><!-- end of order_edit -->
-
-<div class="g5 list_panel" id="list_panel">
-  <!-- The title of this list -->
-      
-  <h2>待处理外卖 (0)</h2>
-  <label style="position: absolute; top: 15px; right: 10px;">
-    <input type="checkbox" class="combinePrintProcess">
-    合并打印和处理按钮
-  </label>
-
-
-<div id="list_container">
-      <ul id="list_items">
-          </ul>
-  </div>
-
-<div class="height_holder"></div>
-  </div>
-
-  <div class="" id="operation_panel">
-    <div id="menu_panel">
-
-      <div id="menu_title">
-        <form id="menusearch">
-          <input type="search" autocomplete="off" name="query" id="search" placeholder="输入菜单拼音进行筛选">
-        </form>
-        <h2>菜单</h2>
-      </div>
-
-      <div id="menu_filter">
-                  <button categoryId="897964" id="category-897964">5元管饱（在线支付再减4元）</button>
-                  <button categoryId="834233" id="category-834233">今日推荐</button>
-                  <button categoryId="473560" id="category-473560">盖浇</button>
-                  <button categoryId="473559" id="category-473559">蜀黍套餐</button>
-                  <button categoryId="473558" id="category-473558">蜀黍小炒</button>
-              </div>
-
-      <hr>
-
-      <div id="menu_container">
-                                            <button disabled="disabled"
-                      foodId="10884373"
-                      id="food-10884373"
-                      categoryId="897964"
-                      searchtext="tudoupaigugaijiao 土豆排骨盖浇"
-                      title="土豆排骨盖浇">土豆排骨盖浇<br/><span class="soldout">已售完</span></button>
-                                                <button disabled="disabled"
-                      foodId="10884380"
-                      id="food-10884380"
-                      categoryId="897964"
-                      searchtext="fanqiechaodangaijiao 番茄炒蛋盖浇"
-                      title="番茄炒蛋盖浇">番茄炒蛋盖浇<br/><span class="soldout">已售完</span></button>
-                                                                  <button foodId="11102583"
-                      id="food-11102583"
-                      categoryId="834233"
-                      searchtext="【shuizhuroupian】 【水煮肉片】"
-                      title="【水煮肉片】">【水煮肉片】<br/><span class="price">20元</span></button>
-                                                <button foodId="10216382"
-                      id="food-10216382"
-                      categoryId="834233"
-                      searchtext="shushutuipaifan 蜀黍腿排饭"
-                      title="蜀黍腿排饭">蜀黍腿排饭<br/><span class="price">13元</span></button>
-                                                <button foodId="10798614"
-                      id="food-10798614"
-                      categoryId="834233"
-                      searchtext="tuodandejipaifan 脱单的鸡排饭"
-                      title="脱单的鸡排饭">脱单的鸡排饭<br/><span class="price">15元</span></button>
-                                                <button foodId="10216477"
-                      id="food-10216477"
-                      categoryId="834233"
-                      searchtext="kaoyafan 烤鸭饭"
-                      title="烤鸭饭">烤鸭饭<br/><span class="price">16元</span></button>
-                                                                  <button foodId="6168051"
-                      id="food-6168051"
-                      categoryId="473560"
-                      searchtext="tudoupaigugaijiao 土豆排骨盖浇"
-                      title="土豆排骨盖浇">土豆排骨盖浇<br/><span class="price">10元</span></button>
-                                                <button foodId="6168052"
-                      id="food-6168052"
-                      categoryId="473560"
-                      searchtext="hongshaorougaijiao 红烧肉盖浇"
-                      title="红 烧肉盖浇">红烧肉盖浇<br/><span class="price">10元</span></button>
-                                                <button foodId="9195740"
-                      id="food-9195740"
-                      categoryId="473560"
-                      searchtext="fanqiechaodangaijiao 番茄炒蛋盖浇"
-                      title="番茄炒蛋盖浇">番茄炒蛋盖浇<br/><span class="price">10元</span></button>
-                                                                  <button foodId="6168048"
-                      id="food-6168048"
-                      categoryId="473559"
-                      searchtext="nimeichiguodeganguoxiajiao 你没吃过的干锅虾饺"
-                      title="你没吃过的干锅虾饺">你没吃过的干锅虾饺<br/><span class="price">18元</span></button>
-                                                <button disabled="disabled"
-                      foodId="6168033"
-                      id="food-6168033"
-                      categoryId="473559"
-                      searchtext="ganbianji 干煸鸡"
-                      title="干煸鸡">干煸鸡<br/><span class="soldou      t">已售完</span></button>
-                                                <button foodId="6168037"
-                      id="food-6168037"
-                      categoryId="473559"
-                      searchtext="gongfujituifan 功夫鸡腿饭"
-                      title="功夫鸡腿饭">功夫鸡腿饭<br/><span class="price">13元</span></button>
-                                                <button foodId="6168041"
-                      id="food-6168041"
-                      categoryId="473559"
-                      searchtext="buxiezuoyedehongshaorou 不写作业的红烧肉"
-                      title="不写作业的红烧肉">不写作业的红烧肉<br/><span class="price">14元</span></button>
-                                                <button foodId="6168043"
-                      id="food-6168043"
-                      categoryId="473559"
-                      searchtext="yaoyiyaotudoupaigu 摇一摇土豆排骨"
-                      title="摇一摇土豆排骨">摇一摇土豆排骨<br/><span class="price">14元</span></button>
-                                                <button foodId="6168049"
-                      id="food-6168049"
-                      categoryId="473559"
-                      searchtext="qiexingqiezhenxidexiaochaorou 且行且珍惜的小炒肉"
-                      title="且行且珍惜的小炒肉">且行且珍惜的小炒肉<br/><span class="price">14元</span></button>
-                                                <button foodId="9195716"
-                      id="food-9195716"
-                      categoryId="473559"
-                      searchtext="suantiandefanqiechaodan 酸甜的番茄炒蛋"
-                      title="酸甜的番茄炒蛋">酸甜的番茄炒蛋<br/><span class="price">12元</span></button>
-                                                <button foodId="8568430"
-                      id="food-8568430"
-                      categoryId="473559"
-                      searchtext="kaoyafan 烤鸭饭"
-                      title="烤鸭饭">烤鸭饭<br/><span class="price">16元</span></button>
-                                                <button disabled="disabled"
-                      foodId="10990143"
-                      id="food-10990143"
-                      categoryId="473559"
-                      searchtext="mapodoufu 麻婆豆腐"
-                      title="麻婆豆腐">麻婆豆腐<br/><span class="soldout">已售完</span></button>
-                                                                  <button foodId="6405647"
-                      id="food-6405647"
-                      categoryId="473558"
-                      searchtext="【nimeichiguodeganguoxiajiao】 【你没吃过的干锅虾饺】"
-                      title="【你没吃过的干锅虾饺】">【你没吃过的干锅虾..<br/><span class="price">20元</span></button>
-                                                <button foodId="6405637"
-                      id="food-6405637"
-                      categoryId="473558"
-                      searchtext="【qiexingqiezhenxidexiaochaorou】 【且行且珍惜的小炒肉】"
-                      title="【且行且珍惜的小炒肉】">【且行且珍惜的小炒..<br/><span class="price">16元</span></button>
-                                                <button foodId="6405808"
-                      id="food-6405808"
-                      categoryId="473558"
-                      searchtext="【yaoyiyaotudoupaigu】 【摇一摇土豆排骨】"
-                      title="【摇一摇土豆排骨】">【摇一摇土豆排骨】<br/><span class="price">16元</span></button>
-                                                <button disabled="disabled"
-                      foodId="6405847"
-                      id="food-6405847"
-                      categoryId="473558"
-                      searchtext="【ganbianji】 【干煸鸡】"
-                      title="【干煸鸡】">【干煸鸡】<br/><span class="soldout">已售完</span></button>
-                                                <button foodId="6405948"
-                      id="food-6405948"
-                      categoryId="473558"
-                      searchtext="【hongshaorou】 【红烧肉】"
-                      title="【红烧肉】">【红烧肉】<br/><span class="price">16元</span></button>
-                                                <button foodId="9195683"
-                      id="food-9195683"
-                      categoryId="473558"
-                      searchtext="【fanqiechaodan】   【番茄炒蛋】"
-                      title="【番茄炒蛋】">【番茄炒蛋】<br/><span class="price">14元</span></button>
-                                                <button foodId="11195256"
-                      id="food-11195256"
-                      categoryId="473558"
-                      searchtext="zhenzhudamifan 珍珠大米饭"
-                      title="珍珠大米饭">珍珠大米饭<br/><span class="price">2元</span></button>
-                                                <button foodId="9119708"
-                      id="food-9119708"
-                      categoryId="473558"
-                      searchtext="lujitui 卤鸡腿"
-                      title="卤鸡腿">卤鸡腿<br/><span class="price">4元</span></button>
-                                                <button disabled="disabled"
-                      foodId="11116102"
-                      id="food-11116102"
-                      categoryId="473558"
-                      searchtext="rousongbing{2ge} 肉松饼{2个}"
-                      title="肉松饼{2个}">肉松饼{2个}<br/><span class="soldout        ">已售完</span></button>
-                                                <button foodId="9119717"
-                      id="food-9119717"
-                      categoryId="473558"
-                      searchtext="kelelaguan 可乐拉罐"
-                      title="可乐拉罐">可乐拉罐<br/><span class="price">2.5元</span></button>
-                                                <button disabled="disabled"
-                      foodId="10990161"
-                      id="food-10990161"
-                      categoryId="473558"
-                      searchtext="【mapodoufu】 【麻婆豆腐】"
-                      title="【麻婆豆腐】">【麻婆豆腐】<br/><span class="soldout">已售完</span></button>
-                                    </div>
-
-    </div>
-  </div>
-
-<div id="slide_container" style="display:block;">
-  <div id="slide_panel">
-    <div id="slide_content">
-
-      <div class="order_content new">
-        <span class="process_num"></span>
-        <div class="list_time"></div>
-        <div class="order_detail">
-          <div>
-            <p><span class="info_name">订单流水号:</span><span class="info_content"></span></p>
-            <p><span class="info_name">订单编号:</span><span class="info_content"></span></p>
-            <p><span class="info_name">订单状态:</span><span class="info_content"></span></p>
-          </div>
-          <div>
-            <p><span class="info_name">订单类型:</span><span class="info_content"></span></p>
-            <p><span class="info_name">订单时间:</span><span class="info_content"></span></p>
-            <p><span class="info_name">订单备注:</span><span class="info_content"></span></p>
-          </div>
-          <div class="customer">
-            <p><span class="info_name">顾客电话:</span><span class="info_content"></span></p>
-            <p><span class="info_name">顾客地址:</span><span class="info_content"></span></p>
-          </div>
-          <div class="list_source">
-            <span class="eleme">饿</span>
-          </div>
-        </div> <!-- order_content new -->
-      </div>
-
-      <hr />
-
-      <div class="menu_detail">
-        <div class="order_action">
-          <a href="#" class="print button action">打印</a>
-          <a href="#" class="process button success">处理</a>
-          <a href="#" class="cancel button warning">无效</a>
-        </div>
-
-        <div class="menu_content">
-          <table id="order_table">
-            <thead>
-              <tr>
-                <th>菜单</th>
-                <th>单价</th>
-                <th>数量</th>
-                <th>总价</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <th colspan="3">合计</th>
-                <th></th>
-              </tr>
-            </tfoot>
-          </table>
-        </div><!-- end of menu_content -->
-
-        <div id="customer_detail">
-          <h3>顾客信息</h3>
-          <p>
-            <span class="info_name">电话:</span>
-            <span class="info_content"></span>,
-            <span class="info_content"></span>
-          </p>
-          <p>
-            <span class="info_name">地址:</span>
-            <span class="info_content"></span>,
-            <span class="info_content"></span>
-          </p>
-          <p>
-            <span class="info_name">历史消费:</span>
-            <span class="info_content"></span>
-            <span class="info_content"></span>
-          </p>
-          <p>
-            <span class="info_name">上次消费:</span>
-            <span class="info_content"></span>
-            <span class="info_content"></span>
-          </p>
-        </div>
-      </div><!-- end of menu_detail -->
-    </div>
-
-    <a href="#" class="cancel-button">cancel</a>
-  </div>
-</div>
-
-
-<div id="cash_dialog" title="收银">
-  <div class="dialog_content">
-    <table>
-      <tr>
-        <td>应收账款</td>
-        <td><span class="deserved"></span></td>
-      </tr>
-      <tr>
-        <td>已收账款</td>
-        <td>
-          <input type="text" name="total" class="total" />
-        </td>
-      </tr>
-      <tr>
-        <td>找零</td>
-        <td><span class="charge"></span></td>
-      </tr>
-      <tr>
-        <td colspan="2">
-          <div class="cash-keypad keypad-popup-placeholder">
-          </div>
-        </td>
-      </tr>
-    </table>
-
-    <div class="cash_button">
-      <a class="print button success completeCashBtn" href="#">完成收银</a>
-      <a class="process button warning cancelCash" href="#">取消收银</a>
-    </div>
-  </div>
-</div>
-
-<script>
-  var NAPOS = NAPOS || {};
-  try{
-    NAPOS.foods = {"10884373":{"id":10884373,"name":"\u571f\u8c46\u6392\u9aa8\u76d6\u6d47","categoryId":897964,"pinyinName":"tudoupaigugaijiao","price":10},"10884380":{"id":10884380,"name":"\u756a\u8304\u7092\u86cb\u76d6\u6d47","categoryId":897964,"pinyinName":"fanqiechaodangaijiao","price":10},"11102583":{"id":11102583,"name":"\u3010\u6c34\u716e\u8089\u7247\u3011","categoryId":834233,"pinyinName":"\u3010shuizhuroupian\u3011","price":20},"10216382":{"id":10216382,"name":"\u8700\u9ecd\u817f\u6392\u996d","categoryId":834233,"pinyinName":"shushutuipaifan","price":13},"10798614":{"id":10798614,"name":"\u8131\u5355\u7684\u9e21\u6392\u996d","categoryId":834233,"pinyinName":"tuodandejipaifan","price":15},"10216477":{"id":10216477,"name":"\u70e4\u9e2d\u996d","categoryId":834233,"pinyinName":"kaoyafan","price":16},"6168051":{"id":6168051,"name":"\u571f\u8c46\u6392\u9aa8\u76d6\u6d47","categoryId":473560,"pinyinName":"tudoupaigugaijiao","price":10},"6168052":{"id":6168052,"name":"\u7ea2\u70e7\u8089\u76d6\u6d47","categoryId":473560,"pinyinName":"hongshaorougaijiao","price":10},"9195740":{"id":9195740,"name":"\u756a\u8304\u7092\u86cb\u76d6\u6d47","categoryId":473560,"pinyinName":"fanqiechaodangaijiao","price":10},"6168048":{"id":6168048,"name":"\u4f60\u6ca1\u5403\u8fc7\u7684\u5e72\u9505\u867e\u997a","categoryId":473559,"pinyinName":"nimeichiguodeganguoxiajiao","price":18},"6168033":{"id":6168033,"name":"\u5e72\u7178\u9e21","categoryId":473559,"pinyinName":"ganbianji","price":14},"6168037":{"id":6168037,"name":"\u529f\u592b\u9e21\u817f\u996d","categoryId":473559,"pinyinName":"gongfujituifan","price":13},"6168041":{"id":6168041,"name":"\u4e0d\u5199\u4f5c\u4e1a\u7684\u7ea2\u70e7\u8089","categoryId":473559,"pinyinName":"buxiezuoyedehongshaorou","price":14},"6168043":{"id":6168043,"name":"\u6447\u4e00\u6447\u571f\u8c46\u6392\u9aa8","categoryId":473559,"pinyinName":"yaoyiyaotudoupaigu","price":14},"6168049":{"id":6168049,"name":"\u4e14\u884c\u4e14\u73cd\u60dc\u7684\u5c0f\u7092\u8089","categoryId":473559,"pinyinName":"qiexingqiezhenxidexiaochaorou","price":14},"9195716":{"id":9195716,"name":"\u9178\u751c\u7684\u756a\u8304\u7092\u86cb","categoryId":473559,"pinyinName":"suantiandefanqiechaodan","price":12},"8568430":{"id":8568430,"name":"\u70e4\u9e2d\u996d","categoryId":473559,"pinyinName":"kaoyafan","price":16},"10990143":{"id":10990143,"name":"\u9ebb\u5a46\u8c46\u8150","categoryId":473559,"pinyinName":"mapodoufu","price":13},"6405647":{"id":6405647,"name":"\u3010\u4f60\u6ca1\u5403\u8fc7\u7684\u5e72\u9505\u867e\u997a\u3011","categoryId":473558,"pinyinName":"\u3010nimeichiguodeganguoxiajiao\u3011","price":20},"6405637":{"id":6405637,"name":"\u3010\u4e14\u884c\u4e14\u73cd\u60dc\u7684\u5c0f\u7092\u8089\u3011","categoryId":473558,"pinyinName":"\u3010qiexingqiezhenxidexiaochaorou\u3011","price":16},"6405808":{"id":6405808,"name":"\u3010\u6447\u4e00\u6447\u571f\u8c46\u6392\u9aa8\u3011","categoryId":473558,"pinyinName":"\u3010yaoyiyaotudoupaigu\u3011","price":16},"6405847":{"id":6405847,"name":"\u3010\u5e72\u7178\u9e21\u3011","categoryId":473558,"pinyinName":"\u3010ganbianji\u3011","price":16},"6405948":{"id":6405948,"name":"\u3010\u7ea2\u70e7\u8089\u3011","categoryId":473558,"pinyinName":"\u3010hongshaorou\u3011","price":16},"9195683":{"id":9195683,"name":"\u3010\u756a\u8304\u7092\u86cb\u3011","categoryId":473558,"pinyinName":"\u3010fanqiechaodan\u3011","price":14},"11195256":{"id":11195256,"name":"\u73cd\u73e0\u5927\u7c73\u996d","categoryId":473558,"pinyinName":"zhenzhudamifan","price":2},"9119708":{"id":9119708,"name":"\u5364\u9e21\u817f","categoryId":473558,"pinyinName":"lujitui","price":4},"11116102":{"id":11116102,"name":"\u8089\u677e\u997c{2\u4e2a}","categoryId":473558,"pinyinName":"rousongbing{2ge}","price":3.5},"9119717":{"id":9119717,"name":"\u53ef\u4e50\u62c9\u7f50","categoryId":473558,"pinyinName":"kelelaguan","price":2.5},"10990161":{"id":10990161,"name":"\u3010\u9ebb\u5a46\u8c46\u8150\u3011","categoryId":473558,"pinyinName":"\u3010mapodoufu\u3011","price":15}};
-  }catch(e){
-    alert("dashboard/index error:"+e.toString());
-  }
-  NAPOS.dineEnabled = true;
-  NAPOS.list = NAPOS.list || {};
-  NAPOS.list.LAST = "unprocessed_waimai",
-  NAPOS.list.CURRENT = "unprocessed_waimai"/*current list*/
-  NAPOS.now = 1417243171;
-  NAPOS.autoPrintTangchi = 1;
-  NAPOS.restaurant = {"id":63997,"name":"\u602a\u8700\u9ecd\u8fde\u9501\u5feb\u9910","nameForUrl":"cd-gss","phone":"18328419287","address":"\u9f99\u6e56\u65f6\u4ee3\u5929\u8857","paperWidth":"58","waimaiNumPrintCopies":1,"tangchiNumPrintCopies":1};
-</script>
-
-<script type="text/x-jquery-tmpl" id="template-order-table-tbody">
-  {{each(key, value) list}}
-  <tr>
-    {{if value.id == ""}}
-      <td >${value.name}</td> <td class="item_quantity">${value.quantity}</td> <td>${value.total}</td>
-    {{else}}
-      {{if showActionFoodId != "" && showActionFoodId == value.id}}
-      <td >${value.name}</td> <td class="item_quantity"><a href="#" class="minus show" foodId=${value.id}></a>${value.quantity}<a href="" class="add show" foodId=${value.id}></a></td> <td>${value.total}</td>
-      {{else}}
-      <td >${value.name}</td> <td class="item_quantity"><a href="#" class="minus" foodId=${value.id}></a>${value.quantity}<a href="" class="add" foodId=${value.id}></a></td> <td>${value.total}</td>
-      {{/if}}
-    {{/if}}
-  </tr>
-  {{/each}}
-</script>
-  </section>
-
-  <footer>Copyright by ele.me 2011</footer>
-
-  <div id="user_info_dialog" title="顾客订单记录">
-    <div class="dialog_content">
-    </div>
-  </div>
-
-  <object id="naposplugin" type="application/x-napos">
-    <param name="onload" value="pluginLoaded" />
-  </object>
-
-  <script>
-    var NAPOS = NAPOS || {};
-    NAPOS.ma = 'dashboard/index';
-    NAPOS.dada = {"status":-1};
-  </script>
-
-  
-      <script src="http://static10.elemecdn.com/napos_old/js/public/naposfoot_201410212029.js"></script>
-  
-</body>
-</html>

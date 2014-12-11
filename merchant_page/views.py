@@ -702,3 +702,88 @@ def get_sender_change(request):
 
         else:
             return HttpResponse(json.dumps('T'), content_type="application/json")
+
+def operate_today(request):
+    if not request.session.get('username'):
+        return HttpResponseRedirect('login_in')
+    merchant_id = request.session['username']
+    currentuser = Merchant.objects.get(alin_account=merchant_id)
+    pending = DayOrder.objects.filter(merchant=currentuser, status=1).count()
+    accept = DayOrder.objects.filter(merchant=currentuser, status=2).count()
+    sending = DayOrder.objects.filter(merchant=currentuser, status=3).count()
+    refuse = DayOrder.objects.filter(merchant=currentuser, status=5).count()
+    online = DayOrder.objects.filter(merchant=currentuser, status=4, pay=True).count()
+    offline = DayOrder.objects.filter(merchant=currentuser, status=4, pay=False).count()
+    tdd = DayOrder.objects.filter(merchant=currentuser, status=4, platform=1).count()
+    ele = DayOrder.objects.filter(merchant=currentuser, status=4, platform=2).count()
+    mei = DayOrder.objects.filter(merchant=currentuser, status=4, platform=3).count()
+    other = DayOrder.objects.filter(merchant=currentuser, status=4, platform=4).count()
+    total_orders = DayOrder.objects.filter(merchant=currentuser, status=4)
+    online_money = 0.0
+    offline_money = 0.0
+    for itm in total_orders:
+        if itm.pay is False:
+            offline_money += float(itm.real_price)
+        else:
+            online_money += float(itm.real_price)
+    total_money = online_money + offline_money
+    summary = '今日待接收' + str(pending) + '单，已接收' + str(accept) + '单，派送中' + str(sending) + '单，已撤销' + str(refuse) + '单，已完成' + str(total_orders.count()) + '单，其中，淘点点' + str(tdd) + '单，饿了么' + str(ele) + '单，美团' + str(mei) + '单，其他' + str(other) + '单，线上支付' + str(online) + '单，共计' + str(online_money) + '元，线下支付' + str(offline) + '单，共计' + str(offline_money) + '元，今日总营业额' + str(total_money) + '元'
+    senders = currentuser.bind_sender.all()
+    for item in senders:
+        my_send = DayOrder.objects.filter(finish_by=item.phone)
+        my_sending = DayOrder.objects.filter(bind_sender=item).count()
+        if my_sending == 0:
+            item.status = '待命中'
+        else:
+            item.status = '派送中'
+        item.today_sends = int(my_send.count())
+        for itm in my_send:
+            if itm.pay is False:
+                item.offline_money += float(itm.real_price)
+                item.offline_num += 1
+            else:
+                item.online_money += float(itm.real_price)
+                item.online_num += 1
+    paginator = Paginator(senders, 20)
+    try:
+        page_num = request.GET.get('page')
+        senders = paginator.page(page_num)
+    except PageNotAnInteger:
+        senders = paginator.page(1)
+    except EmptyPage:
+        senders = paginator.page(paginator.num_pages)
+    except:
+        pass
+    return render_to_response('merchant_operate_today.html', {'senders': senders, 'summary': summary})
+
+def operate_history(request):
+    if not request.session.get('username'):
+        return HttpResponseRedirect('login_in')
+    if request.method == 'GET':
+        merchant_id = request.session['username']
+        currentuser = Merchant.objects.get(alin_account=merchant_id)
+        start_date = request.GET.get('start_date', '')
+        end_date = request.GET.get('end_date', '')
+        pagepara = '?end_date=' + start_date + '&start_date=' + end_date
+        if start_date != '' and end_date != '':
+            stime = time.strptime(start_date, "%Y-%m-%d")
+            etime = time.strptime(end_date, "%Y-%m-%d")
+            sdate = datetime.datetime(*stime[:6])
+            edate = datetime.datetime(*etime[:6])
+            total_orders = TotalOrder.objects.order_by('-order_time').filter(merchant=currentuser, order_time__range=(sdate, edate))
+            senders = currentuser.bind_sender.all()
+            paginator = Paginator(total_orders, 20)
+            try:
+                page_num = request.GET.get('page')
+                total_orders = paginator.page(page_num)
+            except PageNotAnInteger:
+                total_orders = paginator.page(1)
+            except EmptyPage:
+                total_orders = paginator.page(paginator.num_pages)
+            except:
+                pass
+            return render_to_response('merchant_operate_history.html', {'orders': total_orders, 'pagepara': pagepara})
+        else:
+            return render_to_response('merchant_operate_history.html')
+    else:
+        raise Http404

@@ -65,11 +65,13 @@ class Ele(object):
         if len(res) == 0:
             print 'no new orders'
             return False
-        thiscount = int(DayOrder.objects.filter(merchant = curmet).count()) + 1
+        thiscount = int(DayOrder.objects.filter(merchant=curmet, platform=2).count()) + 1
         # print 'start: ' + str(thiscount)
         for item in res:
             neworder = DayOrder()
             onpay = False
+            yu_time = item.find('a', attrs={'rel': 'tipsy'})
+            process_num = item.find('span', attrs={'class': 'process_num'})
             detail = item.find('p', attrs={'class': 'list_addr'})
             note = item.find('p', attrs={'class': 'list_description'})
             price = item.find('p', attrs={'class': 'list_price'})
@@ -95,6 +97,16 @@ class Ele(object):
             thiscount += 1
             qrres = createqr(1, newid)
             time.sleep(1)
+            if yu_time.has_attr('explain'):
+                res = re.findall(r'([0-9,:, ,-]+)', str(yu_time['explain']))
+                if len(res) > 0:
+                    yutt = time.strptime(str(res[0]), "%Y-%m-%d %H:%M:%S")
+                    yudatetime = datetime.datetime(*yutt[:6])
+                    neworder.send_time = yudatetime
+                else:
+                    neworder.send_time = datetimee
+            else:
+                neworder.send_time = datetimee
             address = detail.string[3:]
             neworder.address = address[1:]
             neworder.order_id_alin = newid
@@ -103,7 +115,6 @@ class Ele(object):
             neworder.real_price = price.string[1:]
             neworder.phone = phone.string[3:]
             neworder.order_time = datetimee
-            neworder.send_time = datetimee
             neworder.status = 1
             neworder.promotion = 'nothing'
             neworder.pay = onpay
@@ -111,6 +122,7 @@ class Ele(object):
             neworder.platform = 2
             neworder.qr_path = qrres
             neworder.merchant = curmet
+            neworder.plat_num = str(process_num.string)
             neworder.save()
             print timee
             print orderid

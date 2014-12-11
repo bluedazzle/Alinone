@@ -16,7 +16,11 @@ def migrateorder(args = None):
         newto.order_id_alin = itm.order_id_alin
         newto.order_id_old = itm.order_id_old
         newto.origin_price = itm.origin_price
-        newto.status = itm.status
+        if str(itm.status) != '4' or str(itm.status) != '5':
+            newto.status = 4
+            newto.finish_by = itm.bind_sender
+        else:
+            newto.status = itm.status
         newto.pay = itm.pay
         newto.phone = itm.phone
         newto.send_time = itm.send_time

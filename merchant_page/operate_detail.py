@@ -118,40 +118,33 @@ def add_order(request):
         phone = request.GET.get('phone')
         address = request.GET.get('address')
         platform = request.GET.get('platform')
+        ifcharge = str(request.GET.get('ifcharge'))
+        pay = False
         if money and phone and address and platform:
-            # try:
-            #     merchant = Merchant.objects.get(alin_account=request.session['username'])
-            #     new_order = DayOrder()
-            #     new_order.order_id_alin = 1111111111
-            #     new_order.order_id_old = 0000000000
-            #     new_order.phone = phone
-            #     new_order.address = address
-            #     new_order.platform = platform
-            #     new_order.status = 2
-            #     new_order.real_price = money
-            #     new_order.merchant = merchant
-            #     new_order.origin_price = 0
-            #     new_order.order_time = datetime.datetime.utcnow()
-            #     new_order.send_time = datetime.datetime.utcnow()
-            #     new_order.save()
-            #     return HttpResponse(json.dumps('T'), content_type='application/json')
-            # except:
-            #     return HttpResponse(json.dumps('F'), content_type='application/json')
-            merchant = Merchant.objects.get(alin_account=request.session['username'])
-            new_order = DayOrder()
-            new_order.order_id_alin = 1111111111
-            new_order.order_id_old = 0000000000
-            new_order.phone = phone
-            new_order.address = address
-            new_order.platform = platform
-            new_order.status = 2
-            new_order.real_price = money
-            new_order.merchant = merchant
-            new_order.origin_price = 0
-            new_order.order_time = datetime.datetime.utcnow()
-            new_order.send_time = datetime.datetime.utcnow()
-            new_order.save()
-            return HttpResponse(json.dumps('T'), content_type='application/json')
+            try:
+                merchant = Merchant.objects.get(alin_account=request.session['username'])
+                autoid = int(DayOrder.objects.filter(platform=platform, merchant=merchant).count()) + 1
+                if ifcharge == '1':
+                    pay = True
+                new_order = DayOrder()
+                newid = createAlinOrderNum(str(platform), merchant.id, autoid)
+                new_order.order_id_alin = newid
+                new_order.qr_path = createqr(1, newid)
+                new_order.order_id_old = str(autoid)
+                new_order.phone = phone
+                new_order.address = address
+                new_order.platform = platform
+                new_order.status = 2
+                new_order.pay = pay
+                new_order.real_price = money
+                new_order.merchant = merchant
+                new_order.origin_price = money
+                new_order.order_time = datetime.datetime.now()
+                new_order.send_time = datetime.datetime.now()
+                new_order.save()
+                return HttpResponse(json.dumps('T'), content_type='application/json')
+            except:
+                return HttpResponse(json.dumps('F'), content_type='application/json')
         else:
             return HttpResponse(json.dumps('F'), content_type='application/json')
     else:

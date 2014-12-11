@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+
+    <title></title>
+</head>
+<body>
+{% block define %}
+    <script type="text/javascript" src="/js/mine.js" charset="UTF-8"></script>
+    <form method="get" action="operate_history" id="search_mes">
+    <div class="col-md-12 col-lg-12" style="margin-top: 3%">
+      <div class="col-md-5 col-lg-5 input-group has-success" style="width: 30%;max-width: 300px;margin-right:27%;float: right">
+         <span class="input-group-addon" style="width: 80px">截止日期:</span>
+         <input id="end_date" name="end_date" type="text" class="form-control" style="cursor: pointer; margin-right: 10%;" onclick="fPopCalendar(event,this,this)" onfocus="this.select()" readonly="readonly" />
+      </div>
+      <div class="col-md-5 col-lg-5 input-group has-success" style="width: 30%;max-width: 300px;margin-right: 1%;float: right">
+         <span class="input-group-addon">起始日期:</span>
+         <input id="start_date" name="start_date" type="text" class="form-control" style="cursor: pointer; margin-right: 10%;" onclick="fPopCalendar(event,this,this)" onfocus="this.select()" readonly="readonly" />
+      </div>
+    </div>
+    <div class="col-md-2 col-lg-2" style="float: right;margin-right: 7%;margin-top: -38px;">
+          <button id="search" class="btn btn-success">查询</button>
+      </div>
+    </form>
+     <span>{{ summary }}</span>
+<div class="panel panel-default text-center">
+    <div class="panel-body">
+             <table class="table table-bordered text-center">
+                 <tr>
+                     <th>姓名</th>
+                     <th>联系方式</th>
+                     <th>状态</th>
+                     <th>到付单数</th>
+                     <th>到付金额</th>
+                     <th>已付单数</th>
+                     <th>已付金额</th>
+                     <th>已送单数</th>
+                 </tr>
+                 {%for item in senders%}
+                 <tr>
+                     <td>{{ item.nick }}</td>
+                     <td>{{ item.phone }}</td>
+                     <td>{{ item.status }}</td>
+                     <td>{{ item.offline_num }}</td>
+                     <td>{{ item.offline_money }}</td>
+                     <td>{{ item.online_num }}</td>
+                     <td>{{ item.online_money }}</td>
+                     <td>{{ item.today_sends }}</td>
+                 </tr>
+                 {% endfor %}
+             </table>
+         <table class="table table-bordered text-center">
+                 <tr>
+                     <th>订单号</th>
+                     <th>下单时间</th>
+                     <th>联系方式</th>
+                     <th>地址</th>
+                     <th>订餐平台</th>
+                     <th>付款</th>
+                     <th>派送员</th>
+                     <th>菜单</th>
+                 </tr>
+                 {%for item in orders%}
+                 <tr>
+                     <td>{{ item.order_id_alin }}</td>
+                     <td>{{ item.order_time|date:"Y-m-d H:i:s" }}</td>
+                     <td>{{ item.phone }}</td>
+                     <td>{{ item.address }}</td>
+                     <td>{{ item.platform }}</td>
+                     <td>{{ item.real_price }}</td>
+                     <td>{{ item.finish_by }}</td>
+                     <td>
+                         <div class="btn-group dropdown">
+                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">查看<span class="caret"></span>
+                             </button>
+                             <ul class="dropdown-menu" role="menu" style="text-align: center;">
+                                 {% for dish in item.tdishs.all %}
+                                     <li><p>{{ dish.dish_name }} X {{ dish.dish_count }}</p></li>
+                                 {% endfor %}
+                             </ul>
+                         </div>
+                     </td>
+                 </tr>
+                 {% endfor %}
+             </table>
+        <nav>
+       <ul class="pagination">
+             {% if orders.has_previous %}
+        <li><a href="{{ pagepara }}&page={{ orders.previous_page_number }}">&laquo;</a></li>
+             {% endif %}
+             {% for page in orders.paginator.page_range %}
+               {% if page = orders.number %}
+        <li class="active"><a href="?page={{ page }}">{{ page }}</a></li>
+               {% else %}
+        <li><a href="{{ pagepara }}&page={{ page }}">{{ page }}</a></li>
+               {% endif %}
+            {% endfor %}
+            {% if items.has_next %}
+        <li><a href="{{ pagepara }}&page={{ orders.next_page_number }}">&raquo;</a></li>
+            {% endif %}
+       </ul>
+     </nav>
+        </div>
+</div>
+{% endblock define %}
+</body>
+</html>
