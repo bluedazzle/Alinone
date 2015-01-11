@@ -26,8 +26,15 @@ function jieshouone(order_account){
                                 if($('tr').length == 1){
                                     window.location.href = 'operate_new'
                                 }
+                            }else if(data == 'C'){
+                                alert('该单已被用户取消，请在已取消订单中查看');
+                                clearInterval(countdown);
+                                window.location.href = 'operate_new'
+                            }else if(data != 'N' && data != 'F'){
+                                var mess = '有' + data.toString() + '单已被用户取消，请在已取消订单中查看';
+                                alert(mess);
                             }
-                            else{
+                            else if(data == 'N'){
                                 window.location.href = 'login_in'
                             }
                         },
@@ -89,7 +96,15 @@ function jieshouall(){
                             if (data == 'T') {
                                 window.location.href = 'operate_new'
                             }
-                            else{
+                            else if(data == 'C'){
+                                alert('该单已被用户取消，请在已取消订单中查看');
+                                clearInterval(countdown);
+                                window.location.href = 'operate_new'
+                            }else if(data != 'N' && data != 'F'){
+                                var mess = '有' + data.toString() + '单已被用户取消，请在已取消订单中查看';
+                                alert(mess);
+                            }
+                            else if(data == 'N'){
                                 window.location.href = 'login_in'
                             }
                         },

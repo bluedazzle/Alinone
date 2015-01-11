@@ -39,8 +39,16 @@ def jieshouone(request, order):
     order_detail.status = 2
     orderstr = str(order_detail.order_id_old) + ',' + str(order_detail.platform)
     res = alo.ensure_order(str(currentusr.id), orderstr)
-    if res:
+    print res
+    if res is True:
         order_detail.save()
+    elif res is False:
+        order_detail.status = 2
+        order_detail.save()
+    elif res == 'c cancel':
+        order_detail.status = 5
+        order_detail.save()
+        return HttpResponse(json.dumps('C'), content_type='application/json')
     return HttpResponse(json.dumps('T'), content_type='application/json')
 
 
@@ -59,6 +67,7 @@ def jujueone(request, order):
 
 
 def jieshouall(request):
+    flag = 0
     if not request.session.get('username'):
         return HttpResponse(json.dumps('N'), content_type='application/json')
     merchant0 = request.session.get('username')
@@ -66,10 +75,21 @@ def jieshouall(request):
     order_detail = DayOrder.objects.filter(merchant=merchant, status=1)
     for item in order_detail:
         orderstr = str(item.order_id_old) + ',' + str(item.platform)
+        print orderstr
         res = alo.ensure_order(str(merchant.id), orderstr)
-        if res:
+        print res
+        if res is True:
             item.status = 2
             item.save()
+        elif res is False:
+            item.status = 2
+            item.save()
+        elif res == 'c cancel':
+            item.status = 5
+            item.save()
+            flag += 1
+    if flag != 0:
+        return HttpResponse(json.dumps(flag), content_type='application/json')
     return HttpResponse(json.dumps('T'), content_type='application/json')
 
 

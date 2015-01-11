@@ -1,4 +1,7 @@
 import datetime
+import string
+import time
+import random
 from CronOrder.models import *
 from AlinLog.models import *
 from django.http import Http404
@@ -31,3 +34,17 @@ def resetAutoId(args = None):
     newlog.status = True
     newlog.save()
     return True
+
+def createMeiId():
+    return string.join(random.sample('FEDCBA1234567890FEDCBA1234567890FEDCBA1234567890FEDCBA1234567890', 64)).replace(" ", "")
+
+def createMeiOrder(mid):
+    date = time.strftime('%Y%m%d', time.localtime(time.time()))[2:]
+    mmid = '%07i' % int(mid)
+    mei_id = date + mmid + '0000'
+    return mei_id
+
+def timestampToDatetime(timestamp):
+    formattime = time.localtime(float(timestamp))
+    datetimee = datetime.datetime(*formattime[:6])
+    return datetimee

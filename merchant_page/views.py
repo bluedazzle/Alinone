@@ -258,6 +258,7 @@ def change_name(request):
 #get orders count
 def get_orders_count(request):
     global alo
+    res = None
     if not request.session.get('username'):
         return HttpResponseRedirect('login_in')
     else:
@@ -266,7 +267,8 @@ def get_orders_count(request):
         merchant.update_time = datetime.datetime.now()
         merchant.save()
         if merchant.tao_account != '' or merchant.ele_account != '' or merchant.mei_account != '':
-            alo.cronOrder(str(merchant.id))
+            res = alo.cronOrder(str(merchant.id))
+            print res
         status = 'T'
         if merchant.tao_account:
             if merchant.tao_status == False:
@@ -296,12 +298,14 @@ def get_orders_count(request):
                        'status': status,
                        'order_num': finnum,
                        'total_money': total,
+                       'ver': res,
                        'notice_list': notice_list0}
         else:
             content = {'count': count,
                        'status': status,
                        'order_num': finnum,
                        'total_money': total,
+                       'ver': res,
                        'notice_list': 'N'}
         return HttpResponse(simplejson.dumps(content), content_type="application/json")
 
@@ -610,14 +614,20 @@ def platform_delete(request, name):
         merchant.tao_passwd = ''
         merchant.tao_sessionkey = ''
         merchant.tao_refreshkey = ''
+        merchant.tao_message = ''
+        merchant.tao_status = False
         merchant.save()
     elif name == '3':
         merchant.mei_account = ''
         merchant.mei_passwd = ''
+        merchant.mei_message = ''
+        merchant.mei_status = False
         merchant.save()
     elif name == '2':
         merchant.ele_account = ''
         merchant.ele_passwd = ''
+        merchant.ele_message = ''
+        merchant.ele_status = False
         merchant.save()
     return HttpResponseRedirect("operate_pingtai")
 

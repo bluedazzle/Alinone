@@ -119,6 +119,13 @@
                             else{
                                 $('#platform_status').addClass('hidden')
                             }
+                            if (data['ver'] == 'v need'){
+                                var str=prompt("随便写点儿啥吧","比如我叫啥");
+                                if(str)
+                                    {
+                                        alert("您刚输入的是："+ str);
+                                    }
+                            }
                         },
                         dataType: 'json'
                     });}
