@@ -13,8 +13,8 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "SeaSite.settings")
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
 
-uwsgi.register_signal(80, "", resetAutoId)
-uwsgi.add_cron(80, 0, 0, -1, -1, -1)
+uwsgi.register_signal(80, "", resetToken)
+uwsgi.add_timer(80, 7200)
 uwsgi.register_signal(82, "", getproxy)
 uwsgi.add_cron(82, 0, 10, -1, -1, -1)
 uwsgi.register_signal(84, "", getproxy)

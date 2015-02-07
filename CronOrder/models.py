@@ -229,3 +229,19 @@ class Tdish(models.Model):
 
     def __unicode__(self):
         return self.dish_name
+
+class CatcheData(models.Model):
+    merchant = models.OneToOneField(Merchant, related_name='Cache')
+    ele_cookie = models.TextField(max_length=5000, null=True, blank=True)
+    mei_token = models.CharField(max_length=128, null=True, blank=True)
+    mei_id = models.CharField(max_length=20, null=True, blank=True)
+    mei_acctid = models.CharField(max_length=20, null=True, blank=True)
+    mei_lastorderid = models.CharField(max_length=20, null=True, blank=True)
+    mei_sid = models.CharField(max_length=128, null=True, blank=True)
+    mei_verify = models.CharField(max_length=10, null=True, blank=True)
+    mei_need_verify = models.BooleanField(default=False)
+    tdd_sessionid = models.CharField(max_length=500, null=True, blank=True)
+    tdd_shopid = models.CharField(max_length=20, null=True, blank=True)
+
+    def __unicode__(self):
+        return str(self.merchant)

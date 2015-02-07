@@ -63,7 +63,7 @@ class Tao(object):
                 line = f1.readline()
         return res
 
-    def ensureorder(self, orderid):
+    def ensureorder(self, merchant, orderid):
         top.setDefaultAppInfo(self.appkey, self.secret)
         req = top.api.TradeWaimaiConfirmRequest()
         req.order_id = orderid
@@ -76,7 +76,7 @@ class Tao(object):
         except Exception, e:
             self.errorhandle(e)
 
-    def refuseorder(self, orderid):
+    def refuseorder(self, merchant, orderid):
         top.setDefaultAppInfo(self.appkey, self.secret)
         req = top.api.TradeWaimaiRefuseRequest()
         req.order_id = orderid
@@ -90,7 +90,7 @@ class Tao(object):
         except Exception, e:
             self.errorhandle(e)
 
-    def getpaddingorder(self):
+    def getpaddingorder(self, merchant):
         orderid_list = []
         top.setDefaultAppInfo(self.appkey, self.secret)
         if self.shopid == '':

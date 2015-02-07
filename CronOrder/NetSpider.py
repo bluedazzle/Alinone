@@ -2,6 +2,8 @@
 import cookielib
 import urllib2
 import urllib
+import simplejson
+import copy
 
 class NetSpider(object):
     """docstring for NetSpider"""
@@ -102,6 +104,7 @@ class NetSpider(object):
                 opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(self.__cookielist))
             urllib2.install_opener(opener)
             # req = urllib2.urlopen(requrl)
+            req = None
             if method == 'POST':
                 if reqdata != '':
                     req = urllib2.Request(requrl, reqdata)
@@ -112,14 +115,19 @@ class NetSpider(object):
             elif method == "GET":
                 # print requrl
                 req = urllib2.Request(requrl)
-            for key,itm in self.__postHeaders.items():
+            for key, itm in self.__postHeaders.items():
                 req.add_header(key, itm)
             res = urllib2.urlopen(req, timeout=6)
-            resdata = res.read().decode(encodemethod)
-            res.close()
-            return resdata
+            try:
+                resdata = res.read().decode(encodemethod)
+                res.close()
+                return str(resdata)
+            except Exception, e:
+                res.close()
+                return e
         except Exception, e:
             self.__ErrorHandle(e)
+            return e
         finally:
             pass
 
@@ -138,4 +146,49 @@ class NetSpider(object):
             print index
             print str(cookie.name) + ' : ' + str(cookie.value)
 
+    def OutPutCookie(self):
+        if len(self.__cookielist) == 0:
+            print "no cookie"
+            return None
+        outlist = []
+        for cookie in self.__cookielist:
+            newcookiedict = {}
+            newcookiedict['name'] = cookie.name
+            newcookiedict['version'] = cookie.version
+            newcookiedict['value'] = cookie.value
+            newcookiedict['port'] = cookie.port
+            newcookiedict['port_specified'] = cookie.port_specified
+            newcookiedict['domain'] = cookie.domain
+            newcookiedict['domain_specified'] = cookie.domain_specified
+            newcookiedict['domain_initial_dot'] = cookie.domain_initial_dot
+            newcookiedict['path'] = cookie.path
+            newcookiedict['path_specified'] = cookie.path_specified
+            newcookiedict['secure'] = cookie.secure
+            newcookiedict['expires'] = cookie.expires
+            newcookiedict['discard'] = cookie.discard
+            newcookiedict['comment'] = cookie.comment
+            newcookiedict['comment_url'] = cookie.comment_url
+            outlist.append(copy.copy(newcookiedict))
+        return simplejson.dumps(outlist)
 
+    def SetCookie(self, cookielist):
+        cookie_list = simplejson.loads(cookielist)
+        for itm in cookie_list:
+            newcookie = cookielib.Cookie(None, None, None, None, None, itm['domain'], None, None, None, None, None, None, None, None, None, None)
+            newcookie.version = itm['version']
+            newcookie.name = itm['name']
+            newcookie.value = itm['value']
+            newcookie.port = itm['port']
+            newcookie.port_specified = itm['port_specified']
+            newcookie.domain_initial_dot = itm['domain_initial_dot']
+            newcookie.domain_specified = itm['domain_specified']
+            newcookie.path = itm['path']
+            newcookie.path_specified = itm['path_specified']
+            newcookie.secure = itm['secure']
+            newcookie.expires = itm['expires']
+            newcookie.discard = itm['discard']
+            newcookie.comment = itm['comment']
+            newcookie.comment_url = itm['comment_url']
+            newcookie._rest = None
+            self.__cookielist.set_cookie(newcookie)
+        return True

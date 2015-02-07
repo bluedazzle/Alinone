@@ -4,6 +4,7 @@ from CronOrder.models import *
 from CronOrder.ele import *
 from CronOrder.Aaps import *
 from CronOrder.ALO import *
+from CronOrder.meituan import *
 import os, sys
 from apscheduler.schedulers.blocking import BlockingScheduler
 from CronOrder.method import *
@@ -19,5 +20,11 @@ class Command(BaseCommand):
         # a = OrderAps()
         # res = a.addJobs('1')
         # # print res
-        al = Alo()
-        al.cronOrder(str(1))
+        # al = Alo()
+        # al.cronOrder(str(1))
+        meit = mei(1)
+        meit.get_token()
+        print meit.token
+        res = meit.getOrder()
+        if res is True:
+            print 'success'

@@ -49,3 +49,16 @@ def migrateorder(args = None):
         return True
     else:
         return False
+
+def resetToken(args = None):
+    cache_list = CatcheData.objects.all()
+    totalnum = cache_list.count()
+    content = '刷新elecookie成功，刷新数目：' + str(totalnum) + '条'
+    for itm in cache_list:
+        itm.ele_cookie = ''
+        itm.save()
+    newlog = CronLog()
+    newlog.status = True
+    newlog.content = content
+    newlog.ltype = 4
+    newlog.save()

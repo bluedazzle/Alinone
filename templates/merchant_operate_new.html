@@ -172,8 +172,9 @@
                                      LODOP.ADD_PRINT_HTM(0,0,'100%','70%',"<h1>{{ item.phone }}</h1>"
                                      +"<h3 style=\"text-align: center;\">{{ item.merchant.name }}</h3>"
                                      +"<p style=\"font-size: 17px;\">订单号：{{ item.order_id_alin }}<br/>"
-                                     +" 时间: {{ item.order_time|date:"Y-m-d H:i:s" }}<br/>"
-                                     +" 平台: {{ item.platform }}<br/>"
+                                     +" 送达时间: </br>"
+                                     +"{{ item.send_time|date:"Y-m-d H:i:s" }}<br/>"
+                                     +" 平台: {{ item.platform }}({{ item.plat_num }})<br/>"
                                      +" 菜单:<p/>"
                                      +"--------------------------"
                                               {% for dish in item.dishs.all %}
@@ -193,7 +194,7 @@
                                      +"==================<br/>");
                                      if(localStorage.getItem('print_pages')){
                                          var pages = parseInt(localStorage['print_pages']);
-                                         SET_PRINT_COPIES(pages)
+                                         LODOP.SET_PRINT_COPIES(pages)
                                      }
                                      var print_req = LODOP.PRINT();
                                      if(print_req){
@@ -251,8 +252,9 @@
                                      LODOP.ADD_PRINT_HTM(1,1,'100%','70%', "<h1>{{ item.phone }}</h1>"
                                      +"<h3 style=\"text-align: center;\">{{ item.merchant.name }}</h3>"
                                      +"<p style=\"font-size: 15px;\">订单号：{{ item.order_id_alin }}<br/>"
-                                     +" 时间: {{ item.order_time|date:"Y-m-d H:i:s" }}<br/>"
-                                     +" 平台: {{ item.platform }}<br/>"
+                                     +" 送达时间:"
+                                     +" {{ item.send_time|date:"Y-m-d H:i:s" }}<br/>"
+                                     +" 平台: {{ item.platform }}({{ item.plat_num }})<br/>"
                                      +" 菜单:</p>"
                                      +"－－－－－－－－－"
                                               {% for dish in item.dishs.all %}
@@ -265,7 +267,7 @@
                                              {% if item.pay == True %}
                                      +"付款:{{ item.real_price }}(已付)</p>"
                                              {% else %}
-                                     +"付款:{{ item.real_price }}</p>"
+                                     +"付款:{{ item.real_price }}(未付)</p>"
                                              {% endif %}
                                      +"<img src=\"/qrimg/{{ item.qr_path }}\" style=\"height: 130px;width: 130px;\">"
                                      +"<br/>"
