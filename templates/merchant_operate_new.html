@@ -174,7 +174,7 @@
                                      +"<p style=\"font-size: 17px;\">订单号：{{ item.order_id_alin }}<br/>"
                                      +" 送达时间: </br>"
                                      +"{{ item.send_time|date:"Y-m-d H:i:s" }}<br/>"
-                                     +" 平台: {{ item.platform }}({{ item.plat_num }})<br/>"
+                                     +" 平台: <b>{{ item.platform }}({{ item.plat_num }})</b><br/>"
                                      +" 菜单:<p/>"
                                      +"--------------------------"
                                               {% for dish in item.dishs.all %}
@@ -185,9 +185,9 @@
                                      +" 优惠: {{ item.promotion }}<br/>"
                                      +" 电话: {{ item.phone }}<br/>"
                                              {% if item.pay == True %}
-                                     +"付款:{{ item.real_price }}(已付)</p>"
+                                     +"付款:{{ item.real_price }}<b>(已付)</b></p>"
                                              {% else %}
-                                     +"付款:{{ item.real_price }}</p>"
+                                     +"付款:{{ item.real_price }}<b>(未付)</b></p>"
                                              {% endif %}
                                      +"<img src=\"/qrimg/{{ item.qr_path }}\" style=\"height: 130px;width: 130px;\">"
                                      +"<br/>"
@@ -254,7 +254,7 @@
                                      +"<p style=\"font-size: 15px;\">订单号：{{ item.order_id_alin }}<br/>"
                                      +" 送达时间:"
                                      +" {{ item.send_time|date:"Y-m-d H:i:s" }}<br/>"
-                                     +" 平台: {{ item.platform }}({{ item.plat_num }})<br/>"
+                                     +" 平台: <b>{{ item.platform }}({{ item.plat_num }})</b><br/>"
                                      +" 菜单:</p>"
                                      +"－－－－－－－－－"
                                               {% for dish in item.dishs.all %}
@@ -265,9 +265,9 @@
                                      +"优惠: {{ item.promotion }}<br/>"
                                      +" 电话: {{ item.phone }}<br/>"
                                              {% if item.pay == True %}
-                                     +"付款:{{ item.real_price }}(已付)</p>"
+                                     +"付款:{{ item.real_price }}<b>(已付)</b></p>"
                                              {% else %}
-                                     +"付款:{{ item.real_price }}(未付)</p>"
+                                     +"付款:{{ item.real_price }}<b>(未付)</b></p>"
                                              {% endif %}
                                      +"<img src=\"/qrimg/{{ item.qr_path }}\" style=\"height: 130px;width: 130px;\">"
                                      +"<br/>"

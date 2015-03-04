@@ -174,7 +174,10 @@ class Mei(object):
             newdayorder.address = str(itm['recipient_address'])
             newdayorder.phone = str(itm['recipient_phone'])
             newdayorder.real_price = str(itm['total_after'])
-            newdayorder.send_time = timestampToDatetime(str(itm['delivery_btime']))
+            if int(str(itm['delivery_btime'])) == 0:
+                newdayorder.send_time = timestampToDatetime(str(itm['order_time']))
+            else:
+                newdayorder.send_time = timestampToDatetime(str(itm['delivery_btime']))
             newdayorder.order_time = timestampToDatetime(str(itm['order_time']))
             newdayorder.order_id_old = str(itm['wm_order_id_view'])
             newdayorder.note = str(itm['remark'])

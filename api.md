@@ -37,7 +37,7 @@ QRcode/method createqr(type, qrtext)
 ```
 |参数|平台|
 | --------------  | :---: |
-|type|生成类型：1、订单；1、绑定|
+|type|生成类型：1、订单；2、绑定|
 |qrtext|订单号 & 商家ID|
 
 ##**验证码调用**
@@ -46,15 +46,8 @@ AlinApi/method createverfiycode(phone, count)
 ```
 |参数|平台|
 | --------------  | :---: |
-|phone|手机号|
-|count|验证码位数，选填，默认6位|
-###**Return**
-```
-{"success":True,"verify_code":"423561"}
-or
-{"success":False,"body":null}
-```
-
+|type|生成类型：1、订单；2、绑定|
+|qrtext|订单号 & 商家ID|
 
 ##**物流人员注册**
 #####物流人员注册
@@ -76,6 +69,24 @@ or
 {"status":6,"body":null}
 or
 {"status":12,"body":null}
+```
+
+##**验证码**
+#####物流人员注册获取验证码
+```
+POST /sender/req_verify
+```
+###**Parameters**
+* phone(_Required_|string)-待验证手机，必须为手机号
+###**Request**
+```
+{"phone":18215606355}
+```
+###**Return**
+```
+{"status":1,"body":{"verify_code":"123456"}}
+or
+{"status":2,"body":null}
 ```
 
 ##**登录**
@@ -171,6 +182,22 @@ POST /sender/finish_orders
 ###**Return**
 ```
 {"status":1,"body":null}
+```
+
+##**查询当前订单**
+#####物流人员获取已扫订单
+```
+POST /sender/get_bind_orders
+```
+###**Parameters**
+* private_token(_Required_|string)-当前用户token
+###**Request**
+```
+{"private_token":"18215606355"}
+```
+###**Return**
+```
+{"status":1,"body":[{"order_id":"20140000000","name":"xxx","merchant_id":"1","phone":"1300000000","address":"258","dish":[{"name":"xx","count":"1","price":12.0},{"name":"xx","count":"1","price":12.0}]},{"order_id":"20140000000","name":"xxx","merchant_id":"1","phone":"1300000000","address":"258","dish":[{"name":"xx","count":"1","price":12.0},{"name":"xx","count":"1","price":12.0}]}]}
 ```
 
 ##**上传GPS坐标**
@@ -278,21 +305,18 @@ POST /sender/new_password
 {"status":1,"body":{}}
 ```
 
-##**获取之前绑定的单**
-#####物流人员获取之前绑定的单
+##**获取今日配送信息**
+#####物流人员获取今日已配送信息
 ```
-POST /sender/get_bind_orders
+POST /sender/get_today_info
 ```
 ###**Parameters**
-* private_token(_Required_|string)-用户token
+* private_token(_Required_|string)-当前用户token
 ###**Request**
 ```
-{"private_token":"18215606355"}
+{private_token:"18215606355"}
 ```
 ###**Return**
 ```
-有单
-{"status": 1, "body": {"order_list": [{"phone": "18200115204", "name": "1", "dish_list": [{"count": 1, "price": -10.0, "name": "1"}, {"count": 1, "price": 16.0, "name": "1"}, {"count": 1, "price": 4.0, "name": "1"}], "address": "1", "order_id": "2014111602000000010070", "merchant_id": "00000001"}]}}
-无单
-{"status":1,"body":{}}
+{"status": 1, "body": {"merchants": [{"sended": [{"platform": 3, "online_pay": false, "alin_id": "2015030303000000010003", "phone": "18215606355", "price": 18.0, "send_time": "2015-03-03 16:53:36+08:00", "plat_num": "5"}, {"platform": 3, "online_pay": false, "alin_id": "2015030303000000010002", "phone": "13438835711", "price": 12.0, "send_time": "2015-03-03 16:25:57+08:00", "plat_num": ""}], "merchant_id": "00000001", "merchant_name": "IECtest"}, {"sended": [{"platform": 1, "online_pay": true, "alin_id": "2015010303000000010022", "phone": "15008236070", "price": 13.0, "send_time": "2015-03-04 13:52:49+08:00", "plat_num": ""}, {"platform": 3, "online_pay": false, "alin_id": "2015010302000000010004", "phone": "13438839803", "price": 12.0, "send_time": "2015-03-04 13:52:11+08:00", "plat_num": ""}], "merchant_id": "00000002", "merchant_name": "guaishushu"}]}}
 ```

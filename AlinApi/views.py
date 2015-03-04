@@ -299,6 +299,49 @@ def senderinfo(req):
         raise Http404
 
 @csrf_exempt
+def send_info(req):
+    body = {}
+    merchantlist = []
+    orderlist = []
+    if req.method == 'POST':
+        reqdata = simplejson.loads(req.body)
+        privatetoken = reqdata['private_token']
+        currentuser_list = Sender.objects.filter(private_token = str(privatetoken))
+        if currentuser_list.count() > 0:
+            currentuser = currentuser_list[0]
+            lasttime = currentuser.active_time.replace(tzinfo = None)
+            if not isactive(lasttime):
+                return HttpResponse(encodejson(5, body), content_type="application/json")
+            currentuser.active_time = datetime.datetime.now()
+            currentuser.save()
+            bindmerchants = currentuser.sender.all()
+            for itm in bindmerchants:
+                finishorders = DayOrder.objects.filter(finish_by = str(currentuser.phone), merchant = itm)
+                newinfo = {}
+                newsendorder = {}
+                orderlist = []
+                newinfo['merchant_id'] = str('%08i' % itm.id)
+                newinfo['merchant_name'] = itm.name
+                for item in finishorders:
+                    newsendorder['alin_id'] = item.order_id_alin
+                    newsendorder['phone'] = item.phone
+                    newsendorder['plat_num'] = item.plat_num
+                    newsendorder['platform'] = item.platform
+                    newsendorder['send_time'] = str(timezone.localtime(item.send_time))
+                    newsendorder['price'] = item.real_price
+                    newsendorder['online_pay'] = item.pay
+                    orderlist.append(copy.copy(newsendorder))
+                newinfo['sended'] = orderlist
+                merchantlist.append(copy.copy(newinfo))
+            body['merchants'] = merchantlist
+            return HttpResponse(encodejson(1, body), content_type="application/json")
+        else:
+            return HttpResponse(encodejson(7, body), content_type="application/json")
+    else:
+        raise Http404
+
+
+@csrf_exempt
 def login(req):
     body = {}
     if req.method == 'POST':

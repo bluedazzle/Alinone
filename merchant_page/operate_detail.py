@@ -39,6 +39,7 @@ def jieshouone(request, order):
     order_detail.status = 2
     orderstr = str(order_detail.order_id_old) + ',' + str(order_detail.platform)
     res = alo.ensure_order(str(currentusr.id), orderstr)
+    print 'jieshou!!!'
     print res
     if res is True:
         order_detail.save()
@@ -163,7 +164,8 @@ def add_order(request):
                 new_order.send_time = datetime.datetime.now()
                 new_order.save()
                 return HttpResponse(json.dumps('T'), content_type='application/json')
-            except:
+            except Exception, e:
+                print e
                 return HttpResponse(json.dumps('F'), content_type='application/json')
         else:
             return HttpResponse(json.dumps('F'), content_type='application/json')
