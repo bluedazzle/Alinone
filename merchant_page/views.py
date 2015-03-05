@@ -577,6 +577,8 @@ def pingtai_name(orders):
             item.platform = "美团"
         elif item.platform == 2:
             item.platform = "饿了么"
+        elif item.platform == 11:
+            item.platform = "其他平台"
         else:
             item.platform = item.platform
     return orders
