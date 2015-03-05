@@ -24,6 +24,9 @@ class Alo(object):
     def refuse_order(self, merchantid, order):
         orderid = str(order).split(',')[0]
         platform = str(order).split(',')[1]
+        print 'refuse_order'
+        if len(orderid) < 5:
+            return True
         mer = Merchant.objects.filter(id = merchantid)[0]
         if platform == '1':
             tddcat = Tao()

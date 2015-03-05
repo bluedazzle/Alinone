@@ -13,7 +13,7 @@ function jujueone(order_account){
 
 
 function jujueall(){
-    var r=confirm("您确定要取消所有订单么？？？");
+    var r=confirm("您确定要取消所有订单么？？？?");
     if(r==true){
         window.location.href="jujueall";
     }

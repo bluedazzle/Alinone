@@ -290,6 +290,7 @@ def get_orders_count(request):
         else:
             count = order_list.count()
         notice_list = Notice.objects.all()
+        total = '%.2f' % total
         if notice_list.count() > 0:
             notice_list0 = []
             for item in notice_list:
