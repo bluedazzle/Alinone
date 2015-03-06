@@ -150,7 +150,7 @@ class Mei(object):
             curmet.save()
             newlog = RunTimeLog()
             newlog.content = '美团抓单失败'
-            newlog.merchant = None
+            newlog.merchant = curmet
             newlog.err_message = html
             newlog.ltype = 38
             newlog.save()

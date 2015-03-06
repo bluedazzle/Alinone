@@ -9,6 +9,7 @@ def migrateorder(args = None):
         newto = TotalOrder()
         newto.order_time = itm.order_time
         newto.address = itm.address
+        print itm.finish_by
         newto.finish_by = itm.finish_by
         newto.merchant = itm.merchant
         newto.bind_sender = itm.bind_sender

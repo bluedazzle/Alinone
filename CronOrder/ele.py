@@ -109,12 +109,16 @@ class Ele(object):
             neworder.order_id_old = orderid
             neworder.origin_price = price.string[1:]
             neworder.real_price = price.string[1:]
-            neworder.phone = phone.string[3:]
+            orderphone = phone.string[3:]
+            phonelist = orderphone.split(',')
+            neworder.phone = phonelist[0]
             neworder.order_time = datetimee
             neworder.status = 1
             neworder.promotion = 'nothing'
             neworder.pay = onpay
             neworder.note = note
+            if len(phonelist) > 1:
+                neworder.note += '应急电话：%s' % phonelist[1]
             neworder.platform = 2
             neworder.qr_path = qrres
             neworder.merchant = merchant
