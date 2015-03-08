@@ -30,6 +30,8 @@
 |01|淘点点|
 |02|饿了么|
 |03|美团外卖|
+|10|电话订单|
+|11|其他平台|
 
 ##**二维码生成**
 ```
@@ -160,8 +162,7 @@ POST /sender/bind_orders
 ```
 ###**Return**
 ```
-{"status":1,"body":null}
-or
+{"status": 1, "body": {"bind_list": [{"phone": "13438101510", "name": "\u602a\u8700\u9ecd\u7cbe\u54c1\u5916\u5356", "dish_list": [{"count": 1, "price": 13.0, "name": "\u8700\u9ecd\u817f\u6392\u996d"}], "address": "\u7535\u5b50\u79d1\u6280\u5927\u5b66\u672c\u79d1\u4e5d\u680b", "order_id": "2015030803000000040017", "merchant_id": "00000004"}], "fail_list": []}}or
 {"status":4,"body":{"fail_list":[{"order_id":"2014101601000000120001"},{"order_id":"2014101601000000120001"}]}}
 or
 {"status":13,"body":{"fail_list":[{"order_id":"2014101601000000120001"},{"order_id":"2014101601000000120001"}]}}
