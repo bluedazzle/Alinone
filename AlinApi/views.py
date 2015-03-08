@@ -201,6 +201,8 @@ def bindorders(req):
                         order['merchant_id'] = str('%08i' % bindorder.merchant.id)
                         order['phone'] = str(bindorder.phone)
                         order['address'] = str(bindorder.address)
+                        order['price'] = str(bindorder.real_price)
+                        order['if_pay'] = bindorder.pay
                         dishlist = bindorder.dishs.all()
                         for it in dishlist:
                             dish = {}
@@ -250,6 +252,8 @@ def getcurlist(req):
                     order['merchant_id'] = str('%08i' % item.merchant.id)
                     order['phone'] = str(item.phone)
                     order['address'] = str(item.address)
+                    order['price'] = str(item.real_price)
+                    order['if_pay'] = item.pay
                     dishlist = item.dishs.all()
                     for it in dishlist:
                         dish = {}
