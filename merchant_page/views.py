@@ -757,7 +757,7 @@ def operate_today(request):
     summary = '今日待接收' + str(pending) + '单，已接收' + str(accept) + '单，派送中' + str(sending) + '单，已撤销' + str(refuse) + '单，已完成' + str(total_orders.count()) + '单，其中，淘点点' + str(tdd) + '单，饿了么' + str(ele) + '单，美团' + str(mei) + '单，其他' + str(other) + '单，线上支付' + str(online) + '单，共计' + str(online_money) + '元，线下支付' + str(offline) + '单，共计' + str(offline_money) + '元，今日总营业额' + str(total_money) + '元'
     senders = currentuser.bind_sender.all()
     for item in senders:
-        my_send = DayOrder.objects.filter(finish_by=item.phone)
+        my_send = DayOrder.objects.filter(finished_by=item)
         my_sending = DayOrder.objects.filter(bind_sender=item).count()
         if my_sending == 0:
             item.status = '待命中'

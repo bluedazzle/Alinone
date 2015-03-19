@@ -108,13 +108,13 @@ def finishorder(req):
                 return HttpResponse(encodejson(5, body), content_type="application/json")
             currentuser.active_time = datetime.datetime.now()
             currentuser.save()
-            curentorders = currentuser.order.all()
+            curentorders = currentuser.orders.all()
             if orderlist is not None:
                 for itm in orderlist:
                     orderidlist.append(copy.copy(itm['order_id']))
                 for item in curentorders:
                     if str(item.order_id_alin) not in orderidlist:
-                        item.finish_by = str(currentuser.phone)
+                        item.finished_by = currentuser
                         item.status = 4
                         item.save()
                     else:
@@ -122,10 +122,10 @@ def finishorder(req):
                         item.save()
             else:
                 for item in currentorders:
-                    item.finish_by = str(currentuser.phone)
+                    item.finished_by = currentuser
                     item.status = 4
                     item.save()
-            currentuser.order.clear()
+            currentuser.orders.clear()
             currentuser.save()
             return HttpResponse(encodejson(1, body), content_type="application/json")
             #if
@@ -289,7 +289,7 @@ def senderinfo(req):
             currentuser.save()
             bindmerchants = currentuser.sender.all()
             for itm in bindmerchants:
-                finishorders = DayOrder.objects.filter(finish_by = str(currentuser.phone), merchant = itm)
+                finishorders = DayOrder.objects.filter(finished_by = currentuser, merchant = itm)
                 newinfo = {}
                 newinfo['merchant_id'] = str('%08i' % itm.id)
                 newinfo['merchant_name'] = itm.name
@@ -320,7 +320,7 @@ def send_info(req):
             currentuser.save()
             bindmerchants = currentuser.sender.all()
             for itm in bindmerchants:
-                finishorders = DayOrder.objects.filter(finish_by = str(currentuser.phone), merchant = itm)
+                finishorders = DayOrder.objects.filter(finished_by = currentuser, merchant = itm)
                 newinfo = {}
                 newsendorder = {}
                 orderlist = []
@@ -440,6 +440,32 @@ def register(req):
         raise Http404
 
 @csrf_exempt
+def get_pending_order_num(req):
+    body={}
+    if req.method == 'POST':
+        reqdata = simplejson.loads(req.body)
+        token = reqdata['private_token']
+        senderlist = Sender.objects.filter(private_token=token)
+        if senderlist.count() > 0:
+            sender = senderlist[0]
+            bindmerchants = sender.sender.all()
+            merchantlist = []
+            for itm in bindmerchants:
+                merchant = {}
+                count = int(DayOrder.objects.filter(merchant=itm, status=2).count())
+                merchant['merhcant_id'] = str(itm.id)
+                merchant['count'] = count
+                merchantlist.append(copy.copy(merchant))
+            body['merchants'] = merchantlist
+            return HttpResponse(encodejson(1, body), content_type="application/json")
+        else:
+            return HttpResponse(encodejson(13, body), content_type="application/json")
+    else:
+        raise Http404
+
+
+
+@csrf_exempt
 def searchmeal(req):
     iplist = ['127.0.0.1', 'localhost', '100.64.132.200', '125.71.229.18', '121.40.210.250']
     body = {}
@@ -470,7 +496,10 @@ def searchmeal(req):
                 mealdic['name'] = itm.merchant.name
                 mealdic['address'] = itm.merchant.address
                 mealdic['status'] = itm.status
-                mealdic['sender_name'] = str(itm.finish_by)
+                if itm.finished_by is not None:
+                    mealdic['sender_name'] = str(itm.finished_by.phone)
+                else:
+                    mealdic['sender_name'] = '无'
                 mealdic['update_time'] = str(timezone.localtime(itm.order_time))
                 dishlist = itm.dishs.all()
                 for it in dishlist:

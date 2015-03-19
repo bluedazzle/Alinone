@@ -9,8 +9,8 @@ def migrateorder(args = None):
         newto = TotalOrder()
         newto.order_time = itm.order_time
         newto.address = itm.address
-        print itm.finish_by
-        newto.finish_by = itm.finish_by
+        # print itm.finished_by.phone
+        newto.finished_by = itm.finished_by
         newto.merchant = itm.merchant
         newto.bind_sender = itm.bind_sender
         newto.note = itm.note
@@ -19,7 +19,7 @@ def migrateorder(args = None):
         newto.origin_price = itm.origin_price
         if str(itm.status) != '4' or str(itm.status) != '5':
             newto.status = 4
-            newto.finish_by = itm.bind_sender
+            newto.finished_by = itm.bind_sender
         else:
             newto.status = itm.status
         newto.pay = itm.pay
@@ -29,6 +29,7 @@ def migrateorder(args = None):
         newto.promotion = itm.promotion
         newto.qr_path = itm.qr_path
         newto.real_price = itm.real_price
+        newto.day_num = itm.day_num
         newto.save()
     tdish_list = Dish.objects.all()
     for item in tdish_list:

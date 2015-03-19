@@ -183,10 +183,11 @@ class DayOrder(models.Model):
     real_price = models.FloatField(max_length=10)
     status = models.IntegerField(max_length=1)
     merchant = models.ForeignKey(Merchant, blank=True, null=True)
-    bind_sender = models.ForeignKey(Sender, blank=True, null=True, related_name="order")
-    finish_by = models.CharField(max_length=20, blank=True, null=True)
+    bind_sender = models.ForeignKey(Sender, blank=True, null=True, related_name="orders")
+    finished_by = models.ForeignKey(Sender, blank=True, null=True, related_name='forders')
     qr_path = models.CharField(max_length=50, null=True, blank=True)
     plat_num = models.CharField(max_length=10, null=True, blank=True)
+    day_num = models.CharField(max_length=10, null=True, blank=True)
 
     def __unicode__(self):
         return self.order_id_alin
@@ -215,9 +216,10 @@ class TotalOrder(models.Model):
     real_price = models.FloatField(max_length=10)
     status = models.IntegerField(max_length=1)
     merchant = models.ForeignKey(Merchant, blank=True, null=True)
-    bind_sender = models.ForeignKey(Sender, blank=True, null=True, related_name="torder")
-    finish_by = models.CharField(max_length=20, blank=True, null=True)
+    bind_sender = models.ForeignKey(Sender, blank=True, null=True, related_name="torders")
+    finished_by = models.ForeignKey(Sender, blank=True, null=True, related_name='tforders')
     qr_path = models.CharField(max_length=50, null=True, blank=True)
+    day_num = models.CharField(max_length=10, null=True, blank=True)
 
     def __unicode__(self):
         return self.order_id_alin

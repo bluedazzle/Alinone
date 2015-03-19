@@ -5,11 +5,13 @@ from CronOrder.models import *
 class MerchantAdmin(admin.ModelAdmin):
     list_display = ('name', 'alin_account', 'is_online')
     list_filter = ('last_login',)
+    search_fields = ('alin_account', 'name')
     ordering = ('-last_login',)
 
 class DayOrderAdmin(admin.ModelAdmin):
-    list_display = ('order_id_alin', 'order_time', 'order_id_old', 'phone', 'pay', 'platform', 'real_price', 'status')
-    list_filter = ('order_time',)
+    list_display = ('order_id_alin', 'merchant', 'order_time', 'order_id_old', 'phone', 'pay', 'platform', 'real_price', 'status')
+    list_filter = ('order_time', 'merchant',)
+    search_fields = ('order_id_alin', 'merchant__alin_account', 'phone')
     ordering = ('-order_id_alin',)
 
 class DishAdmin(admin.ModelAdmin):

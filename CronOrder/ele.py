@@ -68,6 +68,7 @@ class Ele(object):
             print 'no new orders'
             return False
         thiscount = int(DayOrder.objects.filter(merchant=merchant, platform=2).count()) + 1
+        totalcount = int(DayOrder.objects.filter(merchant=merchant).count()) + 1
         # print 'start: ' + str(thiscount)
         for item in res:
             print item
@@ -122,6 +123,7 @@ class Ele(object):
             neworder.order_time = datetimee
             neworder.status = 1
             neworder.promotion = 'nothing'
+            neworder.day_num = str(totalcount)
             neworder.pay = onpay
             if note is None:
                 neworder.note = ''

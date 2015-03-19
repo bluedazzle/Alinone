@@ -114,7 +114,11 @@ class Mei(object):
                 res = self.get_token(curmet)
                 if res is False:
                     return None
-                cache_list = CatcheData.objects.filter(merchant = curmet)
+        else:
+            res = self.get_token(curmet)
+            if res is False:
+                return None
+        cache_list = CatcheData.objects.filter(merchant = curmet)
         cache = cache_list[0]
         postdic = {'utm_medium': 'android',
                    'wmPoiId': cache.mei_id,
@@ -158,6 +162,7 @@ class Mei(object):
             return False
         res_data = res_json['data']
         thiscount = int(DayOrder.objects.filter(merchant=curmet, platform=3).count()) + 1
+        totalcount = int(DayOrder.objects.filter(enumerate=curmet).count()) + 1
         for itm in res_data:
             mei_order_id = str(itm['wm_order_id_view'])
             ifhave = DayOrder.objects.filter(order_id_old = str(mei_order_id))
@@ -187,6 +192,7 @@ class Mei(object):
             newdayorder.plat_num = str(itm['wm_poi_order_dayseq'])
             newdayorder.origin_price = str(itm['total_before'])
             newdayorder.pay = onpay
+            newdayorder.day_num = str(totalcount)
             newdayorder.save()
             dish_list = itm['details']
             for item in dish_list:

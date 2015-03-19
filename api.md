@@ -321,3 +321,19 @@ POST /sender/get_today_info
 ```
 {"status": 1, "body": {"merchants": [{"sended": [{"platform": 3, "online_pay": false, "alin_id": "2015030303000000010003", "phone": "18215606355", "price": 18.0, "send_time": "2015-03-03 16:53:36+08:00", "plat_num": "5"}, {"platform": 3, "online_pay": false, "alin_id": "2015030303000000010002", "phone": "13438835711", "price": 12.0, "send_time": "2015-03-03 16:25:57+08:00", "plat_num": ""}], "merchant_id": "00000001", "merchant_name": "IECtest"}, {"sended": [{"platform": 1, "online_pay": true, "alin_id": "2015010303000000010022", "phone": "15008236070", "price": 13.0, "send_time": "2015-03-04 13:52:49+08:00", "plat_num": ""}, {"platform": 3, "online_pay": false, "alin_id": "2015010302000000010004", "phone": "13438839803", "price": 12.0, "send_time": "2015-03-04 13:52:11+08:00", "plat_num": ""}], "merchant_id": "00000002", "merchant_name": "guaishushu"}]}}
 ```
+
+##**获取未处理订单数量**
+#####物流人员获取绑定商家的未处理订单数量
+```
+POST /sender/get_pre_orders
+```
+###**Parameters**
+* private_token(_Required_|string)-当前用户token
+###**Request**
+```
+{private_token:"18215606355"}
+```
+###**Return**
+```
+{"status": 1, "body": {"merchants": [{"count": 0, "merhcant_id": "2"}, {"count": 1, "merhcant_id": "1"}]}}
+```
