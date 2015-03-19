@@ -11,6 +11,9 @@ from AlinLog.models import RunTimeLog
 import datetime
 import time
 import simplejson
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
 # http://napos.ele.me/order/processOrder/id/12259070287130497/category/1
 # ttp://napos.ele.me/order/setInvalid/id/12459171300411697/category/1?type=6&remark=
 class Ele(object):
@@ -120,7 +123,10 @@ class Ele(object):
             neworder.status = 1
             neworder.promotion = 'nothing'
             neworder.pay = onpay
-            neworder.note = note
+            if note is None:
+                neworder.note = ''
+            else:
+                neworder.note = note
             if len(phonelist) > 1:
                 neworder.note += '应急电话：%s' % phonelist[1]
             neworder.platform = 2
@@ -180,8 +186,8 @@ class Ele(object):
             # reset_proxy_times(str(self.net.Proxy))
             res_json = simplejson.loads(html)
             if res_json['success'] is False:
-                errmsg = str(res_json['message']).decode('unicode_escape')
-                curmet.ele_message = errmsg
+                errmsg = unicode(res_json['message'])
+                curmet.ele_message = errmsg.encode('unicode_escape').decode('unicode_escape')
                 curmet.ele_status = False
                 curmet.save()
                 newlog = RunTimeLog()

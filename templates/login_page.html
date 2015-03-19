@@ -25,12 +25,18 @@
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
-{% if flag %}
+{% ifequal flag 1 %}
     <div class="alert alert-warning alert-dismissible" role="alert" style="text-align: center;margin-top:-20px;line-height: 1.1;">
        <button type="button" class="close" data-dismiss="alert" style="margin-top: -7px;"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
        <strong style="font-size: 15px;">用户名或密码错误!请重新输入</strong>
     </div>
-{% endif %}
+{% endifequal %}
+{% ifequal flag 2 %}
+    <div class="alert alert-warning alert-dismissible" role="alert" style="text-align: center;margin-top:-20px;line-height: 1.1;">
+       <button type="button" class="close" data-dismiss="alert" style="margin-top: -7px;"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+       <strong style="font-size: 15px;">用户待审核，请稍后再试</strong>
+    </div>
+{% endifequal %}
 <div class="container" style="width: 700px;margin-top:10%;">
     <div class="jumbotron" style="text-align: center;">
         <h2>登录Alinone</h2>

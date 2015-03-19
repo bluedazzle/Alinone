@@ -28,6 +28,8 @@ def login_in(request):
         try:
             user = Merchant.objects.get(alin_account=user_name)
             if user.check_password(password):
+                if user.verify is False:
+                    return render_to_response('login_page.html', {'flag': 2}, context_instance=RequestContext(request))
                 request.session['username'] = user_name
                 merchant = Merchant.objects.get(alin_account=user_name)
                 merchant.update_time = datetime.datetime.now()
@@ -614,6 +616,10 @@ def platform_delete(request, name):
     merchant_id = request.session['username']
     merchant = Merchant.objects.get(alin_account=merchant_id)
     merchant.update_time = datetime.datetime.now()
+    cat_mer_list = CatcheData.objects.filter(merchant=merchant)
+    cat_mer = None
+    if cat_mer_list.count()>0:
+        cat_mer = cat_mer_list[0]
     if name == '1':
         merchant.tao_account = ''
         merchant.tao_passwd = ''
@@ -628,12 +634,18 @@ def platform_delete(request, name):
         merchant.mei_message = ''
         merchant.mei_status = False
         merchant.save()
+        if cat_mer is not None:
+            cat_mer.mei_token = ""
+            cat_mer.save()
     elif name == '2':
         merchant.ele_account = ''
         merchant.ele_passwd = ''
         merchant.ele_message = ''
         merchant.ele_status = False
         merchant.save()
+        if cat_mer is not None:
+            cat_mer.ele_cookie = ''
+            cat_mer.save()
     return HttpResponseRedirect("operate_pingtai")
 
 

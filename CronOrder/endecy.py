@@ -28,3 +28,6 @@ def Decrypt(data):
   buf = buf + cipher.final()
   del cipher
   return buf
+
+
+# Decrypt('3DBA9380B2B40F3813FD68A41D5C7C2C')

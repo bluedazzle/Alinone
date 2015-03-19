@@ -141,6 +141,7 @@ class Merchant(AbstractBaseUser):
     deadtime = models.DateTimeField(blank=True, null=True)
     recent_days = models.IntegerField(blank=True, null=True)
     balance = models.FloatField(blank=True, null=True)
+    verify = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'alin_account'
     REQUIRED_FIELDS = ['alin_account']
