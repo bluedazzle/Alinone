@@ -3,6 +3,7 @@ from CronOrder.endecy import *
 import cookielib
 from CronOrder.method import *
 from QRcode.method import *
+from CronOrder.NetProcess import *
 from CronOrder.NetSpider import *
 from ProxyWork.method import *
 from AlinLog.models import RunTimeLog
@@ -13,10 +14,11 @@ import simplejson
 
 class Mei(object):
     def __init__(self):
-        self.net = NetSpider()
-        self.net.Host = 'waimaieapi.meituan.com'
-        self.net.UserAgent = 'Dalvik/1.6.0 (Linux; U; Android 4.1.1; MI 2S MIUI/4.11.7)'
-        self.net.ContentType = 'application/x-www-form-urlencoded'
+        self.net = NetProcess()
+        self.headers = {'Host': 'waimaieapi.meituan.com',
+                        'User-Agent': 'Dalvik/1.6.0 (Linux; U; Android 4.1.1; MI 2S MIUI/4.11.7)',
+                        'Content-Type': 'application/x-www-form-urlencoded'}
+        self.net.SetHeaders(self.headers)
 
     def get_token(self, curmet):
         user = str(curmet.mei_account)

@@ -608,8 +608,3 @@ def encodejson(status, body):
 
 def createtoken(count = 32):
     return string.join(random.sample('ZYXWVUTSRQPONMLKJIHGFEDCBA1234567890zyxwvutsrqponmlkjihgfedcba+=', count)).replace(" ", "")
-
-def testindex(req):
-    t = 'It works!'
-    print t
-    return HttpResponse(t)

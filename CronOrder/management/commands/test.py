@@ -14,17 +14,17 @@ class Command(BaseCommand):
         # # # # catcheleorder(1)
         # # # ordlist = ['12459171300411697']
         # # # ensureleeorder(1,ordlist)
-        # # a = Ele(1)
-        # # res = a.catcheorder()
+        a = Ele()
+        res = a.catcheorder(1)
         # # print res
         # a = OrderAps()
         # res = a.addJobs('1')
         # # print res
         # al = Alo()
-        # al.cronOrder(str(1))
-        meit = mei(1)
-        meit.get_token()
-        print meit.token
-        res = meit.getOrder()
-        if res is True:
-            print 'success'
+        # # al.cronOrder(str(1))
+        # meit = mei(1)
+        # meit.get_token()
+        # print meit.token
+        # res = meit.getOrder()
+        # if res is True:
+        #     print 'success'

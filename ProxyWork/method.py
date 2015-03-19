@@ -1,4 +1,4 @@
-#coding: utf-8
+# -*- coding: utf-8 -*-
 import random
 from AlinLog.models import *
 from ProxyWork.models import *

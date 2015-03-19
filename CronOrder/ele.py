@@ -5,7 +5,7 @@ from CronOrder.endecy import *
 import cookielib
 from CronOrder.method import *
 from QRcode.method import *
-from CronOrder.NetSpider import *
+from CronOrder.NetProcess import *
 from ProxyWork.method import *
 from AlinLog.models import RunTimeLog
 import datetime
@@ -15,12 +15,14 @@ import simplejson
 # ttp://napos.ele.me/order/setInvalid/id/12459171300411697/category/1?type=6&remark=
 class Ele(object):
     def __init__(self):
-        self.net = NetSpider()
-        self.net.Host = 'napos.ele.me'
+        self.net = NetProcess()
+        # self.net.Host = 'napos.ele.me'
 
     def catcheorder(self, merchant):
         thiscount = 0
-        self.net.Referer = 'http://napos.ele.me/'
+        # self.net.Referer = 'http://napos.ele.me/'
+        print 'catcheele'
+        # self.set_proxy(merchant)
         if not self.iflogin(merchant):
             res = self.loginele(merchant)
             if res is None or res is False:
@@ -45,9 +47,11 @@ class Ele(object):
             newlog.err_message = str(html)
             newlog.status = False
             newlog.ltype = 18
-            newlog.merchant = curmet
+            newlog.merchant = merchant
             newlog.save()
+            # check_proxy_times(str(self.net.Proxy))
             return None
+        # reset_proxy_times(str(self.net.Proxy))
         soup = BeautifulSoup(html)
         intro = soup.find('ul', attrs={'id': 'list_items'})
         if intro is None:
@@ -153,20 +157,27 @@ class Ele(object):
             return False
 
     def loginele(self, curmet):
-        self.net.Referer = 'http://napos.ele.me/login'
+        # self.set_proxy(curmet)
+        # self.net.Referer = 'http://napos.ele.me/login'
+        print 'loginele'
         user = str(curmet.ele_account)
         passwd = str(curmet.ele_passwd)
         de_pass = Decrypt(passwd)
         postdic = {'username': user, 'password': de_pass}
+        # print 'login ele'
         html = self.net.GetResFromRequest('POST', 'http://napos.ele.me/auth/doLogin', 'utf-8', postdic)
-        if html is None:
+        # print 'login end'
+        if not isinstance(html, str):
             newlog = RunTimeLog()
             newlog.content = '饿了么登陆失败'
             newlog.merchant = curmet
-            newlog.err_message = 'no return html'
+            newlog.err_message = str(html)
             newlog.ltype = 15
+            newlog.status = False
             newlog.save()
+            # check_proxy_times(str(self.net.Proxy))
         else:
+            # reset_proxy_times(str(self.net.Proxy))
             res_json = simplejson.loads(html)
             if res_json['success'] is False:
                 errmsg = str(res_json['message']).decode('unicode_escape')
@@ -181,12 +192,13 @@ class Ele(object):
                 newlog.save()
                 return False
             elif res_json['success'] is True:
-                if self.net.SearchCookie('SSID') == 'nothing find':
-                    res = self.loginele()
-                    return res
+                # if self.net.Cookies['SSID'] == 'nothing find':
+                #     res = self.loginele()
+                #     return res
                 curmet.ele_status = True
                 curmet.save()
                 cache_list = CatcheData.objects.filter(merchant = curmet)
+                print str(self.net.OutPutCookie())
                 if cache_list.count() > 0:
                     cache = cache_list[0]
                     cache.ele_cookie = str(self.net.OutPutCookie())
@@ -202,6 +214,7 @@ class Ele(object):
         # curmet_list = Merchant.objects.filter(id = self.merchantid)
         # if curmet_list.count() == 0:
         #     return None
+        # self.set_proxy(curmet)
         if not self.iflogin(curmet):
             res = self.loginele(curmet)
             if res is None or res is False:
@@ -232,6 +245,7 @@ class Ele(object):
         return True
 
     def refuseorder(self, curmet, order):
+        # self.set_proxy(curmet)
         if not self.iflogin(curmet):
             res = self.loginele(curmet)
             if res is None or res is False:
@@ -260,3 +274,7 @@ class Ele(object):
             newlog.save()
             return False
         return True
+    #
+    # def set_proxy(self, curmet):
+    #     ip = distriproxy(str(curmet.id))
+    #     # self.net.Proxy = str(ip)

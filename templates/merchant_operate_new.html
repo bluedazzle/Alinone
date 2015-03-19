@@ -65,7 +65,7 @@
       </div>
         <script>
             $('#submit').click(function(){
-                if($('#phone').val().length==11 && $('#money').val() && $('#address').val()
+                if($('#money').val() && $('#address').val()
                         && $('#platform').val()){
                     var phone = $('#phone').val();
                     var money = $('#money').val();
@@ -111,6 +111,7 @@
                      <th>地址</th>
                      <th style="min-width: 80px;">订餐平台</th>
                      <th>平台流水号</th>
+                     <th>备注</th>
                      <th>付款</th>
                      <th>菜单</th>
                      <th style="min-width: 170px;">
@@ -129,6 +130,7 @@
                      </td>
                      <td>{{ item.platform }}</td>
                      <td>{{ item.plat_num }}</td>
+                     <td>{{ item.note }}</td>
                      {% if item.pay == True %}
                      <td>{{ item.real_price }}元(已付)</td>
                      {% else %}
@@ -175,6 +177,7 @@
                                      +"<p style=\"font-size: 17px;\">订单号：{{ item.order_id_alin }}<br/>"
                                      +" 送达时间: </br>"
                                      +"{{ item.send_time|date:"Y-m-d H:i:s" }}<br/>"
+                                     +" 备注:{{ item.note }}<br/>"
                                      +" 平台: <b>{{ item.platform }}({{ item.plat_num }})</b><br/>"
                                      +" 菜单:<p/>"
                                      +"--------------------------"
@@ -261,6 +264,7 @@
                                      +"<p style=\"font-size: 15px;\">订单号：{{ item.order_id_alin }}<br/>"
                                      +" 送达时间:"
                                      +" {{ item.send_time|date:"Y-m-d H:i:s" }}<br/>"
+                                     +" 备注:{{ item.note }}<br/>"
                                      +" 平台: <b>{{ item.platform }}({{ item.plat_num }})</b><br/>"
                                      +" 菜单:</p>"
                                      +"－－－－－－－－－"
