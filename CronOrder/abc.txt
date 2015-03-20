@@ -1,48 +1,45 @@
+<h2>待处理外卖 (2)</h2>
+
 <div id="list_container">
       <ul id="list_items">
-                <li orderId="12259197077731397"
+                <li orderId="12366176430326061"
     CategoryId="1"
-    id="list-12259197077731397"
+    id="list-12366176430326061"
     class="new"
-    createdAt="1415964436"
-    online-pay="1">
+    createdAt="1426820852"
+    online-pay="">
 
-  <span class="process_num">136</span>
+  <span class="process_num">4</span>
 
-          <div class="list_notice notice"><a rel="tipsy" explain="该订单为在线支付订单" >在线支付</a></div>
-        <div class="list_notice notice"><a rel="tipsy" explain="该订单来自移动设备" >移动端用户</a></div>
-        <br class="clear">
   
-  <div class="list_time">2分钟前</div>
+  <div class="list_time">35秒前</div>
   <!-- output class tag according to order category -->
   <div class="list_content">
 
-    <p class="list_price">￥10</p>
+    <p class="list_price">￥9</p>
 
-          <p class="list_customer waimai">电话：18981776104</p>
-      <p class="list_addr">地址: 电子科技大学清水河校区本科14栋</p>
+          <p class="list_customer waimai">电话：18215606355</p>
+      <p class="list_addr">地址: 科研楼b258</p>
           
     
     <hr />
 
     <p class="list_details">
-      卤鸡腿 1份/【且行且珍惜的小炒肉】 1份 在线支付立减优惠    </p>
+      纯生啤酒（厅） 1份/可乐（厅） 1份/珍珠大米饭 2份    </p>
 
   </div>
 
-  <div class="hidden" id="order_detail_12259197077731397">
+  <div class="hidden" id="order_detail_12366176430326061">
 
-          <div class="slide_notice notice"><span>在线支付:</span><span class="memo_detail">该订单为在线支付订单</span></div>
-        <div class="slide_notice notice"><span>移动端用户:</span><span class="memo_detail">该订单来自移动设备</span></div>
-      
+        
 
-  <div class="order_content new" online-pay="1">
-    <span class="process_num">136</span>
+  <div class="order_content new" online-pay="">
+    <span class="process_num">4</span>
     <div class="list_time"></div>
     <div class="order_detail">
       <div>
-        <p><span class="info_name">订单流水号:</span><span class="info_content">136</span></p>
-        <p><span class="info_name">订单编号:</span><span class="info_content">12259197077731397</span></p>
+        <p><span class="info_name">订单流水号:</span><span class="info_content">4</span></p>
+        <p><span class="info_name">订单编号:</span><span class="info_content">12366176430326061</span></p>
         <p>
           <span class="info_name">订单状态:</span>
           <span class="info_content">等待餐厅确认</span>
@@ -50,12 +47,12 @@
       </div>
       <div>
         <p><span class="info_name">订单类型:</span><span class="info_content">饿了么订单</span></p>
-        <p><span class="info_name">订单时间:</span><span class="info_content">2014-11-14 19:27:16</span></p>
+        <p><span class="info_name">订单时间:</span><span class="info_content">2015-03-20 11:07:32</span></p>
         <p><span class="info_name">订单备注:</span><span class="info_content"></span></p>
       </div>
       <div class="customer">
-                  <p><span class="info_name">顾客电话:</span><span class="info_content">18981776104</span></p>
-          <p><span class="info_name">顾客地址:</span><span class="info_content">电子科技大学清水河校区本科14栋</span></p>
+                  <p><span class="info_name">顾客电话:</span><span class="info_content">18215606355</span></p>
+          <p><span class="info_name">顾客地址:</span><span class="info_content">科研楼b258</span></p>
               </div>
               <div class="list_source">
           <span class="eleme">饿</span>
@@ -68,30 +65,24 @@
   <div class="menu_detail">
     <div class="order_action">
 
-    <a href="#" class="print button success action notcombined hidden" orderId="12259197077731397">打印</a>
-                        <a class="process button success print orderProcessBtn combined hidden"
-             categoryId="1"
-             orderId="12259197077731397"
-             rel="order12259197077731397"
-             dayNumber="136"
-             href="/order/processOrder/id/12259197077731397/category/1">打印并处理</a>
-          <a class="process button orderProcessBtn notcombined hidden"
-             categoryId="1"
-             orderId="12259197077731397"
-             rel="order12259197077731397"
-             dayNumber="136"
-             href="/order/processOrder/id/12259197077731397/category/1">处理</a>
-          <a class="setInvalid button warning orderProcessBtn"
-             categoryId="1"
-             orderId="12259197077731397"
-             rel="order12259197077731397"
-             dayNumber="136"
-             href="/order/setInvalid/id/12259197077731397/category/1">无效</a>
-                                  <a class="copy2 button orderProcessBtn" data-order-text="怪蜀黍连锁快餐[11月14日 No.136] 电子科技大学清水河校区本科14栋[18981776104] 卤鸡腿 1份/【且行且珍惜的小炒肉】 1份 在线支付立减优惠/共10元">复制</a>
-      
-      
-                      <a class="button more_user_info fr mr10" href="/order/getUserInfo/userId/3856826/phone/18981776104" target="_blank">顾客订单记录</a>
-          </div>
+                  <a class="process button success orderProcessBtn toPrint"
+           categoryId="1"
+           orderId="12366176430326061"
+           rel="order12366176430326061"
+           dayNumber="4"
+           href="/order/processOrder/id/12366176430326061/category/1">确认并打印</a>
+          
+                  <a class="setInvalid button warning orderProcessBtn"
+           categoryId="1"
+           orderId="12366176430326061"
+           rel="order12366176430326061"
+           dayNumber="4"
+           href="/order/setInvalid/id/12366176430326061/category/1">无效</a>
+                  <a class="copy2 button orderProcessBtn" data-order-text="屌丝烤鸭[3月20日 No.4] 科研楼b258[18215606355] 纯生啤酒（厅） 1份/可乐（厅） 1份/珍珠大米饭 2份/共9元">复制</a>
+    
+    
+                <a class="button more_user_info fr mr10" href="/order/getUserInfo/userId/1958315/phone/18215606355" target="_blank">顾客订单记录</a>
+        </div>
 
     <div class="menu_content">
         <table class="item_table">
@@ -105,50 +96,32 @@
     </thead>
     <tbody>
               <tr>
-          <td class="item_name"><span class="dishname">卤鸡腿</span></td>
-          <td class="item_price">4</td>
+          <td class="item_name"><span class="dishname">纯生啤酒（厅）</span></td>
+          <td class="item_price">2.5</td>
           <td class="item_quantity">1</td>
-          <td class="item_total_price">4</td>
+          <td class="item_total_price">2.5</td>
         </tr>
                       <tr>
-          <td class="item_name"><span class="dishname">【且行且珍惜的小炒肉】</span></td>
-          <td class="item_price">16</td>
+          <td class="item_name"><span class="dishname">可乐（厅）</span></td>
+          <td class="item_price">2.5</td>
           <td class="item_quantity">1</td>
-          <td class="item_total_price">16</td>
+          <td class="item_total_price">2.5</td>
+        </tr>
+                      <tr>
+          <td class="item_name"><span class="dishname">珍珠大米饭</span></td>
+          <td class="item_price">2</td>
+          <td class="item_quantity">2</td>
+          <td class="item_total_price">4</td>
         </tr>
                   </tbody>
     <tfoot>
       <tr>
         <th colspan="3">小计</th>
-        <th>20</th>
+        <th>9</th>
       </tr>
     </tfoot>
   </table>
 
-  <table class="item_table">
-    <thead>
-      <tr>
-        <th>其他费用</th>
-        <th>单价</th>
-        <th>数量</th>
-        <th>总价</th>
-      </tr>
-    </thead>
-    <tbody>
-              <tr>
-          <td class="item_name"><span class="dishname">在线支付立减优惠</span></td>
-          <td class="item_price">-10</td>
-          <td class="item_quantity">1</td>
-          <td class="item_total_price">-10</td>
-        </tr>
-          </tbody>
-    <tfoot>
-      <tr>
-        <th colspan="3">小计</th>
-        <th>-10</th>
-      </tr>
-    </tfoot>
-  </table>
 
     </div><!-- end of menu_content -->
           <div id="customer_detail" class=""></div>
@@ -157,33 +130,26 @@
   </div><!-- end of menu_detail -->
 
   <div id="order_json_data" class="hidden">
-    {"total":10,"items":[{"entity_id":9119708,"name":"\u5364\u9e21\u817f","price":4,"parent_entity_id":0,"group_id":1,"quantity":1,"entity_category_id":1},{"entity_id":6405637,"name":"\u3010\u4e14\u884c\u4e14\u73cd\u60dc\u7684\u5c0f\u7092\u8089\u3011","price":16,"parent_entity_id":0,"group_id":1,"quantity":1,"entity_category_id":1},{"entity_id":10207,"name":"\u5728\u7ebf\u652f\u4ed8\u7acb\u51cf\u4f18\u60e0","price":-10,"parent_entity_id":0,"group_id":0,"quantity":1,"entity_category_id":12}],"isWaimai":true,"isTangchi":false,"isBook":false,"deliverTime":"","restaurantNumber":136,"createdAt":"2014-11-14 19:27:16","table":"","people":"","phone":"18981776104","address":"\u7535\u5b50\u79d1\u6280\u5927\u5b66\u6e05\u6c34\u6cb3\u6821\u533a\u672c\u79d114\u680b","description":"","isFollower":false,"isOnlinePayment":true,"invoice":"","isTimeEnsure":false,"timeEnsureText":""}  </div>
+    {"id":"12366176430326061","total":9,"items":[{"entity_id":10046636,"name":"\u7eaf\u751f\u5564\u9152\uff08\u5385\uff09","price":2.5,"parent_entity_id":0,"group_id":1,"quantity":1,"entity_category_id":1},{"entity_id":9123776,"name":"\u53ef\u4e50\uff08\u5385\uff09","price":2.5,"parent_entity_id":0,"group_id":1,"quantity":1,"entity_category_id":1},{"entity_id":11195278,"name":"\u73cd\u73e0\u5927\u7c73\u996d","price":2,"parent_entity_id":0,"group_id":1,"quantity":2,"entity_category_id":1}],"isWaimai":true,"isTangchi":false,"isBook":false,"deliverTime":"","restaurantNumber":4,"createdAt":"2015-03-20 11:07:32","table":"","people":"","phone":"18215606355","address":"\u79d1\u7814\u697cb258","description":"","isFollower":false,"isOnlinePayment":false,"invoice":"","isTimeEnsure":false,"timeEnsureText":"","refundStatus":0,"refundStatusText":"\u672a\u7533\u8bf7\u9000\u5355"}  </div>
 
 </div>
 
 
   <div class="button_container">
-    <a href="#" class="print button success action notcombined hidden" orderId="12259197077731397">&nbsp;打印&nbsp;</a>
-
-                  <a class="process button success print orderProcessBtn combined hidden"
+                  <a class="process button success orderProcessBtn toPrint"
            categoryId="1"
-           orderId="12259197077731397"
-           rel="order12259197077731397"
-           dayNumber="136"
-           href="/order/processOrder/id/12259197077731397/category/1">打印并处理</a>
-        <a class="process button orderProcessBtn notcombined hidden"
+           orderId="12366176430326061"
+           rel="order12366176430326061"
+           dayNumber="4"
+           href="/order/processOrder/id/12366176430326061/category/1">确认并打印</a>
+          
+                  <a class="setInvalid button warning orderProcessBtn"
            categoryId="1"
-           orderId="12259197077731397"
-           rel="order12259197077731397"
-           dayNumber="136"
-           href="/order/processOrder/id/12259197077731397/category/1">处理</a>
-        <a class="setInvalid button warning orderProcessBtn"
-           categoryId="1"
-           orderId="12259197077731397"
-           rel="order12259197077731397"
-           dayNumber="136"
-           href="/order/setInvalid/id/12259197077731397/category/1">无效</a>
-                        <a class="copy button orderProcessBtn" data-order-text="怪蜀黍连锁快餐[11月14日 No.136] 电子科技大学清水河校区本科14栋[18981776104] 卤鸡腿 1份/【且行且珍惜的小炒肉】 1份 在线支付立减优惠/共10元">复制</a>
+           orderId="12366176430326061"
+           rel="order12366176430326061"
+           dayNumber="4"
+           href="/order/setInvalid/id/12366176430326061/category/1">无效</a>
+                  <a class="copy button orderProcessBtn" data-order-text="屌丝烤鸭[3月20日 No.4] 科研楼b258[18215606355] 纯生啤酒（厅） 1份/可乐（厅） 1份/珍珠大米饭 2份/共9元">复制</a>
     
     
       </div>
@@ -192,10 +158,179 @@
 <script>
   var NAPOS = NAPOS || {};
   NAPOS.orders = NAPOS.orders || {};
-  NAPOS.orders[12259197077731397] = {"total":10,"items":[{"entity_id":9119708,"name":"\u5364\u9e21\u817f","price":4,"parent_entity_id":0,"group_id":1,"quantity":1,"entity_category_id":1},{"entity_id":6405637,"name":"\u3010\u4e14\u884c\u4e14\u73cd\u60dc\u7684\u5c0f\u7092\u8089\u3011","price":16,"parent_entity_id":0,"group_id":1,"quantity":1,"entity_category_id":1},{"entity_id":10207,"name":"\u5728\u7ebf\u652f\u4ed8\u7acb\u51cf\u4f18\u60e0","price":-10,"parent_entity_id":0,"group_id":0,"quantity":1,"entity_category_id":12}],"isWaimai":true,"isTangchi":false,"isBook":false,"deliverTime":"","restaurantNumber":136,"createdAt":"2014-11-14 19:27:16","table":"","people":"","phone":"18981776104","address":"\u7535\u5b50\u79d1\u6280\u5927\u5b66\u6e05\u6c34\u6cb3\u6821\u533a\u672c\u79d114\u680b","description":"","isFollower":false,"isOnlinePayment":true,"invoice":"","isTimeEnsure":false,"timeEnsureText":""};
+  NAPOS.orders["12366176430326061"] = {"id":"12366176430326061","total":9,"items":[{"entity_id":10046636,"name":"\u7eaf\u751f\u5564\u9152\uff08\u5385\uff09","price":2.5,"parent_entity_id":0,"group_id":1,"quantity":1,"entity_category_id":1},{"entity_id":9123776,"name":"\u53ef\u4e50\uff08\u5385\uff09","price":2.5,"parent_entity_id":0,"group_id":1,"quantity":1,"entity_category_id":1},{"entity_id":11195278,"name":"\u73cd\u73e0\u5927\u7c73\u996d","price":2,"parent_entity_id":0,"group_id":1,"quantity":2,"entity_category_id":1}],"isWaimai":true,"isTangchi":false,"isBook":false,"deliverTime":"","restaurantNumber":4,"createdAt":"2015-03-20 11:07:32","table":"","people":"","phone":"18215606355","address":"\u79d1\u7814\u697cb258","description":"","isFollower":false,"isOnlinePayment":false,"invoice":"","isTimeEnsure":false,"timeEnsureText":"","refundStatus":0,"refundStatusText":"\u672a\u7533\u8bf7\u9000\u5355"};
+</script>
+  <li orderId="12366276530238261"
+    CategoryId="1"
+    id="list-12366276530238261"
+    class="new"
+    createdAt="1426820838"
+    online-pay="">
+
+  <span class="process_num">3</span>
+
+  
+  <div class="list_time">49秒前</div>
+  <!-- output class tag according to order category -->
+  <div class="list_content">
+
+    <p class="list_price">￥11</p>
+
+          <p class="list_customer waimai">电话：18215606355</p>
+      <p class="list_addr">地址: 科研楼b258</p>
+          
+    
+    <hr />
+
+    <p class="list_details">
+      纯生啤酒（厅） 1份/可乐（厅） 1份/雪花啤酒（厅） 2份    </p>
+
+  </div>
+
+  <div class="hidden" id="order_detail_12366276530238261">
+
+        
+
+  <div class="order_content new" online-pay="">
+    <span class="process_num">3</span>
+    <div class="list_time"></div>
+    <div class="order_detail">
+      <div>
+        <p><span class="info_name">订单流水号:</span><span class="info_content">3</span></p>
+        <p><span class="info_name">订单编号:</span><span class="info_content">12366276530238261</span></p>
+        <p>
+          <span class="info_name">订单状态:</span>
+          <span class="info_content">等待餐厅确认</span>
+        </p>
+      </div>
+      <div>
+        <p><span class="info_name">订单类型:</span><span class="info_content">饿了么订单</span></p>
+        <p><span class="info_name">订单时间:</span><span class="info_content">2015-03-20 11:07:18</span></p>
+        <p><span class="info_name">订单备注:</span><span class="info_content"></span></p>
+      </div>
+      <div class="customer">
+                  <p><span class="info_name">顾客电话:</span><span class="info_content">18215606355</span></p>
+          <p><span class="info_name">顾客地址:</span><span class="info_content">科研楼b258</span></p>
+              </div>
+              <div class="list_source">
+          <span class="eleme">饿</span>
+        </div>
+          </div> <!-- order_content new -->
+  </div>
+
+  <hr />
+
+  <div class="menu_detail">
+    <div class="order_action">
+
+                  <a class="process button success orderProcessBtn toPrint"
+           categoryId="1"
+           orderId="12366276530238261"
+           rel="order12366276530238261"
+           dayNumber="3"
+           href="/order/processOrder/id/12366276530238261/category/1">确认并打印</a>
+          
+                  <a class="setInvalid button warning orderProcessBtn"
+           categoryId="1"
+           orderId="12366276530238261"
+           rel="order12366276530238261"
+           dayNumber="3"
+           href="/order/setInvalid/id/12366276530238261/category/1">无效</a>
+                  <a class="copy2 button orderProcessBtn" data-order-text="屌丝烤鸭[3月20日 No.3] 科研楼b258[18215606355] 纯生啤酒（厅） 1份/可乐（厅） 1份/雪花啤酒（厅） 2份/共11元">复制</a>
+    
+    
+                <a class="button more_user_info fr mr10" href="/order/getUserInfo/userId/1958315/phone/18215606355" target="_blank">顾客订单记录</a>
+        </div>
+
+    <div class="menu_content">
+        <table class="item_table">
+    <thead>
+      <tr>
+              <th>美食篮子</th>
+              <th>单价</th>
+        <th>数量</th>
+        <th>总价</th>
+      </tr>
+    </thead>
+    <tbody>
+              <tr>
+          <td class="item_name"><span class="dishname">纯生啤酒（厅）</span></td>
+          <td class="item_price">2.5</td>
+          <td class="item_quantity">1</td>
+          <td class="item_total_price">2.5</td>
+        </tr>
+                      <tr>
+          <td class="item_name"><span class="dishname">可乐（厅）</span></td>
+          <td class="item_price">2.5</td>
+          <td class="item_quantity">1</td>
+          <td class="item_total_price">2.5</td>
+        </tr>
+                      <tr>
+          <td class="item_name"><span class="dishname">雪花啤酒（厅）</span></td>
+          <td class="item_price">3</td>
+          <td class="item_quantity">2</td>
+          <td class="item_total_price">6</td>
+        </tr>
+                  </tbody>
+    <tfoot>
+      <tr>
+        <th colspan="3">小计</th>
+        <th>11</th>
+      </tr>
+    </tfoot>
+  </table>
+
+
+    </div><!-- end of menu_content -->
+          <div id="customer_detail" class=""></div>
+    
+    <div class="height_holder"></div>
+  </div><!-- end of menu_detail -->
+
+  <div id="order_json_data" class="hidden">
+    {"id":"12366276530238261","total":11,"items":[{"entity_id":10046636,"name":"\u7eaf\u751f\u5564\u9152\uff08\u5385\uff09",
+    "price":2.5,"parent_entity_id":0,"group_id":1,"quantity":1,"entity_category_id":1},
+    {"entity_id":9123776,"name":"\u53ef\u4e50\uff08\u5385\uff09",
+    "price":2.5,"parent_entity_id":0,"group_id":1,"quantity":1,
+    "entity_category_id":1},{"entity_id":11237488,
+    "name":"\u96ea\u82b1\u5564\u9152\uff08\u5385\uff09","price":3,
+    "parent_entity_id":0,"group_id":1,"quantity":2,"entity_category_id":1}],
+    "isWaimai":true,"isTangchi":false,"isBook":false,"deliverTime":"",
+    "restaurantNumber":3,"createdAt":"2015-03-20 11:07:18","table":"",
+    "people":"","phone":"18215606355","address":"\u79d1\u7814\u697cb258",
+    "description":"","isFollower":false,"isOnlinePayment":false,"invoice":"",
+    "isTimeEnsure":false,"timeEnsureText":"","refundStatus":0,
+    "refundStatusText":"\u672a\u7533\u8bf7\u9000\u5355"}  </div>
+
+</div>
+
+
+  <div class="button_container">
+                  <a class="process button success orderProcessBtn toPrint"
+           categoryId="1"
+           orderId="12366276530238261"
+           rel="order12366276530238261"
+           dayNumber="3"
+           href="/order/processOrder/id/12366276530238261/category/1">确认并打印</a>
+          
+                  <a class="setInvalid button warning orderProcessBtn"
+           categoryId="1"
+           orderId="12366276530238261"
+           rel="order12366276530238261"
+           dayNumber="3"
+           href="/order/setInvalid/id/12366276530238261/category/1">无效</a>
+                  <a class="copy button orderProcessBtn" data-order-text="屌丝烤鸭[3月20日 No.3] 科研楼b258[18215606355] 纯生啤酒（厅） 1份/可乐（厅） 1份/雪花啤酒（厅） 2份/共11元">复制</a>
+    
+    
+      </div>
+</li>
+
+<script>
+  var NAPOS = NAPOS || {};
+  NAPOS.orders = NAPOS.orders || {};
+  NAPOS.orders["12366276530238261"] = {"id":"12366276530238261","total":11,"items":[{"entity_id":10046636,"name":"\u7eaf\u751f\u5564\u9152\uff08\u5385\uff09","price":2.5,"parent_entity_id":0,"group_id":1,"quantity":1,"entity_category_id":1},{"entity_id":9123776,"name":"\u53ef\u4e50\uff08\u5385\uff09","price":2.5,"parent_entity_id":0,"group_id":1,"quantity":1,"entity_category_id":1},{"entity_id":11237488,"name":"\u96ea\u82b1\u5564\u9152\uff08\u5385\uff09","price":3,"parent_entity_id":0,"group_id":1,"quantity":2,"entity_category_id":1}],"isWaimai":true,"isTangchi":false,"isBook":false,"deliverTime":"","restaurantNumber":3,"createdAt":"2015-03-20 11:07:18","table":"","people":"","phone":"18215606355","address":"\u79d1\u7814\u697cb258","description":"","isFollower":false,"isOnlinePayment":false,"invoice":"","isTimeEnsure":false,"timeEnsureText":"","refundStatus":0,"refundStatusText":"\u672a\u7533\u8bf7\u9000\u5355"};
 </script>
           </ul>
   </div>
 
 <div class="height_holder"></div>
-  </div>

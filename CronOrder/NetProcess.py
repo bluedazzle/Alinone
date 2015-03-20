@@ -24,6 +24,7 @@ class NetProcess(object):
 
     def GetResFromRequest(self, method, requrl, encodemethod='utf-8', postDic={}, reqdata='', use_proxy=False):
         res = None
+        requests.adapters.DEFAULT_RETRIES = 5
         try:
             if str(method).upper() == 'POST':
                 if use_proxy:
