@@ -22,7 +22,15 @@ class SearchLogAdmin(admin.ModelAdmin):
     ordering = ('-req_time', 'req_ip',)
     list_filter = ('req_time', 'req_ip',)
 
+
+class ProRunTimeLogAdmin(admin.ModelAdmin):
+    list_display = ('error_file', 'error_line', 'log_time')
+    ordering = ('-log_time', 'error_file',)
+    list_filter = ('error_file',)
+
+
 admin.site.register(CronLog, CronLogAdmin)
 admin.site.register(RunTimeLog, RunTimeLogAdmin)
 admin.site.register(AccountLog, AccountLogAdmin)
 admin.site.register(SeachLog, SearchLogAdmin)
+admin.site.register(ProRunTimeLog, ProRunTimeLogAdmin)

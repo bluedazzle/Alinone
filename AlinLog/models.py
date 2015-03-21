@@ -40,4 +40,13 @@ class SeachLog(models.Model):
     def __unicode__(self):
         return self.req_ip
 
+class ProRunTimeLog(models.Model):
+    error_file = models.CharField(max_length=200)
+    error_line = models.IntegerField(max_length=10)
+    log_time = models.DateTimeField(auto_now_add=True)
+    origin_message = models.TextField(max_length=1000)
+    err_message = models.TextField(max_length=1000)
+
+    def __unicode__(self):
+        return self.error_file
 

@@ -161,7 +161,7 @@ def register(request):
                     newlog.note = '注册'
                     newlog.account = str(phone)
                     newlog.save()
-                    return HttpResponseRedirect("/merchant/operate_new")
+                    return render_to_response('login_page.html', {'flag': 2}, context_instance=RequestContext(request))
             else:
                 return render_to_response('register.html', {'phone': phone, 'merchant_name': merchant_name,
                                                             'fault3': 'T'}, context_instance=RequestContext(request))

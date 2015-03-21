@@ -3,6 +3,7 @@ import random
 from AlinLog.models import *
 from ProxyWork.models import *
 from ProxyWork.proxys import *
+from AlinLog.error import except_handle
 
 def getproxy(args = None):
     a = NetSpider()
@@ -28,7 +29,7 @@ def getproxy(args = None):
                 newproxy.get_time = datetime.datetime.now()
                 newproxy.save()
         except Exception, e:
-            print e
+            except_handle(e)
             errmsg = str(e)
             continue
     content = '新增代理IP成功，新增数量' + str(newitems) + '条'

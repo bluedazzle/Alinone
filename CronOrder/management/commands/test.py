@@ -14,9 +14,12 @@ class Command(BaseCommand):
         # # # # catcheleorder(1)
         # # # ordlist = ['12459171300411697']
         # # # ensureleeorder(1,ordlist)
-        a = Ele()
+        # a = Ele()
+        # mer = Merchant.objects.get(id=1)
+        # res = a.catcheorder(mer)
         mer = Merchant.objects.get(id=1)
-        res = a.catcheorder(mer)
+        a = Mei()
+        res = a.getOrder(mer)
         # # print res
         # a = OrderAps()
         # res = a.addJobs('1')

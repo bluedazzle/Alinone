@@ -7,6 +7,7 @@ from AlinLog.models import AccountLog, SeachLog
 from AlinApi.models import *
 from AlinApi.fixlnglat import *
 from AlinApi.method import *
+from AlinLog.error import except_handle
 import hashlib
 import simplejson
 import datetime
@@ -453,7 +454,7 @@ def get_pending_order_num(req):
             for itm in bindmerchants:
                 merchant = {}
                 count = int(DayOrder.objects.filter(merchant=itm, status=2).count())
-                merchant['merhcant_id'] = str(itm.id)
+                merchant['merchant_id'] = str('%08i' % itm.id)
                 merchant['count'] = count
                 merchantlist.append(copy.copy(merchant))
             body['merchants'] = merchantlist
@@ -619,14 +620,17 @@ def newpassword(req):
 
 
 def isactive(lastactivetime, det=600):
-    print lastactivetime
-    nowt = datetime.datetime.utcnow()
-    print nowt
-    detla = nowt - lastactivetime
-    if detla > datetime.timedelta(seconds=det):
-        return False
-    else:
-        return True
+    try:
+        print lastactivetime
+        nowt = datetime.datetime.utcnow()
+        print nowt
+        detla = nowt - lastactivetime
+        if detla > datetime.timedelta(seconds=det):
+            return False
+        else:
+            return True
+    except Exception, e:
+        except_handle(e)
 
 
 def encodejson(status, body):

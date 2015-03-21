@@ -40,10 +40,10 @@ class Mei(object):
                    'utm_content': '863077020776914',
                    'appName': '美团外卖商家版',
                    'dType': 'MI 2S',
-                   'appCode': '41',
+                   'appCode': '59',
                    'validCode': verify_code,
                    'uuid': sid,
-                   'utm_term': '2.1.6',
+                   'utm_term': '2.3.8',
                    'appType': '4',
                    'logType': 'C',
                     'userName': user,
@@ -105,6 +105,8 @@ class Mei(object):
         curmet.save()
         return True
 
+
+
     def getOrder(self, curmet):
         print 'getOrder'
         cache = None
@@ -127,10 +129,10 @@ class Mei(object):
                    'utm_content': '863077020776914',
                    'appName': '美团外卖商家版',
                    'dType': 'MI 2S',
-                   'appCode': '41',
+                   'appCode': '59',
                    'uuid': cache.mei_sid,
                    'lastOrderId': cache.mei_lastorderid,
-                   'utm_term': '2.1.6',
+                   'utm_term': '2.3.8',
                    'appType': '4',
                    'logType': 'C',
                     'acctId': cache.mei_acctid,
@@ -162,9 +164,10 @@ class Mei(object):
             return False
         res_data = res_json['data']
         thiscount = int(DayOrder.objects.filter(merchant=curmet, platform=3).count()) + 1
-        totalcount = int(DayOrder.objects.filter(enumerate=curmet).count()) + 1
+        totalcount = int(DayOrder.objects.filter(merchant=curmet).count()) + 1
         for itm in res_data:
             mei_order_id = str(itm['wm_order_id_view'])
+            print mei_order_id
             ifhave = DayOrder.objects.filter(order_id_old = str(mei_order_id))
             if ifhave.count() > 0:
                 continue
@@ -207,6 +210,7 @@ class Mei(object):
         curmet.save()
         return True
 
+
     def ensureOrder(self, curmet, orderid):
         cache_list = CatcheData.objects.filter(merchant = curmet)
         cache = None
@@ -222,10 +226,10 @@ class Mei(object):
                    'utm_content': '863077020776914',
                    'appName': '美团外卖商家版',
                    'dType': 'MI 2S',
-                   'appCode': '41',
+                   'appCode': '59',
                    'uuid': cache.mei_sid,
                    'orderId': str(orderid),
-                   'utm_term': '2.1.6',
+                   'utm_term': '2.3.8',
                    'appType': '4',
                    'logType': 'C',
                     'acctId': cache.mei_acctid,
@@ -271,11 +275,11 @@ class Mei(object):
                    'utm_content': '863077020776914',
                    'appName': '美团外卖商家版',
                    'dType': 'MI 2S',
-                   'appCode': '41',
+                   'appCode': '59',
                    'reasonId': '338',
                    'uuid': cache.mei_sid,
                    'orderId': str(orderid),
-                   'utm_term': '2.1.6',
+                   'utm_term': '2.3.8',
                    'appType': '4',
                    'logType': 'C',
                    'remark': '美食已售完',
@@ -320,8 +324,8 @@ class Mei(object):
                    'appName': '美团外卖商家版',
                    'phone': phone,
                    'dType': 'MI 2S',
-                   'appCode': '41',
-                   'utm_term': '2.1.6',
+                   'appCode': '59',
+                   'utm_term': '2.3.8',
                    'appType': '4',
                    'logType': 'C'}
         html = self.net.GetResFromRequest('POST', 'http://waimaieapi.meituan.com/api/poi/getValidCode', 'utf-8', postdic)

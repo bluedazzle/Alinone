@@ -1,7 +1,7 @@
 from CronOrder.ele import *
 from CronOrder.tdd import *
 from CronOrder.meituan import *
-from AlinLog.models import RunTimeLog
+from AlinLog.error import except_handle
 
 class Alo(object):
     def ensure_order(self, merchantid, order):
@@ -61,4 +61,4 @@ class Alo(object):
         except Exception, e:
             mer.save()
             print 'ALO ERROR'
-            print e
+            except_handle(e)
