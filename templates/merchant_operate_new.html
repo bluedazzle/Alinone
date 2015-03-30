@@ -65,7 +65,7 @@
       </div>
         <script>
             $('#submit').click(function(){
-                if($('#money').val() && $('#address').val()
+                if(($('#phone').val().length==11 || $('#phone').val().length==8 || $('#phone').val().length==7) && $('#money').val() && $('#address').val()
                         && $('#platform').val()){
                     var phone = $('#phone').val();
                     var money = $('#money').val();

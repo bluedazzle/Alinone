@@ -12,6 +12,7 @@ from merchant_page.models import *
 from CronOrder.Aaps import *
 from CronOrder.ALO import *
 import json
+import time
 import simplejson
 import hashlib
 import datetime
@@ -259,8 +260,8 @@ def change_name(request):
 
 #get orders count
 def get_orders_count(request):
-    global alo
-    res = None
+    # global alo
+    # res = None
     if not request.session.get('username'):
         return HttpResponseRedirect('login_in')
     else:
@@ -268,9 +269,9 @@ def get_orders_count(request):
         merchant = Merchant.objects.get(alin_account=merchant_id)
         merchant.update_time = datetime.datetime.now()
         merchant.save()
-        if merchant.tao_account != '' or merchant.ele_account != '' or merchant.mei_account != '':
-            res = alo.cronOrder(str(merchant.id))
-            print res
+        # if merchant.tao_account != '' or merchant.ele_account != '' or merchant.mei_account != '':
+        #     res = alo.cronOrder(str(merchant.id))
+        #     print res
         status = 'T'
         if merchant.tao_account:
             if merchant.tao_status == False:
@@ -285,6 +286,7 @@ def get_orders_count(request):
         finish_list = DayOrder.objects.filter(merchant=merchant, status=4)
         finnum = finish_list.count()
         total = 0.0
+        res = True
         for it in finish_list:
             total += float(it.real_price)
         if order_list.count() == 0:
@@ -311,6 +313,29 @@ def get_orders_count(request):
                        'ver': res,
                        'notice_list': 'N'}
         return HttpResponse(simplejson.dumps(content), content_type="application/json")
+
+
+
+def asyalo(request, first=False):
+    global alo
+    res = None
+    if request.session.get('username'):
+        merchant_id = request.session['username']
+        merchant = Merchant.objects.get(alin_account=merchant_id)
+        if merchant.tao_account != '' or merchant.ele_account != '' or merchant.mei_account != '':
+            res = alo.cronOrder(str(merchant.id), first)
+            print res
+
+
+
+# def asy_get_counts(request):
+#     if not request.session.get('username'):
+#         return HttpResponseRedirect('login_in')
+#     else:
+#         merchant_id = request.session['username']
+#         # merchant = Merchant.objects.get(alin_account=merchant_id)
+#         gevent.joinall([gevent.spawn(asyalo, merchant_id),
+#                         gevent.spawn(get_orders_count, request)])
 
 
 #进入未处理订单界面
@@ -626,13 +651,13 @@ def platform_delete(request, name):
         merchant.tao_sessionkey = ''
         merchant.tao_refreshkey = ''
         merchant.tao_message = ''
-        merchant.tao_status = False
+        merchant.tao_status = True
         merchant.save()
     elif name == '3':
         merchant.mei_account = ''
         merchant.mei_passwd = ''
         merchant.mei_message = ''
-        merchant.mei_status = False
+        merchant.mei_status = True
         merchant.save()
         if cat_mer is not None:
             cat_mer.mei_token = ""
@@ -641,7 +666,7 @@ def platform_delete(request, name):
         merchant.ele_account = ''
         merchant.ele_passwd = ''
         merchant.ele_message = ''
-        merchant.ele_status = False
+        merchant.ele_status = True
         merchant.save()
         if cat_mer is not None:
             cat_mer.ele_cookie = ''
@@ -679,6 +704,7 @@ def add_platform(request):
         merchant.save()
     else:
         return render_to_response('merchant_add_platform.html', {'fault': 'x'}, context_instance=RequestContext(request))
+    asyalo(request, True)
     return HttpResponseRedirect('operate_pingtai')
 
 

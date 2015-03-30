@@ -127,7 +127,12 @@
                             }
                         },
                         dataType: 'json'
-                    });}
+                    });
+                $.ajax({
+                    type: 'GET',
+                    url: 'get_orders_p',
+                    data: ''});
+            }
     $(document).ready(function() {
         $.ajax({
             type: 'GET',
@@ -166,7 +171,7 @@
             },
             dataType: 'json'
         });
-        var count_flag = setInterval(get_new_count, 10000);
+        var count_flag = setInterval(get_new_count, 20000);
     });
 
     </script>

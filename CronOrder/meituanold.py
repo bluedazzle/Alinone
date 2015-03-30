@@ -12,15 +12,11 @@ import simplejson
 
 
 class Mei(object):
-    def __init__(self, merchantid, use_proxy=False):
-        self.net = NetProcess()
-        self.net.Headers = {'User-Agent': 'Dalvik/1.6.0 (Linux; U; Android 4.1.1; MI 2S MIUI/4.11.7)',
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                            'Host': 'waimaieapi.meituan.com'}
-        self.__use_proxy = False
-        if use_proxy:
-            self.set_proxy(merchantid)
-            self.__use_proxy = True
+    def __init__(self):
+        self.net = NetSpider()
+        self.net.Host = 'waimaieapi.meituan.com'
+        self.net.UserAgent = 'Dalvik/1.6.0 (Linux; U; Android 4.1.1; MI 2S MIUI/4.11.7)'
+        self.net.ContentType = 'application/x-www-form-urlencoded'
 
     def get_token(self, curmet):
         user = str(curmet.mei_account)
@@ -52,11 +48,7 @@ class Mei(object):
                    'logType': 'C',
                     'userName': user,
                    'password': de_pass}
-        if self.__use_proxy:
-            print 'use proxy login m'
-            html = self.net.GetResFromRequest('POST', 'http://waimaieapi.meituan.com/api/poi/logon/app/v4', 'utf-8', postdic, use_proxy=True)
-        else:
-            html = self.net.GetResFromRequest('POST', 'http://waimaieapi.meituan.com/api/poi/logon/app/v4', 'utf-8', postdic)
+        html = self.net.GetResFromRequest('POST', 'http://waimaieapi.meituan.com/api/poi/logon/app/v4', 'utf-8', postdic)
         if not isinstance(html, str):
             newlog = RunTimeLog()
             newlog.content = '美团服务器未返回响应'
@@ -65,11 +57,7 @@ class Mei(object):
             newlog.ltype = 30
             newlog.merchant = curmet
             newlog.save()
-            if self.__use_proxy:
-                check_proxy_times(str(self.net.Proxy))
             return None
-        if self.__use_proxy:
-            reset_proxy_times(str(self.net.Proxy))
         res_json = simplejson.loads(html)
         login_status = str(res_json['code'])
         login_msg = str(res_json['msg'])
@@ -149,11 +137,7 @@ class Mei(object):
                    'logType': 'C',
                     'acctId': cache.mei_acctid,
                    'token': cache.mei_token}
-        if self.__use_proxy:
-            print 'use proxy get order m'
-            html = self.net.GetResFromRequest('POST', 'http://waimaieapi.meituan.com/api/order/new/orderList/v3', 'utf-8', postdic, use_proxy=True)
-        else:
-            html = self.net.GetResFromRequest('POST', 'http://waimaieapi.meituan.com/api/order/new/orderList/v3', 'utf-8', postdic)
+        html = self.net.GetResFromRequest('POST', 'http://waimaieapi.meituan.com/api/order/new/orderList/v3', 'utf-8', postdic)
         if not isinstance(html, str):
             newlog = RunTimeLog()
             newlog.content = '美团服务器未返回响应'
@@ -162,11 +146,7 @@ class Mei(object):
             newlog.ltype = 30
             newlog.merchant = curmet
             newlog.save()
-            if self.__use_proxy:
-                check_proxy_times(str(self.net.Proxy))
             return None
-        if self.__use_proxy:
-            reset_proxy_times(str(self.net.Proxy))
         res_json = simplejson.loads(html)
         res_code = str(res_json['code'])
         res_msg = str(res_json['msg'])
@@ -254,11 +234,7 @@ class Mei(object):
                    'logType': 'C',
                     'acctId': cache.mei_acctid,
                    'token': cache.mei_token}
-        if self.__use_proxy:
-            print 'use proxy ensure m'
-            html = self.net.GetResFromRequest('POST', 'http://waimaieapi.meituan.com/api/order/confirm/v3', 'utf-8', postdic, use_proxy=True)
-        else:
-            html = self.net.GetResFromRequest('POST', 'http://waimaieapi.meituan.com/api/order/confirm/v3', 'utf-8', postdic)
+        html = self.net.GetResFromRequest('POST', 'http://waimaieapi.meituan.com/api/order/confirm/v3', 'utf-8', postdic)
         print html
         if not isinstance(html, str):
             newlog = RunTimeLog()
@@ -309,11 +285,7 @@ class Mei(object):
                    'remark': '美食已售完',
                     'acctId': cache.mei_acctid,
                    'token': cache.mei_token}
-        if self.__use_proxy:
-            print 'use proxy refuse m'
-            html = self.net.GetResFromRequest('POST', 'http://waimaieapi.meituan.com/api/order/cancel/v3', 'utf-8', postdic, use_proxy=True)
-        else:
-            html = self.net.GetResFromRequest('POST', 'http://waimaieapi.meituan.com/api/order/cancel/v3', 'utf-8', postdic)
+        html = self.net.GetResFromRequest('POST', 'http://waimaieapi.meituan.com/api/order/cancel/v3', 'utf-8', postdic)
         if not isinstance(html, str):
             newlog = RunTimeLog()
             newlog.content = '美团服务器未返回响应'
@@ -356,11 +328,7 @@ class Mei(object):
                    'utm_term': '2.3.8',
                    'appType': '4',
                    'logType': 'C'}
-        if self.__use_proxy:
-            print 'use proxy get verify m'
-            html = self.net.GetResFromRequest('POST', 'http://waimaieapi.meituan.com/api/poi/getValidCode', 'utf-8', postdic, use_proxy=True)
-        else:
-            html = self.net.GetResFromRequest('POST', 'http://waimaieapi.meituan.com/api/poi/getValidCode', 'utf-8', postdic)
+        html = self.net.GetResFromRequest('POST', 'http://waimaieapi.meituan.com/api/poi/getValidCode', 'utf-8', postdic)
         print 'verfiy code'
         print html
         if not isinstance(html, str):
@@ -402,12 +370,3 @@ class Mei(object):
             return 'v need'
         else:
             return False
-
-
-    def set_proxy(self, curmet):
-        ip = distriproxy(str(curmet))
-        if isinstance(ip, str):
-            self.net.Proxy = str(ip)
-        else:
-            print 'no proxy, use real ip'
-            self.__use_proxy = False

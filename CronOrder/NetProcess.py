@@ -22,24 +22,26 @@ class NetProcess(object):
 
 
 
-    def GetResFromRequest(self, method, requrl, encodemethod='utf-8', postDic={}, reqdata='', use_proxy=False):
+    def GetResFromRequest(self, method, requrl, encodemethod='utf-8', postDic={}, reqdata='', use_proxy=False, timeout=5):
         res = None
         requests.adapters.DEFAULT_RETRIES = 5
         try:
             if str(method).upper() == 'POST':
                 if use_proxy:
-                    proxy = {"http": self.__proxy, }
-                    res = requests.post(requrl, data=postDic, proxies=proxy, headers=self.__headers)
+                    scp = 'http://' + self.__proxy
+                    proxy = {"http": scp, }
+                    res = requests.post(requrl, data=postDic, proxies=proxy, headers=self.__headers, timeout=timeout)
                 else:
-                    res = requests.post(requrl, data=postDic, cookies=self.__cookies, headers=self.__headers)
+                    res = requests.post(requrl, data=postDic, cookies=self.__cookies, headers=self.__headers, timeout=timeout)
             elif str(method).upper() == 'GET':
                 if use_proxy:
-                    proxy = {"http": self.__proxy, }
-                    res = requests.get(requrl, proxies=proxy, cookies=self.__cookies, headers=self.__headers)
+                    scp = 'http://' + self.__proxy
+                    proxy = {"http": scp, }
+                    res = requests.get(requrl, proxies=proxy, cookies=self.__cookies, headers=self.__headers, timeout=timeout)
                 else:
-                    res = requests.get(requrl, cookies=self.__cookies, headers=self.__headers)
+                    res = requests.get(requrl, cookies=self.__cookies, headers=self.__headers, timeout=timeout)
             self.__cookies = res.cookies
-            print res.headers
+            # print res.headers
             return res.content
         except Exception, e:
             print e.message

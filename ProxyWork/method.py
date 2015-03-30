@@ -3,10 +3,11 @@ import random
 from AlinLog.models import *
 from ProxyWork.models import *
 from ProxyWork.proxys import *
+from CronOrder.NetProcess import *
 from AlinLog.error import except_handle
 
 def getproxy(args = None):
-    a = NetSpider()
+    a = NetProcess()
     a.Host = 'www.hao123.com'
     errmsg = ''
     myproxy = SProxy()
@@ -19,7 +20,7 @@ def getproxy(args = None):
                 continue
             a.Proxy = item
             res = a.GetResFromRequest('GET', "http://www.hao123.com/", 'utf-8', use_proxy=True)
-            if res is not None:
+            if isinstance(res, str):
                 newitems += 1
                 newproxy = Proxy()
                 newproxy.ip = item
@@ -45,7 +46,7 @@ def getproxy(args = None):
 def distriproxy(merid):
     ifbind = Proxy.objects.filter(bind_merchant = merid)
     if ifbind.count() > 0:
-        return ifbind[0].ip
+        return str(ifbind[0].ip)
     can_proxy_list = Proxy.objects.filter(is_used = False, is_online = True)
     pronum = can_proxy_list.count()
     if pronum == 0:
@@ -62,7 +63,7 @@ def distriproxy(merid):
     newlog.ltype = 14
     newlog.merchant = Merchant.objects.get(id = merid)
     newlog.save()
-    return proxy.ip
+    return str(proxy.ip)
 
 def delofflineproxy(ipstr):
     offline = Proxy.objects.filter(ip = str(ipstr))
@@ -91,8 +92,7 @@ def reset_proxy_times(ipstr):
     return True
 
 def checkproxy(args = None):
-    a = NetSpider()
-    a.Host = 'napos.ele.me'
+    a = NetProcess()
     useless = 0
     off = Proxy.objects.filter(is_online = False).delete()
     oters = Proxy.objects.all()
@@ -100,11 +100,12 @@ def checkproxy(args = None):
     for item in oters:
         a.Proxy = item.ip
         res = a.GetResFromRequest('GET', "http://napos.ele.me/login", 'utf-8', use_proxy=True)
-        if res is None:
+        if not isinstance(res, str):
             print 'del ' + item.ip
             item.delete()
             useless += 1
         else:
+            # print res
             print item.ip + ' connect success'
     content = '代理检验完成，删除无效代理' + str(useless) + '个'
     print content

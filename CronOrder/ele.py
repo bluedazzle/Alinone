@@ -17,8 +17,12 @@ sys.setdefaultencoding("utf-8")
 # http://napos.ele.me/order/processOrder/id/12259070287130497/category/1
 # ttp://napos.ele.me/order/setInvalid/id/12459171300411697/category/1?type=6&remark=
 class Ele(object):
-    def __init__(self):
+    def __init__(self, merchantid, use_proxy=False):
         self.net = NetProcess()
+        self.__use_proxy = False
+        if use_proxy:
+            self.set_proxy(merchantid)
+            self.__use_proxy = True
         # self.net.Host = 'napos.ele.me'
 
     # def catcheorder(self, merchant):
@@ -170,7 +174,11 @@ class Ele(object):
         self.net.SetCookie(str(cache.ele_cookie))
         tn = str(time.time())[0:10] + '000'
         requrl = 'http://napos.ele.me/order/list?list=unprocessed_waimai&t=' + tn
-        html = self.net.GetResFromRequest('GET', requrl, 'utf-8')
+        if self.__use_proxy:
+            print 'use proxy catche'
+            html = self.net.GetResFromRequest('GET', requrl, 'utf-8', use_proxy=True)
+        else:
+            html = self.net.GetResFromRequest('GET', requrl, 'utf-8')
         print html
         # with open('abc.txt', 'r') as f1:
         #     line = f1.readline()
@@ -185,9 +193,11 @@ class Ele(object):
             newlog.ltype = 18
             newlog.merchant = merchant
             newlog.save()
-            # check_proxy_times(str(self.net.Proxy))
+            if self.__use_proxy:
+                check_proxy_times(str(self.net.Proxy))
             return None
-        # reset_proxy_times(str(self.net.Proxy))
+        if self.__use_proxy:
+            reset_proxy_times(str(self.net.Proxy))
         soup = BeautifulSoup(html)
         intro = soup.find('ul', attrs={'id': 'list_items'})
         if intro is None:
@@ -278,7 +288,11 @@ class Ele(object):
         de_pass = Decrypt(passwd)
         postdic = {'username': user, 'password': de_pass}
         # print 'login ele'
-        html = self.net.GetResFromRequest('POST', 'http://napos.ele.me/auth/doLogin', 'utf-8', postdic)
+        if self.__use_proxy:
+            print 'use proxy login'
+            html = self.net.GetResFromRequest('POST', 'http://napos.ele.me/auth/doLogin', 'utf-8', postdic, use_proxy=True)
+        else:
+            html = self.net.GetResFromRequest('POST', 'http://napos.ele.me/auth/doLogin', 'utf-8', postdic)
         # print 'login end'
         if not isinstance(html, str):
             newlog = RunTimeLog()
@@ -288,9 +302,11 @@ class Ele(object):
             newlog.ltype = 15
             newlog.status = False
             newlog.save()
-            # check_proxy_times(str(self.net.Proxy))
+            if self.__use_proxy:
+                check_proxy_times(str(self.net.Proxy))
         else:
-            # reset_proxy_times(str(self.net.Proxy))
+            if self.__use_proxy:
+                reset_proxy_times(str(self.net.Proxy))
             res_json = simplejson.loads(html)
             if res_json['success'] is False:
                 errmsg = unicode(res_json['message'])
@@ -336,7 +352,11 @@ class Ele(object):
         cache = cache_list[0]
         self.net.SetCookie(str(cache.ele_cookie))
         requrl = 'http://napos.ele.me/order/processOrder/id/' + str(order) + '/category/1'
-        html = self.net.GetResFromRequest('GET', requrl, 'utf-8')
+        if self.__use_proxy:
+            print 'use proxy ensure'
+            html = self.net.GetResFromRequest('GET', requrl, 'utf-8', use_proxy=True)
+        else:
+            html = self.net.GetResFromRequest('GET', requrl, 'utf-8')
         if not isinstance(html, str):
             newlog = RunTimeLog()
             newlog.content = '确认饿了没订单失败'
@@ -367,7 +387,11 @@ class Ele(object):
         cache = cache_list[0]
         self.net.SetCookie(str(cache.ele_cookie))
         requrl = 'http://napos.ele.me/order/setInvalid/id/' + str(order) + '/category/1?type=6&remark='
-        html = self.net.GetResFromRequest('GET', requrl, 'utf-8')
+        if self.__use_proxy:
+            print 'use proxy refuse'
+            html = self.net.GetResFromRequest('GET', requrl, 'utf-8', use_proxy=True)
+        else:
+            html = self.net.GetResFromRequest('GET', requrl, 'utf-8')
         if not isinstance(html, str):
             newlog = RunTimeLog()
             newlog.content = '拒绝饿了么订单失败'
@@ -387,7 +411,12 @@ class Ele(object):
             newlog.save()
             return False
         return True
-    #
-    # def set_proxy(self, curmet):
-    #     ip = distriproxy(str(curmet.id))
-    #     # self.net.Proxy = str(ip)
+
+
+    def set_proxy(self, curmet):
+        ip = distriproxy(str(curmet))
+        if isinstance(ip, str):
+            self.net.Proxy = str(ip)
+        else:
+            print 'no proxy, use real ip'
+            self.__use_proxy = False

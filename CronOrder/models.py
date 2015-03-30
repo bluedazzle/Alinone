@@ -143,6 +143,8 @@ class Merchant(AbstractBaseUser):
     balance = models.FloatField(blank=True, null=True)
     verify = models.BooleanField(default=False)
 
+    private_token = models.CharField(max_length=64, null=True, blank=True)
+
     USERNAME_FIELD = 'alin_account'
     REQUIRED_FIELDS = ['alin_account']
     objects = MerchantManager()

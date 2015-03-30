@@ -4,15 +4,10 @@ from django.http import Http404
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
 from AlinLog.models import AccountLog, SeachLog
-from AlinApi.models import *
 from AlinApi.fixlnglat import *
 from AlinApi.method import *
-from AlinLog.error import except_handle
 import hashlib
 import simplejson
-import datetime
-import random
-import string
 import copy
 import sys
 from CronOrder.models import *
@@ -619,25 +614,3 @@ def newpassword(req):
 
 
 
-def isactive(lastactivetime, det=600):
-    try:
-        print lastactivetime
-        nowt = datetime.datetime.utcnow()
-        print nowt
-        detla = nowt - lastactivetime
-        if detla > datetime.timedelta(seconds=det):
-            return False
-        else:
-            return True
-    except Exception, e:
-        except_handle(e)
-
-
-def encodejson(status, body):
-    tmpjson = {}
-    tmpjson['status'] = status
-    tmpjson['body'] = body
-    return simplejson.dumps(tmpjson)
-
-def createtoken(count = 32):
-    return string.join(random.sample('ZYXWVUTSRQPONMLKJIHGFEDCBA1234567890zyxwvutsrqponmlkjihgfedcba+=', count)).replace(" ", "")

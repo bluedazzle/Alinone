@@ -3,10 +3,11 @@ import re
 import copy
 from bs4 import BeautifulSoup
 from CronOrder.NetSpider import *
+from CronOrder.NetProcess import *
 
 class SProxy(object):
     def __init__(self):
-        self.HttpR = NetSpider()
+        self.HttpR = NetProcess()
         self.XICIURL = 'http://www.xici.net.co/nn/'
         self.KUAI = 'http://www.kuaidaili.com/free/inha/'
         self.CNPROXY = 'http://cn-proxy.com/'
@@ -24,7 +25,7 @@ class SProxy(object):
 
     def get_proxy_from_xici(self):
         flag = 0
-        self.HttpR.Host = 'www.xici.net.co'
+        # self.HttpR.Host = 'www.xici.net.co'
         for j in range(1, 4):
             try:
                 res = self.HttpR.GetResFromRequest('GET', self.XICIURL + str(j), 'utf-8')
@@ -47,7 +48,7 @@ class SProxy(object):
 
     def get_proxy_from_kuai(self):
         flag = 0
-        self.HttpR.Host = 'www.kuaidaili.com'
+        # self.HttpR.Host = 'www.kuaidaili.com'
         for j in range(1, 4):
             try:
                 res = self.HttpR.GetResFromRequest('GET', self.KUAI + str(j) + '/', 'utf-8')
@@ -68,7 +69,7 @@ class SProxy(object):
         return True
 
     def get_proxy_from_cnproxy(self):
-        self.HttpR.Host = 'cn-proxy.com'
+        # self.HttpR.Host = 'cn-proxy.com'
         html = self.HttpR.GetResFromRequest('GET', self.CNPROXY, 'utf-8')
         soup = BeautifulSoup(html)
         s = soup.findAll('tr')

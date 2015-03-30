@@ -160,6 +160,8 @@ def add_order(request):
                 new_order.real_price = money
                 new_order.merchant = merchant
                 new_order.origin_price = money
+                new_order.note = ''
+                new_order.plat_num = ''
                 new_order.order_time = datetime.datetime.now()
                 new_order.send_time = datetime.datetime.now()
                 new_order.save()
