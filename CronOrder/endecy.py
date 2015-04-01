@@ -30,4 +30,4 @@ def Decrypt(data):
   return buf
 
 
-# Decrypt('3DBA9380B2B40F3813FD68A41D5C7C2C')
+# print Decrypt('6C0D072989D9F7271EF1BD5AA1C830F2')

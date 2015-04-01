@@ -4,6 +4,7 @@ from AlinApi.models import PhoneVerify
 from QRcode.method import *
 from django.views.decorators.csrf import csrf_exempt
 from AlinApi.method import *
+from CronOrder.endecy import *
 from django.http import HttpResponse, Http404
 from django.utils import timezone
 from CronOrder.ALO import *
@@ -88,6 +89,7 @@ def login(req):
         curuser.private_token = newtoken
         curuser.save()
         body['private_token'] = newtoken
+        body['merchant_name'] = curuser.name
         return HttpResponse(encodejson(1, body), content_type='application/json')
     else:
         raise Http404
@@ -111,6 +113,85 @@ def logout(req):
         raise Http404
 
 
+
+@csrf_exempt
+def change_password(req):
+    body = {}
+    if not req.method == 'POST':
+        raise Http404
+    resjson = simplejson.loads(req.body)
+    username = resjson['username']
+    token = resjson['private_token']
+    if not if_legal(username, token):
+        body['msg'] = 'auth failed'
+        return HttpResponse(encodejson(13, body), content_type='application/json')
+    curuser = Merchant.objects.get(alin_account=username)
+    old_password = resjson['old_password']
+    new_password = resjson['new_password']
+    if curuser.check_password(old_password):
+        curuser.password = hashlib.md5(new_password).hexdigest()
+        curuser.save()
+        body['msg'] = 'password changed success'
+        return HttpResponse(encodejson(1, body), content_type='application/json')
+    else:
+        body['msg'] = 'password not correct'
+        return HttpResponse(encodejson(4, body), content_type='application/json')
+
+
+
+@csrf_exempt
+def new_password(req):
+    body = {}
+    if not req.method == 'POST':
+        raise Http404
+    resjson = simplejson.loads(req.body)
+    verify_c = str(resjson['verify_code'])
+    phone = resjson['phone']
+    newpass = resjson['new_password']
+    verify_list = PhoneVerify.objects.filter(phone=phone)
+    if not verify_list.exists():
+        body['msg'] = 'invalid verify code'
+        return HttpResponse(encodejson(7, body), content_type='application/json')
+    verify = verify_list[0]
+    if str(verify.verify_code) == verify_c:
+        verify.delete()
+        me_list = Merchant.objects.filter(alin_account=phone)
+        if not me_list.exists():
+            body['msg'] = 'merchant does not exists'
+            return HttpResponse(encodejson(7, body), content_type='application/json')
+        curuser = me_list[0]
+        curuser.password = hashlib.md5(newpass).hexdigest()
+        curuser.save()
+        body['msg'] = 'password resest success'
+        return HttpResponse(encodejson(1, body), content_type='application/json')
+    else:
+        body['msg'] = 'verify code not correct'
+        return HttpResponse(encodejson(12, body), content_type='application/json')
+
+
+
+
+@csrf_exempt
+def change_info(req):
+    body = {}
+    if not req.method == 'POST':
+        raise Http404
+    resjson = simplejson.loads(req.body)
+    username = resjson['username']
+    token = resjson['private_token']
+    if not if_legal(username, token):
+        body['msg'] = 'auth failed'
+        return HttpResponse(encodejson(13, body), content_type='application/json')
+    curuser = Merchant.objects.get(alin_account=username)
+    merhcant_name = resjson['merchant_name']
+    curuser.name = merhcant_name
+    curuser.save()
+    body['msg'] = 'merhcant info change success'
+    return HttpResponse(encodejson(1, body), content_type='application/json')
+
+
+
+
 @csrf_exempt
 def get_new_order(req):
     body={}
@@ -126,6 +207,29 @@ def get_new_order(req):
     new_order_list = DayOrder.objects.filter(status=1, merchant=curuser)
     alo = Alo()
     alo.cronOrder(str(curuser.id))
+    if curuser.ele_account != '':
+        if curuser.ele_status:
+            body['ele_status'] = True
+        else:
+            body['ele_status'] = False
+            body['ele_message'] = curuser.ele_message
+    else:
+        body['ele_status'] = None
+    if curuser.mei_account != '':
+        if curuser.mei_status:
+            body['mei_status'] = True
+        else:
+            body['mei_status'] = False
+            body['mei_message'] = curuser.mei_message
+    else:
+        body['mei_status'] = None
+    # if curuser.tao_account != '':
+    #     if curuser.tao_status:
+    #         body['tao_status'] = True
+    #     else:
+    #         body['tao_status'] = False
+    # else:
+    #     body['tao_status'] = None
     if new_order_list.exists():
         # order_list = []
         # for itm in new_order_list:
@@ -140,7 +244,14 @@ def get_new_order(req):
     else:
         body['have_new'] = False
         body['msg'] = 'no new order'
-        return HttpResponse(encodejson(1, body), content_type='application/json')
+    new_order_list = DayOrder.objects.filter(merchant=curuser)
+    body['today_total'] = new_order_list.count()
+    new_order_list = DayOrder.objects.filter(merchant=curuser, status=4)
+    total_money = 0.0
+    for itm in new_order_list:
+        total_money += float(itm.real_price)
+    body['total_money'] = total_money
+    return HttpResponse(encodejson(1, body), content_type='application/json')
 
 
 
@@ -300,6 +411,150 @@ def create_new_order(req):
 
 
 
+@csrf_exempt
+def add_platform(req):
+    body = {}
+    if not req.method == 'POST':
+        raise Http404
+    resjson = simplejson.loads(req.body)
+    username = resjson['username']
+    token = resjson['private_token']
+    if not if_legal(username, token):
+        body['msg'] = 'login before other action'
+        return HttpResponse(encodejson(13, body), content_type='application/json')
+    curuser = Merchant.objects.get(alin_account=username)
+    form_type = resjson['platform_type']
+    form_account = resjson['account']
+    form_password = resjson['password']
+    password = Encrypt(form_password)
+    if form_type == 2:
+        if curuser.ele_account != '':
+            body['msg'] = 'ele account exists'
+            return HttpResponse(encodejson(6, body), content_type='application/json')
+        curuser.ele_account = form_account
+        curuser.ele_passwd = password
+    elif form_type == 3:
+        if curuser.mei_account != '':
+            body['msg'] = 'met account exists'
+            return HttpResponse(encodejson(6, body), content_type='application/json')
+        curuser.mei_account = form_account
+        curuser.mei_passwd = password
+    curuser.save()
+    alo = Alo()
+    alo.cronOrder(str(curuser.id), True)
+    body['msg'] = 'platform add success'
+    return HttpResponse(encodejson(1, body), content_type='application/json')
+
+
+
+@csrf_exempt
+def delete_platform(req):
+    body = {}
+    if not req.method == 'POST':
+        raise Http404
+    resjson = simplejson.loads(req.body)
+    username = resjson['username']
+    token = resjson['private_token']
+    if not if_legal(username, token):
+        body['msg'] = 'login before other action'
+        return HttpResponse(encodejson(13, body), content_type='application/json')
+    curuser = Merchant.objects.get(alin_account=username)
+    cat_mer_list = CatcheData.objects.filter(merchant=curuser)
+    cat_mer = None
+    if cat_mer_list.count()>0:
+        cat_mer = cat_mer_list[0]
+    platform_id = resjson['platform_type']
+    if platform_id == 2:
+        curuser.ele_account = ''
+        curuser.ele_passwd = ''
+        curuser.ele_message = ''
+        curuser.ele_status = True
+        if cat_mer is not None:
+            cat_mer.ele_cookie = ''
+            cat_mer.save()
+    elif platform_id == 3:
+        curuser.mei_account = ''
+        curuser.mei_status = True
+        curuser.mei_message = ''
+        curuser.mei_passwd = ''
+        if cat_mer is not None:
+            cat_mer.mei_token = ''
+            cat_mer.save()
+    curuser.save()
+    body['msg'] = 'platform delete success'
+    return HttpResponse(encodejson(1, body), content_type='application/json')
+
+
+
+@csrf_exempt
+def add_sender(req):
+    body = {}
+    if not req.method == 'POST':
+        raise Http404
+    resjson = simplejson.loads(req.body)
+    username = resjson['username']
+    token = resjson['private_token']
+    if not if_legal(username, token):
+        body['msg'] = 'login before other action'
+        return HttpResponse(encodejson(13, body), content_type='application/json')
+    curuser = Merchant.objects.get(alin_account=username)
+    res = createqr(2, curuser.id)
+    body['bind_pic'] = res
+    body['msg'] = 'get qrcode success'
+    return HttpResponse(encodejson(1, body), content_type='application/json')
+
+
+@csrf_exempt
+def delete_sender(req):
+    body = {}
+    if not req.method == 'POST':
+        raise Http404
+    resjson = simplejson.loads(req.body)
+    username = resjson['username']
+    sender_phone = resjson['sender']
+    token = resjson['private_token']
+    if not if_legal(username, token):
+        body['msg'] = 'login before other action'
+        return HttpResponse(encodejson(13, body), content_type='application/json')
+    curuser = Merchant.objects.get(alin_account=username)
+    sender_list = Sender.objects.filter(phone=sender_phone)
+    if not sender_list.exists():
+        body['msg'] = 'invalid sender phone'
+        return HttpResponse(encodejson(7, body), content_type='application/json')
+    sender = sender_list[0]
+    bind_sender_list = curuser.bind_sender.all()
+    if sender in bind_sender_list:
+        curuser.bind_sender.remove(sender)
+        body['msg'] = 'delete sender success'
+        return HttpResponse(encodejson(1, body), content_type='application/json')
+    else:
+        body['msg'] = 'invalid sender'
+        return HttpResponse(encodejson(7, body), content_type='application/json')
+
+
+
+@csrf_exempt
+def get_senders(req):
+    body = {}
+    if not req.method == 'POST':
+        raise Http404
+    resjson = simplejson.loads(req.body)
+    username = resjson['username']
+    token = resjson['private_token']
+    if not if_legal(username, token):
+        body['msg'] = 'login before other action'
+        return HttpResponse(encodejson(13, body), content_type='application/json')
+    curuser = Merchant.objects.get(alin_account=username)
+    bind_sender_list = curuser.bind_sender.all()
+    sender_list = []
+    for itm in bind_sender_list:
+        sender = {}
+        sender['phone'] = itm.phone
+        sender['nick'] = itm.nick
+        sender_list.append(copy.copy(sender))
+    body['sender_list'] = sender_list
+    body['msg'] = 'get sender list success'
+    return HttpResponse(encodejson(1, body), content_type='application/json')
 
 
 

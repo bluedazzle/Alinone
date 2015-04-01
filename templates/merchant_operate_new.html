@@ -182,7 +182,7 @@
                                      +" 菜单:<p/>"
                                      +"--------------------------"
                                               {% for dish in item.dishs.all %}
-                                     +" <p style=\"font-size: 14px;\">{{ dish.dish_name }} X {{ dish.dish_count }}  &nbsp;&nbsp; {{ dish.dish_price }}元/份</p>"
+                                     +" <p style=\"font-size: 18px;\"><b>{{ dish.dish_name }} &nbsp; {{ dish.dish_count }} 份 &nbsp;&nbsp; {{ dish.dish_price }}元/份</b></p>"
                                               {% endfor %}
                                      +"--------------------------"
                                      +"<p style=\"font-size: 17px;\">地址: {{ item.address }}<br/>"
@@ -269,7 +269,7 @@
                                      +" 菜单:</p>"
                                      +"－－－－－－－－－"
                                               {% for dish in item.dishs.all %}
-                                     +" <p style=\"font-size: 14px;\">{{ dish.dish_name }} X {{ dish.dish_count }}  &nbsp;&nbsp; {{ dish.dish_price }}元/份</p>"
+                                     +" <p style=\"font-size: 18px;\"><b>{{ dish.dish_name }} &nbsp; {{ dish.dish_count }} 份 &nbsp;&nbsp; {{ dish.dish_price }}元/份</b></p>"
                                               {% endfor %}
                                      +" －－－－－－－－－"
                                      +"<p style=\"font-size: 15px;\">地址: {{ item.address }}<br/>"
