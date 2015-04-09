@@ -21,9 +21,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = 'l_d6a!j5-*&wvt77$l(!oc(xloap@68_a6+nu^2%7av_24jm60'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = False
 
 ALLOWED_HOSTS = ['121.41.169.114', 'www.alinone.cn', 'localhost', '127.0.0.1']
 
