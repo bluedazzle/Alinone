@@ -19,6 +19,12 @@ import datetime
 alo = Alo()
 # aps = OrderAps()
 
+platforms = {'1': "淘点点",
+             '2': "饿了么",
+             '3': "美团",
+             '10': "电话订单",
+             '11': "其他"}
+
 # Create your views here.
 # 登录验证函数
 @ensure_csrf_cookie
@@ -432,25 +438,17 @@ def operate_paisong(request):
         merchant.update_time = datetime.datetime.now()
         merchant.save()
         express_people = merchant.bind_sender.all()
-        orders = DayOrder.objects.order_by('-order_time').filter(merchant=merchant, status=3)
-        orders = pingtai_name(orders)
-        sender_orders = []
         sender_id = request.GET.get('id')
-        sender = ''
+        sender = None
+        content = dict()
         if sender_id:
-            for person in express_people:
-                if person.id == int(sender_id):
-                    sender = person
+            sender = merchant.bind_sender.get(id=sender_id)
+            orders = DayOrder.objects.order_by('-order_time').filter(merchant=merchant, status=3, bind_sender=sender)
         else:
-            try:
-                sender = express_people[0]
-            except:
-                sender = []
-        for item in orders:
-            if item.bind_sender == sender:
-                sender_orders.append(item)
+            orders = DayOrder.objects.order_by('-order_time').filter(merchant=merchant, status=3)
 
-        paginator = Paginator(sender_orders, 20)
+        orders = pingtai_name(orders)
+        paginator = Paginator(orders, 20)
         try:
             page_num = request.GET.get('page')
             sender_orders = paginator.page(page_num)
@@ -460,10 +458,13 @@ def operate_paisong(request):
             sender_orders = paginator.page(paginator.num_pages)
         except:
             pass
-        return render_to_response('merchant_operate_paisong.html', {'orders': sender_orders,
-                                                                    'express_people': express_people,
-                                                                    'sender': sender}
-                                  , context_instance=RequestContext(request))
+        content['orders'] = sender_orders
+        content['express_people'] = express_people
+        if sender:
+            content['sender'] = sender
+        return render_to_response('merchant_operate_paisong.html',
+                                  content,
+                                  context_instance=RequestContext(request))
 
 
 def operate_finish(request):
@@ -474,7 +475,16 @@ def operate_finish(request):
                 merchant = Merchant.objects.get(alin_account=merchant0)
                 merchant.update_time = datetime.datetime.now()
                 merchant.save()
-                order_detail = DayOrder.objects.order_by('-order_time').filter(merchant=merchant, status=4)
+                platform_id = request.GET.get('platform_id')
+                if platform_id:
+                    order_detail = DayOrder.objects.order_by('-order_time').filter(merchant=merchant,
+                                                                                   status=4,
+                                                                                   platform=platform_id)
+                    platform_name = platforms[platform_id]
+                else:
+                    platform_id = None
+                    platform_name = None
+                    order_detail = DayOrder.objects.order_by('-order_time').filter(merchant=merchant, status=4)
                 order_detail = pingtai_name(order_detail)
                 paginator = Paginator(order_detail, 20)
                 try:
@@ -488,7 +498,11 @@ def operate_finish(request):
                     pass
             except DayOrder.DoesNotExist:
                 pass
-            return render_to_response('merchant_operate_finish.html', {'items': order_detail}, context_instance=RequestContext(request))
+            return render_to_response('merchant_operate_finish.html',
+                                      {'items': order_detail,
+                                       'platform_id': platform_id,
+                                       'platform_name': platform_name},
+                                      context_instance=RequestContext(request))
         else:
             return HttpResponseRedirect("login_in")
     return render_to_response('merchant_operate_finish.html', context_instance=RequestContext(request))
