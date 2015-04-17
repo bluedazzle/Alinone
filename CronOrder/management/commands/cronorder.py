@@ -1,13 +1,13 @@
-from django.core.management.base import BaseCommand
-from CronOrder.crontest import *
-from AlinApi.views import *
-from CronOrder.ele import *
-from CronOrder.tdd import *
-from QRcode.method import *
-from CronOrder.models import *
-import cookielib
-import os,sys
-from apscheduler.schedulers.blocking import BlockingScheduler
+# from django.core.management.base import BaseCommand
+# from CronOrder.crontest import *
+# from AlinApi.views import *
+# from CronOrder.ele import *
+# from CronOrder.tdd import *
+# from QRcode.method import *
+# from CronOrder.models import *
+# import cookielib
+# import os,sys
+# from apscheduler.schedulers.blocking import BlockingScheduler
 from CronOrder.method import *
 # scheduler = BlockingScheduler()
 # tddcat = None

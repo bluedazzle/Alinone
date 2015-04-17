@@ -3,17 +3,23 @@ from CronOrder.models import *
 from AlinApi.models import PhoneVerify
 from QRcode.method import *
 from django.views.decorators.csrf import csrf_exempt
+from AlinApi.decorater import api_times
 from AlinApi.method import *
 from CronOrder.endecy import *
 from django.http import HttpResponse, Http404
+from django.core.paginator import Paginator
+from django.core.paginator import PageNotAnInteger
+from django.core.paginator import EmptyPage
 from django.utils import timezone
 from CronOrder.ALO import *
 import simplejson
 import sys
 import copy
+import math
 
 
 @csrf_exempt
+@api_times
 def send_verify(req):
     if req.method == 'POST':
         jsonres = simplejson.loads(req.body)
@@ -37,6 +43,7 @@ def send_verify(req):
 
 
 @csrf_exempt
+@api_times
 def register(req):
     body={}
     if req.method == 'POST':
@@ -68,6 +75,7 @@ def register(req):
 
 
 @csrf_exempt
+@api_times
 def login(req):
     body={}
     if req.method == 'POST':
@@ -96,6 +104,7 @@ def login(req):
 
 
 @csrf_exempt
+@api_times
 def logout(req):
     body={}
     if req.method == 'POST':
@@ -115,6 +124,7 @@ def logout(req):
 
 
 @csrf_exempt
+@api_times
 def change_password(req):
     body = {}
     if not req.method == 'POST':
@@ -140,6 +150,7 @@ def change_password(req):
 
 
 @csrf_exempt
+@api_times
 def new_password(req):
     body = {}
     if not req.method == 'POST':
@@ -161,8 +172,13 @@ def new_password(req):
             return HttpResponse(encodejson(7, body), content_type='application/json')
         curuser = me_list[0]
         curuser.password = hashlib.md5(newpass).hexdigest()
+        new_token = createtoken()
+        curuser.private_token = new_token
         curuser.save()
         body['msg'] = 'password resest success'
+        body['private_token'] = new_token
+        body['merchant_name'] = curuser.name
+        body['username'] = phone
         return HttpResponse(encodejson(1, body), content_type='application/json')
     else:
         body['msg'] = 'verify code not correct'
@@ -172,6 +188,7 @@ def new_password(req):
 
 
 @csrf_exempt
+@api_times
 def change_info(req):
     body = {}
     if not req.method == 'POST':
@@ -193,6 +210,7 @@ def change_info(req):
 
 
 @csrf_exempt
+@api_times
 def get_new_order(req):
     body={}
     if not req.method == 'POST':
@@ -256,6 +274,7 @@ def get_new_order(req):
 
 
 @csrf_exempt
+@api_times
 def get_pending_order_detail(req):
     body={}
     if not req.method == 'POST':
@@ -299,6 +318,52 @@ def get_pending_order_detail(req):
 
 
 @csrf_exempt
+@api_times
+def get_handle_orders(req):
+    body = {}
+    if not req.method == "POST":
+        raise Http404
+    resjson = simplejson.loads(req.body)
+    username = resjson['username']
+    token = resjson['private_token']
+    if not if_legal(username, token):
+        body['msg'] = 'auth failed'
+        return HttpResponse(encodejson(13, body), content_type='application/json')
+    curuser = Merchant.objects.get(alin_account=username)
+    n_order_list = DayOrder.objects.filter(status=2, merchant=curuser)
+    n_order_list |= DayOrder.objects.filter(status=3, merchant=curuser)
+    n_order_list |= DayOrder.objects.filter(status=4, merchant=curuser)
+    n_order_list |= DayOrder.objects.filter(status=5, merchant=curuser)
+    total = n_order_list.count()
+    total_page = math.ceil(float(total) / 20.0)
+    paginator = Paginator(n_order_list, 20)
+    page_num = 1
+    try:
+        page_num = int(resjson['page'])
+        print 'wtf'
+        n_order_list = paginator.page(page_num)
+    except PageNotAnInteger:
+        n_order_list = paginator.page(1)
+    except EmptyPage:
+        n_order_list = []
+    except:
+        n_order_list = paginator.page(page_num)
+    order_list = model_serializer(n_order_list)
+    for i, itm in enumerate(n_order_list):
+        dishs = model_serializer(Dish.objects.filter(order=itm))
+        bind_sender = model_serializer(itm.bind_sender, except_attr=('password', 'private_token'))
+        order_list[i]['dishs'] = dishs
+        order_list[i]['bind_sender'] = bind_sender
+    body['order_list'] = order_list
+    body['total_page'] = total_page
+    body['total'] = total
+    body['page'] = page_num
+    return HttpResponse(encodejson(1, body), content_type='application/json')
+
+
+
+@csrf_exempt
+@api_times
 def ensure_order(req):
     body={}
     if not req.method == 'POST':
@@ -335,6 +400,7 @@ def ensure_order(req):
 
 
 @csrf_exempt
+@api_times
 def refuse_order(req):
     body={}
     if not req.method == 'POST':
@@ -369,6 +435,7 @@ def refuse_order(req):
 
 
 @csrf_exempt
+@api_times
 def create_new_order(req):
     body = {}
     if not req.method == 'POST':
@@ -384,6 +451,8 @@ def create_new_order(req):
     phone = resjson['phone']
     address = resjson['address']
     platform = resjson['platform']
+    create_time = resjson['create_time']
+    c_datetime = timestampToDatetime(create_time)
     pay = resjson['if_pay']
     autoid = int(DayOrder.objects.filter(platform=platform, merchant=curuser).count()) + 1
     new_id = createAlinOrderNum(str(platform), curuser.id, autoid)
@@ -401,8 +470,8 @@ def create_new_order(req):
         merchant=curuser,
         note='',
         plat_num='',
-        order_time=datetime.datetime.now(),
-        send_time=datetime.datetime.now(),
+        order_time=c_datetime,
+        send_time=c_datetime,
         qr_path=qr_path
     )
     new_order.save()
@@ -412,6 +481,7 @@ def create_new_order(req):
 
 
 @csrf_exempt
+@api_times
 def add_platform(req):
     body = {}
     if not req.method == 'POST':
@@ -448,6 +518,7 @@ def add_platform(req):
 
 
 @csrf_exempt
+@api_times
 def delete_platform(req):
     body = {}
     if not req.method == 'POST':
@@ -487,6 +558,7 @@ def delete_platform(req):
 
 
 @csrf_exempt
+@api_times
 def add_sender(req):
     body = {}
     if not req.method == 'POST':
@@ -505,6 +577,7 @@ def add_sender(req):
 
 
 @csrf_exempt
+@api_times
 def delete_sender(req):
     body = {}
     if not req.method == 'POST':
@@ -534,6 +607,7 @@ def delete_sender(req):
 
 
 @csrf_exempt
+@api_times
 def get_senders(req):
     body = {}
     if not req.method == 'POST':

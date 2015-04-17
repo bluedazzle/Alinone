@@ -21,9 +21,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = 'l_d6a!j5-*&wvt77$l(!oc(xloap@68_a6+nu^2%7av_24jm60'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-TEMPLATE_DEBUG = False
+TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = ['121.41.169.114', 'www.alinone.cn', 'localhost', '127.0.0.1']
 
@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'AlinLog',
     'ProxyWork',
     'top',
+    # 'debug_toolbar',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -55,6 +56,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'pagination.middleware.PaginationMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 #自定义验证后台
@@ -75,7 +77,7 @@ WSGI_APPLICATION = 'AlinSite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'alinone',
+        'NAME': 'alinre',
         'USER': 'postgres',                      # Not used with sqlite3.
         'PASSWORD': '123456',                  # Not used with sqlite3.
         'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -125,3 +127,22 @@ QR_DIR = './qrimg'
 MUSIC_DIR = './static/music/'
 APK_DIR = './static/apk/'
 
+
+INTERNAL_IPS = ('127.0.0.1',)
+
+DEBUG_TOOLBAR_PATCH_SETTINGS = False
+
+DEBUG_TOOLBAR_PANELS = [
+        'debug_toolbar.panels.versions.VersionsPanel',
+        'debug_toolbar.panels.timer.TimerPanel',
+        'debug_toolbar.panels.settings.SettingsPanel',
+        'debug_toolbar.panels.headers.HeadersPanel',
+        'debug_toolbar.panels.request.RequestPanel',
+        'debug_toolbar.panels.sql.SQLPanel',
+        'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+        'debug_toolbar.panels.templates.TemplatesPanel',
+        'debug_toolbar.panels.cache.CachePanel',
+        'debug_toolbar.panels.signals.SignalsPanel',
+        'debug_toolbar.panels.logging.LoggingPanel',
+        'debug_toolbar.panels.redirects.RedirectsPanel',
+    ]

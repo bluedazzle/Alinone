@@ -349,6 +349,81 @@ or
 ```
 
 
+
+##**订单**
+#####商家查询已处理订单
+```
+POST /merchant/get_handle_orders
+```
+###**Parameters**
+* private_token(_Required_|string)-当前用户token
+* username(_Required_|string)-用户名，手机号
+* page(_Optional_|integer)-分页
+###**Request**
+```
+{"private_token":"18215606355","username":"12345678","page":1}
+```
+###**Return**
+```
+{
+    "status": 1,
+    "body": {
+        "order_list": [
+            {
+                "order_id_alin": "2015041603000000010001",
+                "finished_by": null,
+                "order_id_old": "1",
+                "send_time": 1429120273,
+                "real_price": 12,
+                "phone": "18215606355",
+                "address": "本科24栋203",
+                "id": 3607,
+                "dishs": [],
+                "order_time": 1429120273,
+                "day_num": "",
+                "pay": true,
+                "bind_sender": {
+                    "status": "",
+                    "active_time": 1429052838,
+                    "update_time": null,
+                    "offline_num": 0,
+                    "is_verify": false,
+                    "online_num": 0,
+                    "nick": "",
+                    "offline_money": 0,
+                    "online_money": 0,
+                    "phone": "15597362217",
+                    "verify_code": null,
+                    "last_login": 1429052722,
+                    "lat": null,
+                    "lng": null,
+                    "today_sends": 0,
+                    "id": 132
+                },
+                "note": "",
+                "platform": 3,
+                "status": 2,
+                "qr_path": "order2015041603000000010001.png",
+                "promotion": "",
+                "origin_price": 12,
+                "plat_num": ""
+            }
+        ],
+        "total": 1,
+        "page": 1,
+        "total_page": 1
+    }
+}
+or
+{
+    "status": 13,
+    "body": {
+        "msg": "auth failed"
+    }
+}
+```
+
+
 ##**接受订单**
 #####商家接受待处理订单
 ```

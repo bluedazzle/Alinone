@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response
+from django.http import HttpResponse
 from django.core.context_processors import csrf
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import HttpResponseRedirect
@@ -325,6 +326,7 @@ def asyalo(request, first=False):
         if merchant.tao_account != '' or merchant.ele_account != '' or merchant.mei_account != '':
             res = alo.cronOrder(str(merchant.id), first)
             print res
+    return HttpResponse('True')
 
 
 

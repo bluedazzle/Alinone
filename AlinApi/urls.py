@@ -37,5 +37,6 @@ urlpatterns = patterns('',
     url(r'^merchant/add_sender$', merhcant_api.add_sender),
     url(r'^merchant/delete_sender$', merhcant_api.delete_sender),
     url(r'^merchant/get_senders$', merhcant_api.get_senders),
+    url(r'^merchant/get_handle_orders$', merhcant_api.get_handle_orders),
 )
 

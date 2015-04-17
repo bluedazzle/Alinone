@@ -1,8 +1,26 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
+from django.utils import timezone
+import copy
 import datetime
 import hashlib
 # Create your models here.
+
+class BaseModel(models.Model):
+
+    def serializer(self, deep=False):
+        attr_list = [attr for attr in [f.name for f in self._meta.fields]]
+        dic_list = {}
+        for itm in attr_list:
+            if isinstance(getattr(self, itm), models.Model):
+                if deep:
+                    dic_list[itm] = getattr(self, itm).serializer(deep)
+            else:
+                dic_list[itm] = getattr(self, itm)
+        return dic_list
+
+    class Meta:
+            abstract = True
 
 class SenderManager(BaseUserManager):
     def create_user(self, email, phone, passwd=None):
@@ -98,6 +116,18 @@ class Sender(AbstractBaseUser):
             return True
         return False
 
+
+    def serializer(self, deep=False):
+        attr_list = [attr for attr in [f.name for f in self._meta.fields]]
+        dic_list = {}
+        for itm in attr_list:
+            if isinstance(getattr(self, itm), models.Model):
+                if deep:
+                    dic_list[itm] = getattr(self, itm).serializer(deep)
+            else:
+                dic_list[itm] = getattr(self, itm)
+        return dic_list
+
     class Meta:
         app_label = 'CronOrder'
 
@@ -166,11 +196,23 @@ class Merchant(AbstractBaseUser):
             return True
         return False
 
+
+    def serializer(self, deep=False):
+        attr_list = [attr for attr in [f.name for f in self._meta.fields]]
+        dic_list = {}
+        for itm in attr_list:
+            if isinstance(getattr(self, itm), models.Model):
+                if deep:
+                    dic_list[itm] = getattr(self, itm).serializer(deep)
+            else:
+                dic_list[itm] = getattr(self, itm)
+        return dic_list
+
     class Meta:
         app_label = 'CronOrder'
 
 
-class DayOrder(models.Model):
+class DayOrder(BaseModel):
     order_id_alin = models.CharField(max_length=22, unique=True)
     order_id_old = models.CharField(max_length=30)
     order_time = models.DateTimeField(max_length=30)
@@ -194,7 +236,7 @@ class DayOrder(models.Model):
     def __unicode__(self):
         return self.order_id_alin
 
-class Dish(models.Model):
+class Dish(BaseModel):
     dish_name = models.CharField(max_length=30)
     dish_price = models.FloatField(max_length=5)
     dish_count = models.IntegerField(max_length=5)
@@ -203,7 +245,7 @@ class Dish(models.Model):
     def __unicode__(self):
         return self.dish_name
 
-class TotalOrder(models.Model):
+class TotalOrder(BaseModel):
     order_id_alin = models.CharField(max_length=22, unique=True)
     order_id_old = models.CharField(max_length=30)
     order_time = models.DateTimeField(max_length=30)
@@ -226,7 +268,7 @@ class TotalOrder(models.Model):
     def __unicode__(self):
         return self.order_id_alin
 
-class Tdish(models.Model):
+class Tdish(BaseModel):
     dish_name = models.CharField(max_length=30)
     dish_price = models.FloatField(max_length=5)
     dish_count = models.IntegerField(max_length=5)
@@ -235,7 +277,7 @@ class Tdish(models.Model):
     def __unicode__(self):
         return self.dish_name
 
-class CatcheData(models.Model):
+class CatcheData(BaseModel):
     merchant = models.OneToOneField(Merchant, related_name='Cache')
     ele_cookie = models.TextField(max_length=5000, null=True, blank=True)
     mei_token = models.CharField(max_length=128, null=True, blank=True)

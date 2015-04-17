@@ -6,8 +6,13 @@ from CronOrder.Aaps import *
 from CronOrder.ALO import *
 from CronOrder.meituan import *
 import os, sys
-from apscheduler.schedulers.blocking import BlockingScheduler
+from django.db.models.query import QuerySet
+# from apscheduler.schedulers.blocking import BlockingScheduler
 from CronOrder.method import *
+from django.db import models
+from AlinApi.method import model_serializer
+import simplejson
+import json
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
@@ -18,8 +23,8 @@ class Command(BaseCommand):
         # mer = Merchant.objects.get(id=1)
         # res = a.catcheorder(mer)
         mer = Merchant.objects.get(id=1)
-        a = Mei()
-        res = a.getOrder(mer)
+        # a = Mei()
+        # res = a.getOrder(mer)
         # # print res
         # a = OrderAps()
         # res = a.addJobs('1')
@@ -32,3 +37,29 @@ class Command(BaseCommand):
         # res = meit.getOrder()
         # if res is True:
         #     print 'success'
+        a = DayOrder.objects.all()
+        # print as[1].serializer()
+        # print type(a)
+        # # print a.latest('alin_account')
+        # # print a.earliest('alin_account')
+        # # print a.__reduce__()
+        e = a[0]
+        d = a[1]
+        # # print isinstance(a, QuerySet)
+        # print type(e)
+        # f = [e, d]
+        # print isinstance(e, models.Model)
+        # print type(f)
+        ff = []
+        # # print e.__dict__
+        # for i in a:
+        #     ff.append(i.serializer())
+        # b = json.dumps(ff)
+        z = model_serializer(a, datetime_format='timestamp', serializer='dict')
+        print z
+        # print b
+        # print d.test()
+        # print e.test()
+        # for i in e.test():
+            # print getattr(e, i.name)
+        # print e.test()

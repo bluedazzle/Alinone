@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 from CronOrder.crontest import *
 from CronOrder.models import *
 import os, sys
-from apscheduler.schedulers.blocking import BlockingScheduler
+# from apscheduler.schedulers.blocking import BlockingScheduler
 from CronOrder.method import *
 
 class Command(BaseCommand):

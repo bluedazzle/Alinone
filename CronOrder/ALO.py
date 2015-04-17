@@ -58,10 +58,12 @@ class Alo(object):
             mer.netspider_time = datetime.datetime.now()
             meires = None
             print('%s is online' % mer.name)
+            CatcheData.objects.get_or_create(merchant=mer)
             if mer.ele_account != '' and mer.ele_status is True:
                 elecat = Ele(merchantid, self.__use_proxy)
                 eleres = elecat.catcheorder(mer)
             if mer.mei_account != '' and mer.mei_status is True:
+                print 'mei excet'
                 meicat = Mei(merchantid, self.__use_proxy)
                 meires = meicat.getOrder(mer)
             if mer.tao_account != '' and mer.tao_status is True:

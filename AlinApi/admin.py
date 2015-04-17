@@ -8,3 +8,4 @@ class PhoneVerifyAdmin(admin.ModelAdmin):
     ordering = ('-update_time',)
 
 admin.site.register(PhoneVerify, PhoneVerifyAdmin)
+admin.site.register(ApiTimes)
