@@ -63,7 +63,8 @@ def register(req):
         mytoken = createtoken()
         newmerchant = Merchant(alin_account=phone,
                                password=hashpass,
-                               active_time=datetime.datetime.now(),
+                               update_time=datetime.datetime.now(),
+                               netspider_time=datetime.datetime.now(),
                                name=mer_name,
                                private_token=mytoken)
         newmerchant.save()
@@ -287,31 +288,10 @@ def get_pending_order_detail(req):
         return HttpResponse(encodejson(13, body), content_type='application/json')
     curuser = Merchant.objects.get(alin_account=username)
     new_order_list = DayOrder.objects.filter(status=1, merchant=curuser)
-    order_list = []
-    for item in new_order_list:
-        order = {}
-        order['alin_id'] = item.order_id_alin
-        order['old_id'] = item.order_id_old
-        order['order_time'] = datetime_to_string(item.order_time)
-        order['send_time'] = datetime_to_string(item.send_time)
-        order['phone'] = item.phone
-        order['pay'] = item.pay
-        order['address'] = item.address
-        order['platform'] = item.platform
-        order['real_price'] = item.real_price
-        order['note'] = item.note
-        order['plat_number'] = item.plat_num
-        order['day_number'] = item.day_num
-        dish_list = Dish.objects.filter(order=item)
-        dishs = []
-        for itm in dish_list:
-            dish = {}
-            dish['dish_name'] = itm.dish_name
-            dish['dish_count'] = itm.dish_count
-            dish['dish_price'] = itm.dish_price
-            dishs.append(copy.copy(dish))
-        order['dish_list'] = dishs
-        order_list.append(copy.copy(order))
+    order_list = model_serializer(new_order_list)
+    for i, itm in enumerate(new_order_list):
+        dishs = model_serializer(Dish.objects.filter(order=itm))
+        order_list[i]['dishs'] = dishs
     body['msg'] = 'pending orders get success'
     body['order_list'] = order_list
     return HttpResponse(encodejson(1, body), content_type='application/json')
@@ -469,8 +449,8 @@ def create_new_order(req):
         origin_price=price,
         merchant=curuser,
         note='',
-        plat_num='',
-        order_time=c_datetime,
+        plat_num=autoid,
+        order_time=datetime.datetime.now(),
         send_time=c_datetime,
         qr_path=qr_path
     )

@@ -35,7 +35,8 @@
 |01|淘点点|
 |02|饿了么|
 |03|美团外卖|
-|70|其他平台|
+|10|电话订单|
+|11|其他平台|
 
 **host: http://alinone.cn**
 
@@ -69,13 +70,13 @@ or
 POST /merhcant/register
 ```
 ###**Parameters**
-* username(_Required_|string)-用户名，必须为手机号
+* phone(_Required_|string)-用户名，必须为手机号
 * password(_Required_|string)-密码
 * verify_code(_Required_|string)-验证码
 * merchant_name(_Required_|string)-店铺名称
 ###**Request**
 ```
-{"username":18215606355,"password":"132456","verify_code":"1234","merchant_name":"test"}
+{"phone":18215606355,"password":"132456","verify_code":"1234","merchant_name":"test"}
 ```
 ###**Return**
 ```
@@ -295,46 +296,86 @@ POST /merchant/get_new_detail
         "msg": "pending orders get success",
         "order_list": [
             {
-                "day_number": "15",
+                "order_id_alin": "2015041711000000010004",
+                "finished_by": null,
+                "order_id_old": "1111",
+                "send_time": 1429231441,
                 "real_price": 18,
-                "alin_id": "2015032603000000010004",
-                "order_time": "2015-03-26 15:32:02+08:00",
-                "old_id": "705292357208108",
-                "pay": false,
-                "send_time": "2015-03-26 18:00:01+08:00",
-                "note": " 米饭多一点",
                 "phone": "18215606355",
-                "platform": 3,
-                "dish_list": [
+                "address": "KB258",
+                "id": 3893,
+                "dishs": [
                     {
-                        "dish_price": 18,
+                        "dish_price": 2,
+                        "dish_count": 2,
+                        "id": 6162,
+                        "dish_name": "可口可乐"
+                    },
+                    {
+                        "dish_price": 1,
+                        "dish_count": 2,
+                        "id": 6161,
+                        "dish_name": "珍珠大吊饭"
+                    },
+                    {
+                        "dish_price": 12,
                         "dish_count": 1,
-                        "dish_name": "咖喱鸡"
+                        "id": 6160,
+                        "dish_name": "宫保鸡丁"
                     }
                 ],
-                "address": "科研楼222",
-                "plat_number": "3"
+                "order_time": 1429231441,
+                "day_num": "5",
+                "pay": true,
+                "bind_sender": null,
+                "note": "",
+                "platform": 11,
+                "status": 1,
+                "qr_path": "order2015041711000000010004.png",
+                "promotion": null,
+                "origin_price": 18,
+                "plat_num": "5"
             },
             {
-                "day_number": "13",
+                "order_id_alin": "2015041711000000010005",
+                "finished_by": null,
+                "order_id_old": "1111",
+                "send_time": 1429231441,
                 "real_price": 18,
-                "alin_id": "2015032603000000010003",
-                "order_time": "2015-03-26 14:52:21+08:00",
-                "old_id": "705292724367644",
-                "pay": false,
-                "send_time": "2015-03-26 17:00:21+08:00",
-                "note": "",
                 "phone": "18215606355",
-                "platform": 3,
-                "dish_list": [
+                "address": "KB258",
+                "id": 3894,
+                "dishs": [
                     {
-                        "dish_price": 18,
+                        "dish_price": 2,
+                        "dish_count": 2,
+                        "id": 6165,
+                        "dish_name": "可口可乐"
+                    },
+                    {
+                        "dish_price": 1,
+                        "dish_count": 2,
+                        "id": 6164,
+                        "dish_name": "珍珠大吊饭"
+                    },
+                    {
+                        "dish_price": 12,
                         "dish_count": 1,
-                        "dish_name": "孜然肉片"
+                        "id": 6163,
+                        "dish_name": "宫保鸡丁"
                     }
                 ],
-                "address": "科研楼222",
-                "plat_number": "2"
+                "order_time": 1429231441,
+                "day_num": "6",
+                "pay": true,
+                "bind_sender": null,
+                "note": "",
+                "platform": 11,
+                "status": 1,
+                "qr_path": "order2015041711000000010005.png",
+                "promotion": null,
+                "origin_price": 18,
+                "plat_num": "5"
             }
         ]
     }
@@ -461,9 +502,10 @@ POST /merchant/create_order
 * platform(_Required_|integer)-平台类型
 * price(_Required_|float)-价格
 * if_pay(_Required_|bool)-是否在线支付
+* create_time(_Required_|string)-配送时间
 ###**Request**
 ```
-{"username":"18215606355","private_token":"PF0VTvtiUfMH76cmpObSYnK3Q+JaldzI","address":"2015032603000000010003","phone":"18215606456","platform":"10","price":"18.0","if_pay":true}
+{"username":"18215606355","private_token":"PF0VTvtiUfMH76cmpObSYnK3Q+JaldzI","address":"2015032603000000010003","phone":"18215606456","platform":"10","price":"18.0","if_pay":true,"create_time":14758697}
 ```
 ###**Return**
 ```

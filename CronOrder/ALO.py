@@ -27,6 +27,8 @@ class Alo(object):
             meicat = Mei(merchantid, self.__use_proxy)
             meires = meicat.ensureOrder(mer, orderid)
             return meires
+        else:
+            return True
 
     def refuse_order(self, merchantid, order):
         orderid = str(order).split(',')[0]
@@ -47,6 +49,8 @@ class Alo(object):
             meicat = Mei(merchantid, self.__use_proxy)
             meires = meicat.refuseOrder(mer, orderid)
             return meires
+        else:
+            return True
 
     def cronOrder(self, merchantid, first=False):
         mer = Merchant.objects.filter(id = merchantid)[0]

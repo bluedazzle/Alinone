@@ -478,7 +478,7 @@ def operate_finish(request):
                 merchant.update_time = datetime.datetime.now()
                 merchant.save()
                 platform_id = request.GET.get('platform_id')
-                if platform_id:
+                if platform_id and platform_id is not None:
                     order_detail = DayOrder.objects.order_by('-order_time').filter(merchant=merchant,
                                                                                    status=4,
                                                                                    platform=platform_id)
