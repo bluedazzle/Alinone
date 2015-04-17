@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     'ProxyWork',
     'top',
     # 'debug_toolbar',
+    'Alin_admin',
 )
 
 MIDDLEWARE_CLASSES = (

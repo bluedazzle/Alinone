@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
@@ -10,10 +10,31 @@
 <div class="panel panel-default text-center">
     <div class="panel-heading">
              <p class="text-center" style="font-size:21px;">已完成的订单</p>
-         </div>
+          <div class="btn-group" style="float: right;margin-top: -43px;">
+            <button type="button" class="btn btn-default btn-lg">
+                {% if platform_name %}
+                    {{ platform_name }}
+                {% else %}
+                所有平台
+                {% endif %}
+            </button>
+            <button type="button" class="btn btn-default dropdown-toggle btn-lg" data-toggle="dropdown">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="operate_finish">所有平台</a></li>
+                <li><a href="operate_finish?platform_id=3">美团</a></li>
+                <li><a href="operate_finish?platform_id=1">淘点点</a></li>
+                <li><a href="operate_finish?platform_id=2">饿了么</a></li>
+                <li><a href="operate_finish?platform_id=10">电话订单</a></li>
+                <li><a href="operate_finish?platform_id=11">其他</a></li>
+            </ul>
+          </div>
+    </div>
     <div class="panel-body">
     {% if not items %}
-    <h3 style="text-align: center;">目前还完成的订单</h3>
+    <h3 style="text-align: center;">目前还没有完成的订单</h3>
     {% else %}
              <table class="table table-bordered text-center">
                  <tr>
@@ -53,17 +74,17 @@
         <nav>
        <ul class="pagination">
              {% if items.has_previous %}
-        <li><a href="?page={{ items.previous_page_number }}">&laquo;</a></li>
+        <li><a href="?page={{ items.previous_page_number }}&platform_id={{ platform_id }}">&laquo;</a></li>
              {% endif %}
              {% for page in items.paginator.page_range %}
-               {% if page = items.number %}
-        <li class="active"><a href="?page={{ page }}">{{ page }}</a></li>
+               {% if page == items.number %}
+        <li class="active"><a href="?page={{ page }}&platform_id={{ platform_id }}">{{ page }}</a></li>
                {% else %}
-        <li><a href="?page={{ page }}">{{ page }}</a></li>
+        <li><a href="?page={{ page }}&platform_id={{ platform_id }}">{{ page }}</a></li>
                {% endif %}
             {% endfor %}
             {% if items.has_next %}
-        <li><a href="?page={{ items.next_page_number }}">&raquo;</a></li>
+        <li><a href="?page={{ items.next_page_number }}&platform_id={{ platform_id }}">&raquo;</a></li>
             {% endif %}
        </ul>
      </nav>

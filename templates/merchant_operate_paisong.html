@@ -18,7 +18,13 @@
     <div class="panel-heading">
 {#             <p class="text-center" style="font-size:21px;">派送员：{{ person.nick }}(电话：{{ person.phone }})</p>#}
     <div class="btn-group">
-  <button type="button" class="btn btn-default btn-lg">派送员：{{ sender.nick }}(电话：{{ sender.phone }})</button>
+  <button type="button" class="btn btn-default btn-lg">
+      {% if sender %}
+      派送员：{{ sender.nick }}(电话：{{ sender.phone }})
+      {% else %}
+      所有派送员
+      {% endif %}
+  </button>
   <button type="button" class="btn btn-default dropdown-toggle btn-lg" data-toggle="dropdown">
     <span class="caret"></span>
     <span class="sr-only">Toggle Dropdown</span>
@@ -82,7 +88,7 @@
              {% endif %}
              {% for page in orders.paginator.page_range %}
                {% if page == orders.number %}
-        <li class="active"><a href="?page={{ page }}">{{ page }}</a></li>
+        <li class="active"><a href="?id={{ sender.id }}&page={{ page }}">{{ page }}</a></li>
                {% else %}
         <li><a href="?id={{ sender.id }}&page={{ page }}">{{ page }}</a></li>
                {% endif %}
