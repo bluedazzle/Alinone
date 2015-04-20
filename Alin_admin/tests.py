@@ -1,1 +1,1 @@
-__author__ = 'wood'
+from django.test import TestCase

@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'AlinSite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'alinre',
+        'NAME': 'alinone',
         'USER': 'postgres',                      # Not used with sqlite3.
         'PASSWORD': '123456',                  # Not used with sqlite3.
         'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
