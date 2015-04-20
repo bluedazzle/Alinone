@@ -114,8 +114,10 @@ def forget_password_verify(request):
         context.update(csrf(request))
         phone = request.POST.get('phone')
         merchant_have = Merchant.objects.filter(alin_account=phone)
-        if merchant_have.count() > 0:
-            # print 'aa'
+        if merchant_have.count() > 0 :
+            merchant = merchant_have[0]
+            if merchant.verify is False:
+                return HttpResponse(json.dumps("auth"), content_type='application/json')
             req = createverfiycode(phone)
             print req
             newlog = AccountLog()
