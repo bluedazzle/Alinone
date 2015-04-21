@@ -21,7 +21,7 @@
 			<input type="hidden" id="end_time" name="end_time" value="{{ end_time }}"><br>
         </div>
         </form>
-        <button class="col-lg-2 col-md-2 btn btn-primary" onclick="submit_account_log_form()">提交</button>
+        <button class="col-lg-2 col-md-2 btn btn-primary" onclick="submit_log_form('account_log_form')">提交</button>
         <table class="table">
             <thead>
                 <h3 style="text-align: center;" class="col-lg-12 col-md-12">登录日志</h3>
@@ -68,6 +68,7 @@
         </table>
     </div>
     {% if account_logs %}
+        {% if pages <= 15 %}
     <nav style="width: 100%;height: 100%;" class="text-center">
        <ul class="pagination">
              {% if account_logs.has_previous %}
@@ -85,6 +86,13 @@
             {% endif %}
        </ul>
      </nav>
+        {% else %}
+     <div class="text-center">
+        <input name="page" type="text" style="width: 50px;text-align: right" value="{{ account_logs.number }}"/>
+        <span>/{{ pages }}</span>
+        <span><button class="btn btn-primary btn-sm" onclick="turn_page('account_log')">Go</button></span>
+     </div>
+         {% endif %}
     {% endif %}
 {% endblock %}
 {% block script %}

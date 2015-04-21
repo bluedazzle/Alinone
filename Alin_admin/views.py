@@ -156,7 +156,13 @@ def account_log(request):
     if request.method == 'GET':
         start_time = request.GET.get('start_time')
         end_time = request.GET.get('end_time')
-        if start_time and end_time:
+        if start_time and not end_time:
+            start_datetime = datetime.datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
+            account_logs = AccountLog.objects.order_by('-id').filter(log_time__gte=start_datetime)[:1000]
+        elif not start_time and end_time:
+            end_datetime = datetime.datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
+            account_logs = AccountLog.objects.order_by('-id').filter(log_time__lte=end_datetime)[:1000]
+        elif start_time and end_time:
             start_datetime = datetime.datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
             end_datetime = datetime.datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
             account_logs = AccountLog.objects.order_by('-id').filter(log_time__lte=end_datetime,
@@ -179,7 +185,8 @@ def account_log(request):
         return render_to_response('alin_admin/log/account_log.html',
                                   {'account_logs': account_logs,
                                    'start_time': start_time,
-                                   'end_time': end_time},
+                                   'end_time': end_time,
+                                   'pages': paginator.num_pages},
                                   context_instance=RequestContext(request))
 
 
@@ -187,9 +194,39 @@ def cron_log(request):
     if not if_login(request):
         return HttpResponseRedirect('admin_login')
     if request.method == 'GET':
-        cron_logs = CronLog.objects.order_by('-id').all()
+        start_time = request.GET.get('start_time')
+        end_time = request.GET.get('end_time')
+        if start_time and not end_time:
+            start_datetime = datetime.datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
+            cron_logs = CronLog.objects.order_by('-id').filter(log_time__gte=start_datetime)
+        elif not start_time and end_time:
+            end_datetime = datetime.datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
+            cron_logs = CronLog.objects.order_by('-id').filter(log_time__lte=end_datetime)
+        elif start_time and end_time:
+            start_datetime = datetime.datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
+            end_datetime = datetime.datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
+            cron_logs = CronLog.objects.order_by('-id').filter(log_time__lte=end_datetime,
+                                                               log_time__gte=start_datetime)
+        else:
+            start_time = ''
+            end_time = ''
+            cron_logs = CronLog.objects.order_by('-id').all()
+
+        paginator = Paginator(cron_logs, 20)
+        try:
+            page_num = request.GET.get('page')
+            cron_logs = paginator.page(page_num)
+        except PageNotAnInteger:
+            cron_logs = paginator.page(1)
+        except EmptyPage:
+            cron_logs = paginator.page(paginator.num_pages)
+        except:
+            pass
         return render_to_response('alin_admin/log/cron_log.html',
-                                  {'cron_logs': cron_logs},
+                                  {'cron_logs': cron_logs,
+                                   'start_time': start_time,
+                                   'end_time': end_time,
+                                   'pages': paginator.num_pages},
                                   context_instance=RequestContext(request))
 
 
@@ -197,9 +234,39 @@ def pro_run_time_log(request):
     if not if_login(request):
         return HttpResponseRedirect('admin_login')
     if request.method == 'GET':
-        pro_run_time_logs = ProRunTimeLog.objects.order_by('-id').all()
+        start_time = request.GET.get('start_time')
+        end_time = request.GET.get('end_time')
+        if start_time and not end_time:
+            start_datetime = datetime.datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
+            pro_run_time_logs = ProRunTimeLog.objects.order_by('-id').filter(log_time__gte=start_datetime)
+        elif not start_time and end_time:
+            end_datetime = datetime.datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
+            pro_run_time_logs = ProRunTimeLog.objects.order_by('-id').filter(log_time__lte=end_datetime)
+        elif start_time and end_time:
+            start_datetime = datetime.datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
+            end_datetime = datetime.datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
+            pro_run_time_logs = ProRunTimeLog.objects.order_by('-id').filter(log_time__lte=end_datetime,
+                                                                             log_time__gte=start_datetime)
+        else:
+            start_time = ''
+            end_time = ''
+            pro_run_time_logs = ProRunTimeLog.objects.order_by('-id').all()
+
+        paginator = Paginator(pro_run_time_logs, 20)
+        try:
+            page_num = request.GET.get('page')
+            pro_run_time_logs = paginator.page(page_num)
+        except PageNotAnInteger:
+            pro_run_time_logs = paginator.page(1)
+        except EmptyPage:
+            pro_run_time_logs = paginator.page(paginator.num_pages)
+        except:
+            pass
         return render_to_response('alin_admin/log/pro_run_time_log.html',
-                                  {'pro_run_time_logs': pro_run_time_logs},
+                                  {'pro_run_time_logs': pro_run_time_logs,
+                                   'start_time': start_time,
+                                   'end_time': end_time,
+                                   'pages': paginator.num_pages},
                                   context_instance=RequestContext(request))
 
 
@@ -207,9 +274,39 @@ def run_time_log(request):
     if not if_login(request):
         return HttpResponseRedirect('admin_login')
     if request.method == 'GET':
-        run_time_logs = RunTimeLog.objects.order_by('-id').all()
+        start_time = request.GET.get('start_time')
+        end_time = request.GET.get('end_time')
+        if start_time and not end_time:
+            start_datetime = datetime.datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
+            run_time_logs = RunTimeLog.objects.order_by('-id').filter(log_time__gte=start_datetime)
+        elif not start_time and end_time:
+            end_datetime = datetime.datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
+            run_time_logs = RunTimeLog.objects.order_by('-id').filter(log_time__lte=end_datetime)
+        elif start_time and end_time:
+            start_datetime = datetime.datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
+            end_datetime = datetime.datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
+            run_time_logs = RunTimeLog.objects.order_by('-id').filter(log_time__lte=end_datetime,
+                                                                      log_time__gte=start_datetime)
+        else:
+            start_time = ''
+            end_time = ''
+            run_time_logs = RunTimeLog.objects.order_by('-id').all()
+
+        paginator = Paginator(run_time_logs, 20)
+        try:
+            page_num = request.GET.get('page')
+            run_time_logs = paginator.page(page_num)
+        except PageNotAnInteger:
+            run_time_logs = paginator.page(1)
+        except EmptyPage:
+            run_time_logs = paginator.page(paginator.num_pages)
+        except:
+            pass
         return render_to_response('alin_admin/log/run_time_log.html',
-                                  {'run_time_logs': run_time_logs},
+                                  {'run_time_logs': run_time_logs,
+                                   'start_time': start_time,
+                                   'end_time': end_time,
+                                   'pages': paginator.num_pages},
                                   context_instance=RequestContext(request))
 
 
@@ -217,9 +314,39 @@ def seach_log(request):
     if not if_login(request):
         return HttpResponseRedirect('admin_login')
     if request.method == 'GET':
-        seach_logs = SeachLog.objects.order_by('-id').all()
+        start_time = request.GET.get('start_time')
+        end_time = request.GET.get('end_time')
+        if start_time and not end_time:
+            start_datetime = datetime.datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
+            seach_logs = SeachLog.objects.order_by('-id').filter(req_time__gte=start_datetime)
+        elif not start_time and end_time:
+            end_datetime = datetime.datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
+            seach_logs = SeachLog.objects.order_by('-id').filter(req_time__lte=end_datetime)
+        elif start_time and end_time:
+            start_datetime = datetime.datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
+            end_datetime = datetime.datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
+            seach_logs = SeachLog.objects.order_by('-id').filter(req_time__lte=end_datetime,
+                                                                 req_time__gte=start_datetime)
+        else:
+            start_time = ''
+            end_time = ''
+            seach_logs = SeachLog.objects.order_by('-id').all()
+
+        paginator = Paginator(seach_logs, 20)
+        try:
+            page_num = request.GET.get('page')
+            seach_logs = paginator.page(page_num)
+        except PageNotAnInteger:
+            seach_logs = paginator.page(1)
+        except EmptyPage:
+            seach_logs = paginator.page(paginator.num_pages)
+        except:
+            pass
         return render_to_response('alin_admin/log/seach_log.html',
-                                  {'seach_logs': seach_logs},
+                                  {'seach_logs': seach_logs,
+                                   'start_time': start_time,
+                                   'end_time': end_time,
+                                   'pages': paginator.num_pages},
                                   context_instance=RequestContext(request))
 
 
@@ -229,8 +356,6 @@ def logout(request):
     if request.method == 'GET':
         del request.session['alin_admin']
         return HttpResponseRedirect('admin_login')
-
-
 
 
 def create_order(request):

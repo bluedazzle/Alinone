@@ -93,11 +93,13 @@ function reject_merchant(merchant_id){
     })
 }
 
-function submit_account_log_form(){
-    if($('#start_time').val() && $('#end_time').val()){
-        $('#account_log_form').submit()
-    }
-    else{
-        return false
-    }
+function submit_log_form(form_id){
+    $('#'+form_id).submit();
+}
+
+function turn_page(url){
+    var start_time = $('#start_time').val();
+    var end_time = $('#end_time').val();
+    var page = $("input[name='page']").val();
+    window.location.href = url + "?start_time=" + start_time + "&end_time" + end_time + "&page=" + page;
 }

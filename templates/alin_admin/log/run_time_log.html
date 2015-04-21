@@ -1,12 +1,125 @@
 {% extends 'alin_admin/base_admin.html' %}
 {% block define %}
-
+    <div class="container" style="padding-top: 50px;">
+        <form action="run_time_log" method="get" id="run_time_log_form">
+        <div class="form-group col-lg-5 col-md-5">
+            <label for="dtp_input1" class="col-md-3 col-lg-3 control-label">起始时间</label>
+            <div class="input-group date form_datetime col-md-8 col-lg-8" data-date="" data-link-field="start_time">
+                <input class="form-control" size="16" type="text" value="{{ start_time }}" readonly="">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+				<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+            </div>
+			<input type="hidden" id="start_time" name="start_time" value="{{ start_time }}"><br>
+        </div>
+        <div class="form-group col-lg-5 col-md-5">
+            <label for="dtp_input2" class="col-md-3 col-lg-3 control-label">结束时间</label>
+            <div class="input-group date form_datetime col-md-8 col-lg-8" data-date="" data-link-field="end_time">
+                <input class="form-control" size="16" type="text" value="{{ end_time }}" readonly="">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+				<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+            </div>
+			<input type="hidden" id="end_time" name="end_time" value="{{ end_time }}"><br>
+        </div>
+        </form>
+        <button class="col-lg-2 col-md-2 btn btn-primary" onclick="submit_log_form('run_time_log_form')">提交</button>
+        <table class="table" style="word-break:break-all; word-wrap:break-all;">
+            <thead>
+                <h3 style="text-align: center;" class="col-lg-12 col-md-12">爬虫运行日志</h3>
+            </thead>
+            <tbody class="merchant-table">
+                <tr style="background-color: #2aabd2;color: #ffffff">
+                    <th>
+                        商家
+                    </th>
+                    <th>
+                        Ltype
+                    </th>
+                    <th style="max-width: 400px;">
+                        content
+                    </th>
+                    <th>
+                        status
+                    </th>
+                    <th>
+                        时间
+                    </th>
+                    <th style="max-width: 400px;">
+                        Err_message
+                    </th>
+                </tr>
+                {% csrf_token %}
+            {% for run_time_log in run_time_logs %}
+                <tr id="m{{ run_time_log.merchant.id }}">
+                    <td>
+                        {{ run_time_log.merchant.name }}({{ run_time_log.merchant.alin_account }})
+                    </td>
+                    <td>
+                        {{ run_time_log.ltype }}
+                    </td>
+                    <td style="max-width: 400px;">
+                        {{ run_time_log.content }}
+                    </td>
+                    <td>
+                        {{ run_time_log.status }}
+                    </td>
+                    <td>
+                        {{ run_time_log.log_time|date:"Y-m-d H:i:s" }}
+                    </td>
+                    <td style="max-width: 400px;">
+                        {{ run_time_log.err_message }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if run_time_logs %}
+        {% if pages <= 15 %}
+    <nav style="width: 100%;height: 100%;" class="text-center">
+       <ul class="pagination">
+             {% if run_time_logs.has_previous %}
+        <li><a href="?page={{ run_time_logs.previous_page_number }}&start_time={{ start_time }}&end_time={{ end_time }}">&laquo;</a></li>
+             {% endif %}
+             {% for page in run_time_logs.paginator.page_range %}
+               {% if page == run_time_logs.number %}
+        <li class="active"><a href="?page={{ page }}&start_time={{ start_time }}&end_time={{ end_time }}">{{ page }}</a></li>
+               {% else %}
+        <li><a href="?page={{ page }}&start_time={{ start_time }}&end_time={{ end_time }}">{{ page }}</a></li>
+               {% endif %}
+            {% endfor %}
+            {% if run_time_logs.has_next %}
+        <li><a href="?page={{ run_time_logs.next_page_number }}&start_time={{ start_time }}&end_time={{ end_time }}">&raquo;</a></li>
+            {% endif %}
+       </ul>
+     </nav>
+         {% else %}
+     <div class="text-center">
+        <input name="page" type="text" style="width: 50px;text-align: right" value="{{ run_time_logs.number }}"/>
+        <span>/{{ pages }}</span>
+        <span><button class="btn btn-primary btn-sm" onclick="turn_page('run_time_log')">Go</button></span>
+     </div>
+         {% endif %}
+    {% endif %}
 {% endblock %}
 {% block script %}
+    <script type="text/javascript" src="/js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
     <script>
+    $('.form_datetime').datetimepicker({
+        language:  'zh-CN',
+{#        weekStart: 1,#}
+        todayBtn:  1,
+		autoclose: 1,
+{#		todayHighlight: 1,#}
+{#		startView: 2,#}
+{#		forceParse: 0,#}
+{#        showMeridian: 0,#}
+        format: 'yyyy-mm-dd hh:ii',
+        pickerPosition: 'bottom-left'
+    });
         $(document).ready(function(){
             $('#run_time_log').addClass('active');
             $('#manage_log').addClass('active');
-        })
+        });
     </script>
 {% endblock %}
