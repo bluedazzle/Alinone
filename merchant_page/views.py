@@ -12,6 +12,7 @@ from AlinLog.models import AccountLog
 from merchant_page.models import *
 from CronOrder.Aaps import *
 from CronOrder.ALO import *
+from CronOrder.method import get_phone_belong
 import json
 import time
 import simplejson
@@ -159,6 +160,7 @@ def register(request):
                     password = hashlib.md5(password).hexdigest()
                     newmerchant.password = password
                     newmerchant.name = merchant_name
+                    newmerchant.belongs = get_phone_belong(phone)
                     newmerchant.save()
                     request.session['username'] = phone
                     qr_bind = createqr(2, newmerchant.id)

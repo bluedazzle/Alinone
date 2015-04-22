@@ -12,6 +12,7 @@ from django.core.paginator import PageNotAnInteger
 from django.core.paginator import EmptyPage
 from django.utils import timezone
 from CronOrder.ALO import *
+from CronOrder.method import get_phone_belong
 import simplejson
 import sys
 import copy
@@ -66,6 +67,7 @@ def register(req):
                                update_time=datetime.datetime.now(),
                                netspider_time=datetime.datetime.now(),
                                name=mer_name,
+                               belongs=get_phone_belong(phone),
                                private_token=mytoken)
         newmerchant.save()
         body['msg'] = 'register success, wait for auth'
