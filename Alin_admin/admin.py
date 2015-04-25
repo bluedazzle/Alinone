@@ -1,2 +1,4 @@
 from django.contrib import admin
-from merchant_page.models import *
+from models import *
+
+admin.site.register(AlinAdmin)

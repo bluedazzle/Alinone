@@ -1,0 +1,40 @@
+{% extends 'alin_admin/base_admin.html' %}
+{% block define %}
+<div class="container" style="padding-top: 5%">
+ <div class="row">
+  <div class="col-lg-4 col-md-4 text-center">
+    <div class="jumbotron">
+      <div class="caption">
+        <h3>当前用户在线</h3>
+        <p id="user_online_number" class="count-font"></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-4 text-center">
+    <div class="jumbotron">
+      <div class="caption">
+        <h3>今天共抓取订单</h3>
+        <p id="order_today_number" class="count-font"></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4 col-md-4 text-center">
+    <div class="jumbotron">
+      <div class="caption">
+        <h3>历史订单数</h3>
+        <p id="order_all_number" class="count-font"></p>
+      </div>
+    </div>
+  </div>
+ </div>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+   $(document).ready(function(){
+       $('#host').addClass('active');
+       update_count();
+       setInterval(update_count, 5000);
+   })
+</script>
+{% endblock %}

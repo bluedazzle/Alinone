@@ -224,13 +224,13 @@
                  </tr>
                  {% endfor %}
              </table>
-       <nav style="width: 100%;height: 100%;">
+      <nav style="width: 100%;height: 100%;">
        <ul class="pagination">
              {% if items.has_previous %}
         <li><a href="?page={{ items.previous_page_number }}">&laquo;</a></li>
              {% endif %}
              {% for page in items.paginator.page_range %}
-               {% if page = items.number %}
+               {% if page == items.number %}
         <li class="active"><a href="?page={{ page }}">{{ page }}</a></li>
                {% else %}
         <li><a href="?page={{ page }}">{{ page }}</a></li>

@@ -113,7 +113,7 @@ class Migration(migrations.Migration):
                 ('recent_days', models.IntegerField(null=True, blank=True)),
                 ('balance', models.FloatField(null=True, blank=True)),
                 ('verify', models.BooleanField(default=False)),
-                ('belong', models.CharField(default=b'11', max_length=10)),
+                ('belongs', models.CharField(default=b'11', max_length=100)),
                 ('private_token', models.CharField(max_length=64, null=True, blank=True)),
             ],
             options={
@@ -141,7 +141,7 @@ class Migration(migrations.Migration):
                 ('online_num', models.IntegerField(default=0, max_length=5, null=True, blank=True)),
                 ('offline_money', models.FloatField(default=0, max_length=10, null=True, blank=True)),
                 ('online_money', models.FloatField(default=0, max_length=10, null=True, blank=True)),
-                ('belong', models.CharField(default=b'11', max_length=10)),
+                ('belongs', models.CharField(default=b'11', max_length=100)),
             ],
             options={
             },

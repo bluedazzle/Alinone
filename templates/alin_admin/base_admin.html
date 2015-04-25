@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Alinone_admin</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="/css/main.css" rel="stylesheet">
+    <script src="/js/jquery.min.js"></script>
+</head>
+<body style="padding-bottom: 50px;">
+<ul class="nav nav-tabs" style="padding: 0 5% 0 5%">
+  <li role="presentation" id="host" style="margin-right: 1%"><a href="admin_host">主页</a></li>
+  <li role="presentation" id="manage_merchant" class="dropdown" style="margin-right: 1%">
+    <a class="dropdown-toggle" href="#" role="button">
+      商家管理 <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" role="menu">
+      <li id="merchant_verify"><a href="merchant_verify">审核商家</a></li>
+      <li id="merchant_list"><a href="merchant_list">商家列表</a></li>
+    </ul>
+  </li>
+  <li role="presentation" id="manage_log" class="dropdown" style="margin-right: 1%">
+    <a class="dropdown-toggle" href="#" role="button">
+      日志管理 <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" role="menu">
+      <li id="account_log"><a href="account_log">账号登入登出</a></li>
+      <li id="cron_log"><a href="cron_log">订单迁移</a></li>
+      <li id="pro_run_time_log"><a href="pro_run_time_log">pro_run_time</a></li>
+      <li id="run_time_log"><a href="run_time_log">爬虫运行</a></li>
+      <li id="seach_log"><a href="seach_log">seach_log</a></li>
+    </ul>
+  </li>
+  <li role="presentation" style="float: right"><a href="logout">logout</a></li>
+</ul>
+{% block define %}
+{% endblock %}
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/alin_admin.js"></script>
+{% block script %}
+{% endblock %}
+</body>
+</html>

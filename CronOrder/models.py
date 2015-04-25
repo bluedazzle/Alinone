@@ -239,6 +239,7 @@ class DayOrder(BaseModel):
     def __unicode__(self):
         return self.order_id_alin
 
+
 class Dish(BaseModel):
     dish_name = models.CharField(max_length=30)
     dish_price = models.FloatField(max_length=5)

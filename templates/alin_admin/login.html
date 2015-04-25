@@ -1,1 +1,18 @@
 {% extends 'alin_admin/base_login.html' %}
+{% block define %}
+    {% if login_fault %}
+        <p class="text-danger text-center" style="background-color: #cc2222;color: #ffffff;font-size: 18px;">用户名或密码错误</p>
+    {% endif %}
+    <div class="container" style="padding: 3% 11% 0 11%">
+        <div class="jumbotron col-lg-12 col-md-12" style="padding: 2% 30% 5% 30%;margin-top: 10%">
+            <h2 class="text-center" style="margin-bottom: 5%">Admin登录</h2>
+            <form action="admin_login" method="post" id="login_form">
+                {% csrf_token %}
+                <input type="text" class="form-control" id="login_username" name="username" placeholder="input your username"/>
+                <input type="password" class="form-control" id="login_password" name="password" placeholder="input your password" style="margin-top: 10px;"/>
+            </form>
+            <button class="btn btn-primary col-lg-12 col-md-12" style="margin-top: 20px;" onclick="check_login_form()">登录</button>
+            <button class="btn btn-danger col-lg-12 col-md-12" style="margin-top: 1px;">忘记密码</button>
+        </div>
+    </div>
+{% endblock %}

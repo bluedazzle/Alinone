@@ -91,7 +91,7 @@
         <li><a href="{{ pagepara }}&page={{ orders.previous_page_number }}">&laquo;</a></li>
              {% endif %}
              {% for page in orders.paginator.page_range %}
-               {% if page = orders.number %}
+               {% if page == orders.number %}
         <li class="active"><a href="?page={{ page }}">{{ page }}</a></li>
                {% else %}
         <li><a href="{{ pagepara }}&page={{ page }}">{{ page }}</a></li>

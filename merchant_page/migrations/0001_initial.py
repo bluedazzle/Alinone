@@ -11,13 +11,11 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='AlinAdmin',
+            name='Notice',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('create_date', models.DateTimeField(auto_created=True)),
-                ('username', models.CharField(max_length=30)),
-                ('password', models.CharField(max_length=40)),
-                ('last_login_date', models.DateTimeField(null=True, blank=True)),
+                ('content', models.CharField(max_length=100, null=True, blank=True)),
+                ('create_time', models.DateTimeField(auto_now_add=True)),
             ],
             options={
             },

@@ -1,0 +1,77 @@
+{% extends 'alin_admin/base_admin.html' %}
+{% block define %}
+    <div class="container" style="padding-top: 50px;">
+        <table class="table">
+            <thead>
+                <h3 style="text-align: center;">审核商家</h3>
+            </thead>
+            <tbody class="merchant-table">
+                <tr style="background-color: #2aabd2;color: #ffffff">
+                    <th>
+                        用户名
+                    </th>
+                    <th>
+                        商家名
+                    </th>
+                    <th>
+                        地址
+                    </th>
+                    <th>
+                        申请时间
+                    </th>
+                    <th>
+                        操作
+                    </th>
+                </tr>
+                {% csrf_token %}
+            {% for merchant in merchants %}
+                <tr id="m{{ merchant.id }}">
+                    <td>
+                        {{ merchant.alin_account }}
+                    </td>
+                    <td>
+                        {{ merchant.name }}
+                    </td>
+                    <td>
+                        {{ merchant.address }}
+                    </td>
+                    <td>
+                        {{ merchant.reg_time|date:"Y-m-d H:i:s" }}
+                    </td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" onclick="pass_merchant('{{ merchant.id }}')">pass</button>
+                        <button class="btn btn-danger btn-sm" onclick="reject_merchant('{{ merchant.id }}')">reject</button>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if merchants %}
+    <nav style="width: 100%;height: 100%;" class="text-center">
+       <ul class="pagination">
+             {% if merchants.has_previous %}
+        <li><a href="?page={{ merchants.previous_page_number }}">&laquo;</a></li>
+             {% endif %}
+             {% for page in merchants.paginator.page_range %}
+               {% if page == merchants.number %}
+        <li class="active"><a href="?page={{ page }}">{{ page }}</a></li>
+               {% else %}
+        <li><a href="?page={{ page }}">{{ page }}</a></li>
+               {% endif %}
+            {% endfor %}
+            {% if merchants.has_next %}
+        <li><a href="?page={{ merchants.next_page_number }}">&raquo;</a></li>
+            {% endif %}
+       </ul>
+     </nav>
+    {% endif %}
+{% endblock %}
+{% block script %}
+    <script>
+        $(document).ready(function(){
+            $('#merchant_verify').addClass('active');
+            $('#manage_merchant').addClass('active');
+        })
+    </script>
+{% endblock %}

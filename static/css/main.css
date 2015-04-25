@@ -52,5 +52,21 @@ color: #000000;
   src: url('/dayin/weiruanyahei.ttf');
 }
 
+.count-font{
+    margin-top: 25%;
+    font-size: 16px;
+}
 
+.navbar-alin_admin{
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.dropdown:hover>ul{
+    display: block;
+}
+
+.merchant-table>tr>th,
+.merchant-table>tr>td{
+    text-align: left;
+}
 
