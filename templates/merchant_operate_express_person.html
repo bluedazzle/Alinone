@@ -1,11 +1,4 @@
 {% extends 'base.html' %}
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
 {% block define %}
 <div class="panel panel-default">
     <div class="panel-heading">
@@ -36,6 +29,8 @@
         </div>
 </div>
 {% endblock define %}
-
-</body>
-</html>
+{% block script %}
+    <script>
+        $('#express_manage').addClass('nav-head-active')
+    </script>
+{% endblock %}

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'order_base.html' %}
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -6,7 +6,7 @@
     <title></title>
 </head>
 <body>
-{% block define %}
+{% block order_panel %}
        <span>{{ summary }}</span>
 <div class="panel panel-default text-center">
     <div class="panel-heading">
@@ -60,6 +60,6 @@
         {% endif %}
         </div>
 </div>
-{% endblock define %}
+{% endblock %}
 </body>
 </html>

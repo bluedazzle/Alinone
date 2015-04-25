@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'order_base.html' %}
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/html">
 <head lang="en">
@@ -6,7 +6,7 @@
     <title></title>
 </head>
 <body>
-{% block define %}
+{% block order_panel %}
 <div class="panel panel-default text-center">
     <div class="panel-heading">
              <p class="text-center" style="font-size:21px;">已完成的订单</p>
@@ -91,6 +91,6 @@
         {% endif %}
         </div>
 </div>
-{% endblock define %}
+{% endblock %}
 </body>
 </html>
