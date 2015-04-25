@@ -120,10 +120,13 @@
                         success: function(data){
                             $('#order_num').text(data['order_num']);
                             $('#total_money').text(data['total_money']);
+                            var order_count = $('#order-count');
                             if(data['count'] != 'N') {
-                                $('#new_orders_count').text(data['count']);
-                                 playmusic()
+                                order_count.text(data['count']);
+                                order_count.show();
+                                playmusic()
                             }else{
+                                order_count.hide();
                                 stopmusic()
                             }
                             if (data['status'] != 'T'){
@@ -155,8 +158,13 @@
             success: function (data) {
                 $('#order_num').text(data['order_num']);
                 $('#total_money').text(data['total_money']);
+                var order_count = $('#order-count');
                 if (data['count'] != 'N') {
-                    $('#new_orders_count').text(data['count'])
+                    order_count.text(data['count']);
+                    order_count.show();
+                }
+                else{
+                    order_count.hide();
                 }
                 if (data['status'] != 'T'){
                     $('#platform_status').removeClass('hidden')
