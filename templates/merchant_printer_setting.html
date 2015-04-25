@@ -51,23 +51,6 @@
         </script>
         <h3>目前的打印机：</h3>
         <p id="printer"></p>
-        <script>
-            var LODOP = getLodop();
-            function select_printer(){
-                localStorage['printer'] = LODOP.SELECT_PRINTER();
-                window.location.href='printer_setting';
-            }
-            $(document).ready(function(){
-                 if(localStorage['printer']){
-                     var num = parseInt(localStorage['printer']);
-                     var printer_name = LODOP.GET_PRINTER_NAME(num);
-                 }
-                else{
-                     var printer_name = LODOP.GET_PRINTER_NAME(-1)
-                 }
-                 $("#printer").text(printer_name);
-            });
-        </script>
     </div>
     <a role="button" class="btn btn-primary btn-lg" onclick="select_printer()" style="margin: 2%;">选择打印机</a>
     <h3>打印联数:
@@ -78,8 +61,28 @@
                 <option value="4">4</option>
                 <option value="5">5</option>
             </select>
-            <script>
-                function change_print_pages(){
+    </h3>
+</div>
+{% endblock define %}
+{% block script %}
+    <script>
+            var LODOP = getLodop();
+            function select_printer(){
+                localStorage['printer'] = LODOP.SELECT_PRINTER();
+                window.location.href='printer_setting';
+            }
+            $(document).ready(function(){
+                 $('#printer_setting').addClass('nav-head-active');
+                 if(localStorage['printer']){
+                     var num = parseInt(localStorage['printer']);
+                     var printer_name = LODOP.GET_PRINTER_NAME(num);
+                 }
+                else{
+                     var printer_name = LODOP.GET_PRINTER_NAME(-1)
+                 }
+                 $("#printer").text(printer_name);
+            });
+            function change_print_pages(){
                     localStorage['print_pages'] = $('#print_pages').val();
                     window.location.href = 'printer_setting'
                 }
@@ -88,7 +91,5 @@
                         $('#print_pages').val(localStorage['print_pages'])
                     }
                 })
-            </script>
-    </h3>
-</div>
-{% endblock define %}
+        </script>
+{% endblock %}

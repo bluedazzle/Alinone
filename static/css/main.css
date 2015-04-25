@@ -15,14 +15,6 @@ th{
     border-color: #28a4c9;
 }
 
-.btn-mine:hover,
-.btn-mine:focus,
-.btn-mine:active,
-.btn-mine.active {
-  color: #245269;
-  background-color:#245269;
-  border-color: #245269;
-}
 .navbar-mine{
     color: #ffffff;
     background-color: #2aabd2;
@@ -68,5 +60,72 @@ color: #000000;
 .merchant-table>tr>th,
 .merchant-table>tr>td{
     text-align: left;
+}
+
+.ul-nav-left{
+    position: fixed;
+    left: -1px;
+    display: block;
+    z-index: 1000;
+}
+
+/***********************************button04***********************************/
+#navigationMenu li{
+	list-style:none;
+	height:45px;
+	padding:2px;
+	width:40px;
+    margin-bottom: 10px;
+}
+
+#navigationMenu a{
+	background: #2aabd2;
+    color: #ffffff;
+	height:45px;
+	width:50px;
+    text-align: center;
+    padding-top: 8px;
+    font-size: 18px;
+	display:block;
+	position:relative;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    transition: width 0.2s;
+    -moz-transition: width 0.2s;	/* Firefox 4 */
+    -webkit-transition: width 0.2s;	/* Safari 和 Chrome */
+    -o-transition: width 0.2s;	/* Opera */
+}
+
+/* General hover styles */
+
+#navigationMenu a:hover{ width:120px; overflow:visible; }
+#navigationMenu a:hover{
+	text-decoration:none;
+}
+
+.nav-a-active{
+    width: 70px;
+}
+
+/***********************end button04***************************/
+
+#nav-top>li>a:hover,
+#nav-top>li>a:active,
+#nav-top>li>a:focus,
+#nav-top>li>a.active{
+    color: #ffffff;
+    background-color:#28a4c9;
+    border-color: #28a4c9;
+}
+
+.nav-head-active{
+    color: #ffffff;
+    background-color:#28a4c9;
+    border-color: #28a4c9;
+}
+.nav-list-active{
+    color: #ffffff;
+    background-color:#28a4c9;
+    border-color: #28a4c9;
 }
 

@@ -1,13 +1,13 @@
-{% extends 'base.html' %}
-    {% block define %}
+{% extends 'order_base.html' %}
+    {% block order_panel %}
     <div class="panel panel-default text-center">
     <div class="panel-heading">
              <p class="text-center" style="font-size:21px;">未处理订单</p>
-         </div>
-    <div class="panel-body">
-            <button type="button" class=" btn btn-primary btn-lg" data-toggle="modal" style="margin-left: 80%;margin-bottom: 2%" data-target="#myModal">
+              <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" style="float: right;margin-top: -43px;margin-right: 3%" data-target="#myModal">
     添加订单
     </button>
+         </div>
+    <div class="panel-body">
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -117,7 +117,7 @@
                      <th style="min-width: 170px;">
                          <a onclick="jieshouall()" id="all_get" role="button" class="btn btn-primary btn-sm">一键接收</a>
 {#                         <iframe id="all" name="all" src="print_all" frameborder='no' border='0' width="0" height="0"></iframe>#}
-                         <a onclick="jujueall()" role="button" class="btn btn-primary btn-sm" style="background-color: #737373">一键拒绝</a>
+                         <a onclick="jujueall()" role="button" class="btn btn-danger btn-sm">一键拒绝</a>
                      </th>
                  </tr>
                  {%for item in items%}
@@ -151,7 +151,7 @@
                      <td>
                          <a role="button" id="i{{ item.order_id_alin }}" onclick="jieshouone('{{ item.order_id_alin }}')" class="btn btn-primary btn-sm">接收</a>
 {#                         <iframe id="{{ item.order_id_alin }}" name="{{ item.order_id_alin }}" src="print_one{{ item.order_id_alin }}" frameborder='no' border='0' width="0" height="0"></iframe>#}
-                         <a role="button" onclick="jujueone('{{ item.order_id_alin }}')" class="btn btn-primary btn-sm" style="background-color: #737373">拒绝</a>
+                         <a role="button" onclick="jujueone('{{ item.order_id_alin }}')" class="btn btn-danger btn-sm">拒绝</a>
                      </td>
                      <script>
                          if(sessionStorage['{{ item.order_id_alin }}']){
@@ -334,4 +334,4 @@
                 var countdown = setInterval(fresh, 8000);
             })
         </script>
-    {% endblock define %}
+    {% endblock %}

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'order_base.html' %}
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -7,7 +7,7 @@
     <title></title>
 </head>
 <body>
-{% block define %}
+{% block order_panel %}
     <script type="text/javascript" src="/js/mine.js" charset="UTF-8"></script>
     <form method="get" action="operate_history" id="search_mes">
     <div class="col-md-12 col-lg-12" style="margin-top: 3%">
@@ -104,6 +104,6 @@
      </nav>
         </div>
 </div>
-{% endblock define %}
+{% endblock %}
 </body>
 </html>

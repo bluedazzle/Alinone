@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'order_base.html' %}
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -6,7 +6,7 @@
     <title></title>
 </head>
 <body>
-{% block define %}
+{% block order_panel %}
     {% if not express_people %}
     <div class="panel panel-default">
         <div class="panel-body" style="text-align: center;">
@@ -102,7 +102,7 @@
         </div>
     {% endif %}
     </div>
-{% endblock define %}
+{% endblock %}
 
 </body>
 </html>

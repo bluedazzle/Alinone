@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block order %}
+    <ul id="navigationMenu" class="ul-nav-left" style="padding-left: 0;">
+        <li>
+            <a class="home" href="operate_new" role="button" style="background-color: #bdc3c7">
+                未
+            </a>
+        </li>
+        <li>
+            <a class="home" href="operate_get" role="button" style="background-color: #1abc9c">
+                接
+            </a>
+        </li>
+        <li>
+            <a class="home" href="operate_paisong" role="button" style="background-color: #16a085">
+                送
+            </a>
+        </li>
+        <li>
+            <a class="home" href="operate_finish" role="button" style="background-color: #2ecc71">
+                完
+            </a>
+        </li>
+        <li>
+            <a class="home" href="operate_delete" role="button" style="background-color: #e74c3c">
+                拒
+            </a>
+        </li>
+        <li>
+            <a class="home" href="operate_today" role="button" style="background-color: #3498db">
+                统
+            </a>
+        </li>
+        <li>
+            <a class="home" href="operate_history" role="button" style="background-color: #2980b9">
+                查
+            </a>
+        </li>
+    </ul>
+    <div class="col-lg-12 col-md-12" style="padding: 0 7% 0 7%">
+    {% block order_panel%}
+    {% endblock %}
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        $(document).ready(function(){
+           $('#order_manage').addClass('nav-head-active');
+        });
+    </script>
+{% endblock %}

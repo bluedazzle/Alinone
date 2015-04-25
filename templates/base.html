@@ -12,21 +12,34 @@
 </head>
 <body  style="font-family: Microsoft Yahei;">
 <nav class="navbar navbar-mine" role="navigation">
-    <span class="navbar-brand">今日共有<span id="order_num">0</span>笔已完成订单，<span id="total_money">0.0</span>元</span>
-        <div class="container-fluid">
+        <div class="container-fluid container" style="padding: 0 8% 0 8%">
             <!-- Brand and toggle get grouped for better mobile display -->
 
-            <div class="navbar-header" style="padding-left: 30%;">
-
+            <div class="navbar-header">
                 <a class="navbar-brand" style="font-size: 34px;color: #ffffff;">Alinone</a>
             </div>
+{#            <span class="navbar-brand">今日共有<span id="order_num">0</span>笔已完成订单，<span id="total_money">0.0</span>元</span>#}
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><p id='merchant_user_name'style="margin: 17px;color: #c9e2b3"></p></li>
+                <ul class="nav navbar-nav navbar-right" id="nav-top">
+                    <li><p id='merchant_user_name' style="margin: 17px;color: #ecf0f1"></p></li>
+                    <li><a role="button" class="btn btn-primary btn-mine" href="operate_new" id="order_manage">订单管理</a></li>
+                    <li><a role="button" class="btn btn-primary btn-mine" href="operate_express_person" id="express_manage">物流管理</a></li>
+                    <li id="user_mes_manage">
+                        <a role="button" class="btn btn-mine">
+                            用户信息管理
+                            <span class="caret"></span>
+                        </a>
+                        <ul role="menu" id="manage_list" class="dropdown-menu" style="min-width: 100%;background-color: #2aabd2">
+                            <li><a role="button"  id="change_name" class="btn btn-primary btn-mine" href="change_name" style="font-size:15px;color: #ffffff">修改店名</a></li>
+                            <li><a role="button"  id="change_password" class="btn btn-primary btn-mine" href="change_password" style="font-size:15px;color: #ffffff">修改密码</a></li>
+                            <li><a role="button" id="login_out" class="btn btn-primary btn-mine" href="login_out" style="font-size:15px;color: #ffffff;">登出</a></li>
+                        </ul>
+                    </li>
+                    <li><a role="button" class="btn btn-primary btn-mine" href="printer_setting" id="printer_setting">打印设置</a></li>
+                    <li><a role="button" class="btn btn-primary btn-mine" id="message_back">消息反馈</a></li>
 {#                    <li><a role="button" class="btn btn-primary btn-mine" href="fuwei" style="color: #ffffff">数据复位(测试用)</a></li>#}
-                    <li><a role="button"  id="change_name" class="btn btn-primary btn-mine" href="change_name" style="font-size:15px;color: #ffffff">修改店名</a></li>
-                    <li><a role="button"  id="change_password" class="btn btn-primary btn-mine" href="change_password" style="font-size:15px;color: #ffffff">修改密码</a></li>
-                    <li><a role="button" id="login_out" class="btn btn-primary btn-mine" href="login_out" style="font-size:15px;color: #ffffff;">登出</a></li>
+{#                    <li><a role="button"  id="change_name" class="btn btn-primary btn-mine" href="change_name" style="font-size:15px;color: #ffffff">修改店名</a></li>#}
+{#                    <li><a role="button"  id="change_password" class="btn btn-primary btn-mine" href="change_password" style="font-size:15px;color: #ffffff">修改密码</a></li>#}
                 </ul>
             </div>
             <script>
@@ -38,7 +51,7 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
         </div><!-- /.container-fluid -->
 </nav>
-<div class="alert alert-warning alert-dismissible" role="alert"style="text-align: center;margin-top:-20px;line-height: 0.1;">
+<div class="alert alert-warning alert-dismissible" role="alert" style="text-align: center;margin-top:-20px;line-height: 0.1;">
  <p id="notice"></p>
 </div>
 <div>
@@ -46,28 +59,29 @@
         <source src="/music/bgmu.mp3">
     </audio>
 </div>
-<div class="col-md-2 col-lg-2" style="padding-left: 0;padding-top:3%;position: fixed;">
-   <div class="btn-group-vertical" style="width: 110%;">
-      <a role="button" class="btn btn-primary btn-lg" href="operate_new">
-          未处理订单<span class="badge" id="new_orders_count" style="margin-left: 10px;"></span>
-      </a>
-      <a role="button" class="btn btn-primary btn-lg" href="operate_get">已接收订单</a>
-      <a role="button" class="btn btn-primary btn-lg" href="operate_paisong">派送的订单</a>
-      <a role="button" class="btn btn-primary btn-lg" href="operate_finish">已完成订单</a>
-      <a role="button" class="btn btn-primary btn-lg" href="operate_delete">取消的订单</a>
-       <a role="button" class="btn btn-primary btn-lg" href="operate_today">今日统计</a>
-       <a role="button" class="btn btn-primary btn-lg" href="operate_history">历史查询</a>
-      <a role="button" class="btn btn-primary btn-lg" href="operate_pingtai">
-          平台管理
-          <span id="platform_status" class="glyphicon glyphicon-exclamation-sign hidden"></span>
-      </a>
-      <a role="button" class="btn btn-primary btn-lg" href="operate_express_person">物流人员管理</a>
-      <a role="button" class="btn btn-primary btn-lg" href="printer_setting">打印设置</a>
-   </div>
-    <span>物流APP请到各大应用商城下载“送饭去”</span>
-</div>
-
-<div class="col-md-10 col-lg-10" style="margin-left: 12%;padding-right: 1%;padding-top: 1%;">
+{#<div class="col-md-2 col-lg-2" style="padding-left: 0;position: fixed;">#}
+{#   <div class="btn-group-vertical" style="width: 110%;">#}
+{#      <a role="button" class="btn btn-primary btn-lg" href="operate_new">#}
+{#          未处理订单<span class="badge" id="new_orders_count" style="margin-left: 10px;"></span>#}
+{#      </a>#}
+{#      <a role="button" class="btn btn-primary btn-lg" href="operate_get">已接收订单</a>#}
+{#      <a role="button" class="btn btn-primary btn-lg" href="operate_paisong">派送的订单</a>#}
+{#      <a role="button" class="btn btn-primary btn-lg" href="operate_finish">已完成订单</a>#}
+{#      <a role="button" class="btn btn-primary btn-lg" href="operate_delete">取消的订单</a>#}
+{#       <a role="button" class="btn btn-primary btn-lg" href="operate_today">今日统计</a>#}
+{#       <a role="button" class="btn btn-primary btn-lg" href="operate_history">历史查询</a>#}
+{#      <a role="button" class="btn btn-primary btn-lg" href="operate_pingtai">#}
+{#          平台管理#}
+{#          <span id="platform_status" class="glyphicon glyphicon-exclamation-sign hidden"></span>#}
+{#      </a>#}
+{#      <a role="button" class="btn btn-primary btn-lg" href="operate_express_person">物流人员管理</a>#}
+{#      <a role="button" class="btn btn-primary btn-lg" href="printer_setting">打印设置</a>#}
+{#   </div>#}
+{#    <span>物流APP请到各大应用商城下载“送饭去”</span>#}
+{#</div>#}
+{% block order %}
+{% endblock order %}
+<div class="col-lg-12 col-md-12" style="padding: 0 7% 0 7%">
 {% block define %}
 {% endblock define %}
 </div>
@@ -176,22 +190,18 @@
 
     </script>
     <script>
-        function getCookie(name) {
-                    var cookieValue = null;
-                    if (document.cookie && document.cookie != '') {
-                        var cookies = document.cookie.split(';');
-                        for (var i = 0; i < cookies.length; i++) {
-                            var cookie = jQuery.trim(cookies[i]);
-                // Does this cookie string begin with the name we want?
-                            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                                break;
-                            }
-                         }
-                     }
-                     return cookieValue;
-                }
+        var user_mes_manage = $('#user_mes_manage');
+        user_mes_manage.mouseover(function(){
+            user_mes_manage.children('a').addClass('nav-list-active');
+            user_mes_manage.children('ul').show();
+        });
+        user_mes_manage.mouseleave(function(){
+            user_mes_manage.children('a').removeClass('nav-list-active');
+            user_mes_manage.children('ul').hide();
+        })
     </script>
+{% block script %}
+{% endblock %}
 <script src="http://s11.cnzz.com/z_stat.php?id=1254496940&web_id=1254496940" language="JavaScript"></script>
 </body>
 </html>
