@@ -16,6 +16,7 @@ urlpatterns = patterns('',
     url(r'^forget_password_verify$', forget_password_verify),
     url(r'^change_password$', change_password),
     url(r'^change_name$', change_name),
+    url(r'^feed_back$', feed_back),
     # url(r'^login_ver', login_ver),
     # only for test
     # url(r'^fuwei$', fuwei),

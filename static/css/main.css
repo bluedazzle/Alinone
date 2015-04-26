@@ -1,3 +1,7 @@
+body{
+    overflow-y: scroll;
+}
+
 th{
     text-align: center;
 }
@@ -6,6 +10,7 @@ th{
     background-color: #2aabd2;
     border-color: #2aabd2;
     border-radius: 0;
+    margin-right: 4px;
 }
 #change_name:hover,
 #change_password:hover,

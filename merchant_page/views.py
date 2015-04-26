@@ -291,17 +291,28 @@ def get_orders_count(request):
         if merchant.mei_account:
             if merchant.mei_status == False:
                 status = 'F'
-        order_list = DayOrder.objects.filter(merchant=merchant, status=1)
+        order_list = DayOrder.objects.order_by('-id').filter(merchant=merchant, status=1)
         finish_list = DayOrder.objects.filter(merchant=merchant, status=4)
         finnum = finish_list.count()
         total = 0.0
         res = True
+        have_new_order = None
         for it in finish_list:
             total += float(it.real_price)
         if order_list.count() == 0:
             count = 'N'
         else:
+            if request.session.get('new_order_id'):
+                if request.session['new_order_id'] == order_list[0].id:
+                    have_new_order = 'F'
+                else:
+                    have_new_order = 'T'
+                    request.session['new_order_id'] = order_list[0].id
+            else:
+                request.session['new_order_id'] = order_list[0].id
+                have_new_order = 'T'
             count = order_list.count()
+            request.session['new_order_id'] = order_list[0].id
         notice_list = Notice.objects.all()
         total = '%.2f' % total
         if notice_list.count() > 0:
@@ -313,14 +324,16 @@ def get_orders_count(request):
                        'order_num': finnum,
                        'total_money': total,
                        'ver': res,
-                       'notice_list': notice_list0}
+                       'notice_list': notice_list0,
+                       'have_new_order': have_new_order}
         else:
             content = {'count': count,
                        'status': status,
                        'order_num': finnum,
                        'total_money': total,
                        'ver': res,
-                       'notice_list': 'N'}
+                       'notice_list': 'N',
+                       'have_new_order': have_new_order}
         return HttpResponse(simplejson.dumps(content), content_type="application/json")
 
 
@@ -584,8 +597,13 @@ def operate_express_person(request):
     merchant = Merchant.objects.get(alin_account=merchant_id)
     merchant.update_time = datetime.datetime.now()
     merchant.save()
-    express_people = merchant.bind_sender.all()
-    return render_to_response('merchant_operate_express_person.html', {'express_people': express_people}, context_instance=RequestContext(request))
+    express_people = merchant.bind_sender.order_by('-id').all()
+    request.session['sender_count'] = express_people.count()
+    qr_bind = createqr(2, merchant.id)
+    return render_to_response('merchant_operate_express_person.html',
+                              {'express_people': express_people,
+                               'filename': qr_bind},
+                              context_instance=RequestContext(request))
 
 
 #打印机设置页面
@@ -734,6 +752,7 @@ def delete_sender(request, phone):
     sender = Sender.objects.get(phone=phone)
     merchant.bind_sender.remove(sender)
     merchant.save()
+    senders = merchant.bind_sender.order_by('-id').all()
     return HttpResponseRedirect("operate_express_person")
 
 
@@ -764,15 +783,26 @@ def get_sender_change(request):
     else:
         merchant_id = request.session['username']
         merchant = Merchant.objects.get(alin_account=merchant_id)
-        express_people = merchant.bind_sender.all()
-        if request.session.get('sender_count') or request.session['sender_count'] == 0:
-            if request.session['sender_count'] == express_people.count():
+        express_people = merchant.bind_sender.order_by('-id').all()
+        content = []
+        if express_people.count() == 0:
+            return HttpResponse(json.dumps('F'), content_type="application/json")
+        if request.session.get('sender_count'):
+            if request.session['sender_count'] >= express_people.count():
                 return HttpResponse(json.dumps('F'), content_type="application/json")
             else:
-                return HttpResponse(json.dumps('T'), content_type="application/json")
+                request.session['sender_count'] = express_people.count()
+                for sender in express_people:
+                    content.append({'nick': sender.nick,
+                                    'phone': sender.phone})
+                return HttpResponse(json.dumps(content), content_type="application/json")
 
         else:
-            return HttpResponse(json.dumps('T'), content_type="application/json")
+            request.session['sender_count'] = express_people.count()
+            for sender in express_people:
+                    content.append({'nick': sender.nick,
+                                    'phone': sender.phone})
+            return HttpResponse(json.dumps(content), content_type="application/json")
 
 def operate_today(request):
     if not request.session.get('username'):
@@ -827,6 +857,7 @@ def operate_today(request):
         pass
     return render_to_response('merchant_operate_today.html', {'senders': senders, 'summary': summary})
 
+
 def operate_history(request):
     if not request.session.get('username'):
         return HttpResponseRedirect('login_in')
@@ -858,3 +889,23 @@ def operate_history(request):
             return render_to_response('merchant_operate_history.html')
     else:
         raise Http404
+
+
+def feed_back(request):
+    if not request.session.get('username'):
+        return HttpResponseRedirect('login_in')
+    if request.method == 'GET':
+        return render_to_response('feed_back.html',
+                                  context_instance=RequestContext(request))
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        if not content:
+            raise Http404
+        merchant = Merchant.objects.get(alin_account=request.session['username'])
+        new_feedback = FeedBack()
+        new_feedback.content = content
+        new_feedback.merchant = merchant
+        new_feedback.save()
+        return render_to_response('feed_back.html',
+                                  {'success': True},
+                                  context_instance=RequestContext(request))

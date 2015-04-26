@@ -1,14 +1,17 @@
-{% extends 'base.html' %}
+{% extends 'other_base.html' %}
 {% block define %}
 <div class="panel panel-default">
     <div class="panel-heading">
              <p class="text-center" style="font-size:21px;">现有物流人员</p>
          </div>
     {% if not express_people %}
-    <h3 style="text-align: center;">您还未绑定任何快递人员</h3>
-    {% else %}
+    <h3 style="text-align: center;color: red;margin-bottom: 20px;" id="no_sender_warning">您还未绑定任何快递人员</h3>
     <div class="panel-body">
-             <table class="table table-bordered text-center">
+        <table class="table table-bordered text-center" style="display: none">
+    {% else %}
+    <div class="panel-body" id="sender_table">
+        <table class="table table-bordered text-center">
+    {% endif %}
                  <tr>
                      <th>姓名</th>
                      <th>联系方式</th>
@@ -17,20 +20,48 @@
                  {% for person in express_people %}
                  <tr>
                      <td>{{  person.nick }}</td>
-                     <td>{{  person.phone }}</td>
+                     <td id="s{{ person.phone }}">{{  person.phone }}</td>
                      <td>
-                         <a role="button" href="delete_sender{{ person.phone }}" class="btn btn-primary btn-sm">删除</a>
+                         <a role="button" href="delete_sender{{ person.phone }}" class="btn btn-danger btn-sm">删除</a>
                      </td>
                  </tr>
                  {% endfor %}
              </table>
-        {% endif %}
-        <a role="button" href="add_sender_page" class="btn btn-primary btn-lg" style="margin-left: 90%;margin-bottom: 1%;">添加</a>
+        <div  class="" style="text-align: center;">
+        <h3>扫描下方二维码添加快递人员</h3>
+        <img src="/qrimg/{{ filename }}">
+        <br/>
+ </div>
         </div>
 </div>
 {% endblock define %}
 {% block script %}
     <script>
         $('#express_manage').addClass('nav-head-active')
+    </script>
+    <script>
+    $(document).ready(function(){
+        var countdown;
+        function fresh(){
+            $.ajax({
+                        type: 'GET',
+                        url: 'get_sender_change',
+                        data: '',
+                        success: function(data){
+                            if(data != 'F') {
+                                $('#no_sender_warning').hide();
+                                $('.table').show();
+                                for(var i=0; i<data.length; i++){
+                                if($('#s' + data[i]['phone']).text()) continue;
+                                $('.table').append("<tr><td>" + data[i]['nick'] + "</td><td id='s+" + data[i]['phone'] + "'>" + data[i]['phone'] + "</td><td>"
+                        + "<a role='button' href='delete_sender" + data[i]['phone'] + "' class='btn btn-danger btn-sm'>删除</a></td></tr>")
+                                }
+                            }
+                        },
+                        dataType: 'json'
+                    });
+        }
+        countdown = setInterval(fresh, 5000);
+    })
     </script>
 {% endblock %}
