@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block others %}
+    <ul id="navigationMenu" class="ul-nav-left" style="padding-left: 0;padding-top: 2px;">
+        <li>
+            <a class="home" href="operate_new" role="button" style="background-color: #bdc3c7">
+                未
+                <span id="order-count" style="background: #ecf0f1;color: red;"></span>
+            </a>
+        </li>
+    </ul>
+    <div class="col-lg-12 col-md-12" style="padding: 0 7% 0 7%">
+    {% block define %}
+    {% endblock define %}
+    </div>
+{% endblock %}

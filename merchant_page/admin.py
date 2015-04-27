@@ -3,3 +3,4 @@ from merchant_page.models import *
 # Register your models here.
 
 admin.site.register(Notice)
+admin.site.register(FeedBack)

@@ -1,3 +1,7 @@
+body{
+    overflow-y: scroll;
+}
+
 th{
     text-align: center;
 }
@@ -6,6 +10,7 @@ th{
     background-color: #2aabd2;
     border-color: #2aabd2;
     border-radius: 0;
+    margin-right: 4px;
 }
 #change_name:hover,
 #change_password:hover,
@@ -72,10 +77,40 @@ color: #000000;
 /***********************************button04***********************************/
 #navigationMenu li{
 	list-style:none;
-	height:45px;
+	height:50px;
 	padding:2px;
-	width:40px;
+	width:160px;
     margin-bottom: 10px;
+}
+
+#navigationMenu span{
+    /* Container properties */
+    display: none;
+	width:30px;
+	left:48px;
+    top: 0;
+    height: 45px;
+	padding-top:10px;
+	position:absolute;
+    z-index: -1;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+
+	/* Text properties */
+	font-family:'Myriad Pro',Arial, Helvetica, sans-serif;
+	font-size:16px;
+	font-weight:bold;
+	letter-spacing:0.6px;
+	white-space:nowrap;
+	/*line-height:39px;*/
+
+	/* CSS3 Transition: */
+	-webkit-transition: 0.2s;
+	/*-o-transition: 0.25s;*/
+
+	/* Future proofing (these do not work yet): */
+	-moz-transition: 0.2s;
+	transition: 0.2s;
 }
 
 #navigationMenu a{
@@ -102,6 +137,7 @@ color: #000000;
 #navigationMenu a:hover{
 	text-decoration:none;
 }
+#navigationMenu a:hover span{ left: 118px; }
 
 .nav-a-active{
     width: 70px;
