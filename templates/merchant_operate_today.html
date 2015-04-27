@@ -1,21 +1,14 @@
 {% extends 'order_base.html' %}
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
 {% block order_panel %}
-       <span>{{ summary }}</span>
 <div class="panel panel-default text-center">
     <div class="panel-heading">
-             <p class="text-center" style="font-size:21px;">物流人员明细</p>
+             <p class="text-center" style="font-size:21px;">今日统计</p>
          </div>
     <div class="panel-body">
     {% if not senders %}
     <h3 style="text-align: center;">目前还没有绑定物流人员</h3>
     {% else %}
+             <h4 class="col-md-12 col-lg-12 text-center">物流人员明细</h4>
              <table class="table table-bordered text-center">
                  <tr>
                      <th>姓名</th>
@@ -40,13 +33,210 @@
                  </tr>
                  {% endfor %}
              </table>
+          <h4 class="text-center col-md-12 col-lg-12" style="border-top: 1px solid #bdc3c7;margin: 30px 0 30px 0;padding-top: 30px;">
+              今日订单状态统计
+          </h4>
+        <canvas id="orders_today" class="col-md-6 col-lg-6" height="400" style="height: 400px;"></canvas>
+        <table class="col-md-6 col-lg-6 table-bordered text-center" style="height: 400px;">
+            <tbody>
+                <tr>
+                    <th>
+                        状态
+                    </th>
+                    <th>
+                        数量
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        未接收
+                    </td>
+                    <td>
+                        {{ today_data.pending }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        已接收
+                    </td>
+                    <td>
+                        {{ today_data.accept }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        派送中
+                    </td>
+                    <td>
+                        {{ today_data.sending }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        已完成
+                    </td>
+                    <td>
+                        {{ today_data.finish }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        已撤销
+                    </td>
+                    <td>
+                        {{ today_data.refuse }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        总共
+                    </td>
+                    <td>
+                        {{ today_data.today_total }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4 class="text-center col-md-12 col-lg-12" style="border-top: 1px solid #bdc3c7;margin: 30px 0 30px 0;padding-top: 30px;">
+            已完成平台订单统计
+        </h4>
+        <div class="col-md-6 col-lg-6">
+            <canvas id="order_platform" height="400" style="height: 400px;"></canvas>
+        </div>
+        <table class="col-md-6 col-lg-6 table-bordered text-center" style="height: 400px;">
+            <tbody>
+                <tr>
+                    <th>
+                        平台
+                    </th>
+                    <th>
+                        数量
+                    </th>
+                    <th>
+                        颜色
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        淘点点
+                    </td>
+                    <td>
+                        {{ today_data.tdd }}
+                    </td>
+                    <td>
+                        <span class="label" style="background-color: #cc6600;">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        美团
+                    </td>
+                    <td>
+                        {{ today_data.mei }}
+                    </td>
+                    <td>
+                        <span class="label" style="background-color: #1abc9c;">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        饿了么
+                    </td>
+                    <td>
+                        {{ today_data.ele }}
+                    </td>
+                    <td>
+                        <span class="label" style="background-color: #0099ff;">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        其他
+                    </td>
+                    <td>
+                        {{ today_data.other }}
+                    </td>
+                    <td>
+                        <span class="label" style="background-color: #bdc3c7;">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4 class="text-center col-md-12 col-lg-12" style="border-top: 1px solid #bdc3c7;margin: 30px 0 30px 0;padding-top: 30px;">
+            营业额统计
+        </h4>
+        <div class="col-md-6 col-lg-6">
+            <canvas id="money_total" height="400" style="height: 400px;"></canvas>
+        </div>
+        <table class="col-md-6 col-lg-6 table-bordered text-center" style="height: 400px;">
+            <tbody>
+                <tr>
+                    <th>
+                        类型
+                    </th>
+                    <th>
+                        收益
+                    </th>
+                    <th>
+                        颜色
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        线上支付
+                    </td>
+                    <td>
+                        {{ today_data.online_money }}元
+                    </td>
+                    <td>
+                        <span class="label" style="background-color: #F7464A;">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        线下支付
+                    </td>
+                    <td>
+                        {{ today_data.offline_money }}元
+                    </td>
+                    <td>
+                        <span class="label" style="background-color: #1abc9c;">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        总计
+                    </td>
+                    <td>
+                        {{ today_data.money_total }}元
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <nav>
        <ul class="pagination">
              {% if items.has_previous %}
         <li><a href="?page={{ items.previous_page_number }}">&laquo;</a></li>
              {% endif %}
              {% for page in items.paginator.page_range %}
-               {% if page = items.number %}
+               {% if page == items.number %}
         <li class="active"><a href="?page={{ page }}">{{ page }}</a></li>
                {% else %}
         <li><a href="?page={{ page }}">{{ page }}</a></li>
@@ -61,5 +251,66 @@
         </div>
 </div>
 {% endblock %}
-</body>
-</html>
+{% block script %}
+    <script src="/js/Chart.min.js"></script>
+    <script>
+        var ctx = $('#orders_today').get(0).getContext("2d");
+        var data = {
+          labels: ["未接收", "已接收", "派送中", "已完成", "已撤销", "总共"],
+          datasets: [
+                  {
+			        fillColor : "rgba(151,187,205,0.5)",
+			        strokeColor : "rgba(151,187,205,1)",
+			        data : [{{ today_data.pending }},
+                            {{ today_data.accept }},
+                            {{ today_data.sending }},
+                            {{ today_data.finish }},
+                            {{ today_data.refuse }},
+                            {{ today_data.today_total }}]
+		          }
+          ]
+        };
+        new Chart(ctx).Bar(data, {responsive: false,
+                                  scaleShowGridLines : true});
+        var platform_orders = $('#order_platform').get(0).getContext("2d");
+        var platform_data = [
+                {
+                    label: "淘点点",
+		            value: {{ today_data.tdd }},
+		            color: "#CC6600"
+	            },
+	            {
+		            label : "美团",
+                    value: {{ today_data.mei }},
+		            color: "#1ABC9C"
+	            },
+	            {
+		            label : "饿了么",
+                    value: {{ today_data.ele }},
+		            color: "#0099FF"
+	            },
+	            {
+		            label: "其他",
+                    value : {{ today_data.other }},
+		            color: "#BDC3C7"
+	            }
+        ];
+        new Chart(platform_orders).Pie(platform_data);
+        var money_total = $('#money_total').get(0).getContext("2d");
+        var money_data = [
+                {
+                    label: "线上支付",
+		            value: {{ today_data.online_money }},
+		            color: "#F7464A"
+	            },
+	            {
+		            label : "线下支付",
+                    value: {{ today_data.offline_money }},
+		            color: "#1ABC9C"
+	            },
+        ];
+        new Chart(money_total).Pie(money_data);
+
+    </script>
+
+{% endblock %}

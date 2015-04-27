@@ -820,6 +820,7 @@ def operate_today(request):
     mei = DayOrder.objects.filter(merchant=currentuser, status=4, platform=3).count()
     other = DayOrder.objects.filter(merchant=currentuser, status=4, platform=4).count()
     total_orders = DayOrder.objects.filter(merchant=currentuser, status=4)
+    total_orders_today = DayOrder.objects.filter(merchant_id=currentuser).count()
     online_money = 0.0
     offline_money = 0.0
     for itm in total_orders:
@@ -855,7 +856,24 @@ def operate_today(request):
         senders = paginator.page(paginator.num_pages)
     except:
         pass
-    return render_to_response('merchant_operate_today.html', {'senders': senders, 'summary': summary})
+    today_data = {'pending': pending,
+                  'accept': accept,
+                  'sending': sending,
+                  'refuse': refuse,
+                  'finish': total_orders.count(),
+                  'today_total': total_orders_today,
+                  'online': online,
+                  'offline': offline,
+                  'tdd': tdd,
+                  'ele': ele,
+                  'mei': mei,
+                  'other': other,
+                  'online_money': online_money,
+                  'offline_money': offline_money,
+                  'money_total': online_money + offline_money}
+    return render_to_response('merchant_operate_today.html', {'senders': senders,
+                                                              'summary': summary,
+                                                              'today_data': today_data})
 
 
 def operate_history(request):
