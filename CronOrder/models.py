@@ -95,6 +95,8 @@ class Sender(AbstractBaseUser):
     offline_money = models.FloatField(max_length=10, null=True, blank=True, default=0)
     online_money = models.FloatField(max_length=10, null=True, blank=True, default=0)
 
+    belongs = models.CharField(max_length=100, default='11')
+
     USERNAME_FIELD = 'phone'
     REQUIRED_FIELDS = ['phone']
     objects = SenderManager()
@@ -172,6 +174,7 @@ class Merchant(AbstractBaseUser):
     recent_days = models.IntegerField(blank=True, null=True)
     balance = models.FloatField(blank=True, null=True)
     verify = models.BooleanField(default=False)
+    belongs = models.CharField(max_length=100, default='11')
 
     private_token = models.CharField(max_length=64, null=True, blank=True)
 

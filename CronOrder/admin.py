@@ -3,7 +3,7 @@ from CronOrder.models import *
 # Register your models here.
 
 class MerchantAdmin(admin.ModelAdmin):
-    list_display = ('name', 'alin_account', 'is_online')
+    list_display = ('name', 'alin_account', 'belongs', 'is_online')
     list_filter = ('last_login',)
     search_fields = ('alin_account', 'name')
     ordering = ('-last_login',)
@@ -20,7 +20,7 @@ class DishAdmin(admin.ModelAdmin):
     ordering = ('-dish_name',)
 
 class SenderAdmin(admin.ModelAdmin):
-    list_display = ('phone', 'nick', 'update_time')
+    list_display = ('phone', 'belongs', 'nick', 'update_time')
     list_filter = ('active_time',)
     ordering = ('-active_time',)
 

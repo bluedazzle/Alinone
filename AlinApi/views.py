@@ -6,6 +6,7 @@ from django.utils import timezone
 from AlinLog.models import AccountLog, SeachLog
 from AlinApi.fixlnglat import *
 from AlinApi.method import *
+from CronOrder.method import get_phone_belong
 import hashlib
 import simplejson
 import copy
@@ -416,6 +417,7 @@ def register(req):
                 newsender.password = hashlib.md5(passwd).hexdigest()
                 newsender.active_time = datetime.datetime.now()
                 newsender.nick = nick
+                newsender.belongs = get_phone_belong(username)
                 newsender.private_token = mytoken
                 newsender.save()
                 body["private_token"] = mytoken

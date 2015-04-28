@@ -2,6 +2,8 @@ import datetime
 import string
 import time
 import random
+import requests
+import json
 from CronOrder.models import *
 from AlinLog.models import *
 from django.http import Http404
@@ -48,3 +50,19 @@ def timestampToDatetime(timestamp):
     formattime = time.localtime(float(timestamp))
     datetimee = datetime.datetime(*formattime[:6])
     return datetimee
+
+
+
+def get_phone_belong(phone):
+    url = 'http://api.k780.com:88/?app=phone.get&appkey=13790&sign=40003a34260aa4def35d83d83a7ba580&format=json&phone=' + str(phone)
+    newreq = requests.get(url, timeout=6)
+    res = newreq.content
+    # try:
+    jsonres = json.loads(res)
+    if str(jsonres['success']) == '1':
+        return jsonres['result']['style_simcall']
+    return 'fail'
+    # except:
+    #     return 'fail'
+
+
