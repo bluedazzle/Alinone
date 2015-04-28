@@ -1,37 +1,36 @@
 {% extends 'order_base.html' %}
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-
-    <title></title>
-</head>
-<body>
 {% block order_panel %}
+    <ul class="nav nav-tabs nav-justified">
+        <li role="presentation" id="search_order"><a href="operate_history?search_type=1">订单查询</a></li>
+        <li role="presentation" id="search_sender"><a href="operate_history?search_type=2">派送员查询</a></li>
+    </ul>
     <script type="text/javascript" src="/js/mine.js" charset="UTF-8"></script>
     <form method="get" action="operate_history" id="search_mes">
-    <div class="col-md-12 col-lg-12" style="margin-top: 3%">
+        {% if search_sender %}
+        <input name="search_type" value="2" style="display: none"/>
+        {% endif %}
+    <div class="col-md-12 col-lg-12" style="margin-top: 30px; margin-bottom: 30px;">
       <div class="col-md-5 col-lg-5 input-group has-success" style="width: 30%;max-width: 300px;margin-right:27%;float: right">
          <span class="input-group-addon" style="width: 80px">截止日期:</span>
-         <input id="end_date" name="end_date" type="text" class="form-control" style="cursor: pointer; margin-right: 10%;" onclick="fPopCalendar(event,this,this)" onfocus="this.select()" readonly="readonly" />
+         <input id="end_date" name="end_date" value="{{ end_date }}" type="text" class="form-control" style="cursor: pointer; margin-right: 10%;" onclick="fPopCalendar(event,this,this)" onfocus="this.select()" readonly="readonly" />
       </div>
       <div class="col-md-5 col-lg-5 input-group has-success" style="width: 30%;max-width: 300px;margin-right: 1%;float: right">
          <span class="input-group-addon">起始日期:</span>
-         <input id="start_date" name="start_date" type="text" class="form-control" style="cursor: pointer; margin-right: 10%;" onclick="fPopCalendar(event,this,this)" onfocus="this.select()" readonly="readonly" />
+         <input id="start_date" name="start_date" value="{{ start_date }}" type="text" class="form-control" style="cursor: pointer; margin-right: 10%;" onclick="fPopCalendar(event,this,this)" onfocus="this.select()" readonly="readonly" />
       </div>
     </div>
-    <div class="col-md-2 col-lg-2" style="float: right;margin-right: 7%;margin-top: -38px;">
+    <div class="col-md-2 col-lg-2" style="float: right;margin-right: 7%;margin-top: -63px;">
           <button id="search" class="btn btn-success">查询</button>
       </div>
     </form>
      <span>{{ summary }}</span>
-<div class="panel panel-default text-center">
+<div class="panel panel-default text-center" style="border-top: 0;min-height: 500px;">
     <div class="panel-body">
+        {% if search_sender %}
              <table class="table table-bordered text-center">
                  <tr>
                      <th>姓名</th>
                      <th>联系方式</th>
-                     <th>状态</th>
                      <th>到付单数</th>
                      <th>到付金额</th>
                      <th>已付单数</th>
@@ -42,7 +41,6 @@
                  <tr>
                      <td>{{ item.nick }}</td>
                      <td>{{ item.phone }}</td>
-                     <td>{{ item.status }}</td>
                      <td>{{ item.offline_num }}</td>
                      <td>{{ item.offline_money }}</td>
                      <td>{{ item.online_num }}</td>
@@ -51,6 +49,8 @@
                  </tr>
                  {% endfor %}
              </table>
+        {% endif %}
+        {% if search_order %}
          <table class="table table-bordered text-center">
                  <tr>
                      <th>订单号</th>
@@ -85,6 +85,7 @@
                  </tr>
                  {% endfor %}
              </table>
+        {% endif %}
         <nav>
        <ul class="pagination">
              {% if orders.has_previous %}
@@ -92,7 +93,7 @@
              {% endif %}
              {% for page in orders.paginator.page_range %}
                {% if page == orders.number %}
-        <li class="active"><a href="?page={{ page }}">{{ page }}</a></li>
+        <li class="active"><a href="{{ pagepara }}&page={{ page }}">{{ page }}</a></li>
                {% else %}
         <li><a href="{{ pagepara }}&page={{ page }}">{{ page }}</a></li>
                {% endif %}
@@ -105,5 +106,14 @@
         </div>
 </div>
 {% endblock %}
-</body>
-</html>
+{% block script %}
+    <script>
+        $(document).ready(function(){
+            {% if search_sender %}
+                $('#search_sender').addClass('active');
+            {% else %}
+                $('#search_order').addClass('active');
+            {% endif %}
+        })
+    </script>
+{% endblock %}
