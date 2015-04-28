@@ -9,6 +9,8 @@ from django.core.paginator import Paginator
 from django.core.paginator import PageNotAnInteger
 from django.core.paginator import EmptyPage
 from AlinLog.models import AccountLog
+from AlinApi.method import createverifycode
+from AlinApi.models import PhoneVerify
 from merchant_page.models import *
 from CronOrder.Aaps import *
 from CronOrder.ALO import *
@@ -119,7 +121,7 @@ def forget_password_verify(request):
             merchant = merchant_have[0]
             if merchant.verify is False:
                 return HttpResponse(json.dumps("auth"), content_type='application/json')
-            req = createverfiycode(phone)
+            req = createverifycode(phone)
             print req
             newlog = AccountLog()
             newlog.atype = '商家'
@@ -192,7 +194,7 @@ def register_verify(request):
         merchant_have = Merchant.objects.filter(alin_account=phone)
         if merchant_have.count() > 0:
             return HttpResponse(json.dumps("false"), content_type="application/json")
-        req = createverfiycode(phone)
+        req = createverifycode(phone)
         print req
         return HttpResponse(json.dumps("true"), content_type="application/json")
     raise Http404
