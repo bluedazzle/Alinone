@@ -150,18 +150,18 @@ color: #000000;
 #nav-top>li>a:focus,
 #nav-top>li>a.active{
     color: #ffffff;
-    background-color:#28a4c9;
-    border-color: #28a4c9;
+    background-color:#6699cc;
+    border-color: #6699cc;
 }
 
 .nav-head-active{
     color: #ffffff;
-    background-color:#28a4c9;
-    border-color: #28a4c9;
+    background-color:#6699cc;
+    border-color: #6699cc;
 }
 .nav-list-active{
     color: #ffffff;
-    background-color:#28a4c9;
-    border-color: #28a4c9;
+    background-color:#6699cc;
+    border-color: #6699cc;
 }
 
