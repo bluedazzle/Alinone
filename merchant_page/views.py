@@ -891,7 +891,7 @@ def operate_history(request):
         currentuser = Merchant.objects.get(alin_account=merchant_id)
         start_date = request.GET.get('start_date', '')
         end_date = request.GET.get('end_date', '')
-        pagepara = '?end_date=' + start_date + '&start_date=' + end_date
+        pagepara = '?end_date=' + end_date + '&start_date=' + start_date
         search_type = request.GET.get('search_type', '')
         page_num = request.GET.get('page')
         if not start_date or not end_date:

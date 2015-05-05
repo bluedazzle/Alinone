@@ -10,50 +10,60 @@
     <script language="javaScript" src="/js/operate.js"></script>
     <script language="javascript" src="/js/LodopFuncs.js"></script>
 </head>
-<body  style="font-family: Microsoft Yahei;">
+<body style="font-family: Microsoft Yahei;">
 <nav class="navbar navbar-mine" role="navigation">
-        <div class="container-fluid container" style="padding: 0 8% 0 8%">
-            <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="container-fluid container" style="padding: 0 8% 0 8%">
+        <!-- Brand and toggle get grouped for better mobile display -->
 
-            <div class="navbar-header">
-                <a class="navbar-brand" style="font-size: 34px;color: #ffffff;">Alinone</a>
-            </div>
-{#            <span class="navbar-brand">今日共有<span id="order_num">0</span>笔已完成订单，<span id="total_money">0.0</span>元</span>#}
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right" id="nav-top">
-                    <li><p id='merchant_user_name' style="margin: 17px;color: #ecf0f1"></p></li>
-                    <li><a role="button" class="btn btn-primary btn-mine" href="operate_new" id="order_manage">订单管理</a></li>
-                    <li><a role="button" class="btn btn-primary btn-mine" href="operate_express_person" id="express_manage">物流管理</a></li>
-                    <li id="user_mes_manage">
-                        <a role="button" class="btn btn-mine">
-                            用户信息管理
-                            <span class="caret"></span>
-                        </a>
-                        <ul role="menu" id="manage_list" class="dropdown-menu" style="min-width: 100%;background-color: #2aabd2">
-                            <li><a role="button"  id="change_name" class="btn btn-primary btn-mine" href="operate_pingtai" style="font-size:15px;color: #ffffff">平台管理</a></li>
-                            <li><a role="button"  id="change_name" class="btn btn-primary btn-mine" href="change_name" style="font-size:15px;color: #ffffff">修改店名</a></li>
-                            <li><a role="button"  id="change_password" class="btn btn-primary btn-mine" href="change_password" style="font-size:15px;color: #ffffff">修改密码</a></li>
-                            <li><a role="button" id="login_out" class="btn btn-primary btn-mine" href="login_out" style="font-size:15px;color: #ffffff;">登出</a></li>
-                        </ul>
-                    </li>
-                    <li><a role="button" class="btn btn-primary btn-mine" href="printer_setting" id="printer_setting">打印设置</a></li>
-                    <li><a role="button" class="btn btn-primary btn-mine" href="feed_back" id="feed_back">消息反馈</a></li>
-{#                    <li><a role="button" class="btn btn-primary btn-mine" href="fuwei" style="color: #ffffff">数据复位(测试用)</a></li>#}
-{#                    <li><a role="button"  id="change_name" class="btn btn-primary btn-mine" href="change_name" style="font-size:15px;color: #ffffff">修改店名</a></li>#}
-{#                    <li><a role="button"  id="change_password" class="btn btn-primary btn-mine" href="change_password" style="font-size:15px;color: #ffffff">修改密码</a></li>#}
-                </ul>
-            </div>
-            <script>
-                if(localStorage['user_name']){
-                    $('#merchant_user_name').text("欢迎！" + localStorage['user_name']);
-                }
-            </script>
+        <div class="navbar-header">
+            <a class="navbar-brand" style="font-size: 34px;color: #ffffff;">Alinone</a>
+        </div>
+        <span class="navbar-brand">今日共有<span id="order_num">0</span>笔已完成订单，<span id="total_money">0.0</span>元</span>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-        </div><!-- /.container-fluid -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right" id="nav-top">
+                <li><p id='merchant_user_name' style="margin: 17px;color: #ecf0f1"></p></li>
+                <li><a role="button" class="btn btn-primary btn-mine" href="operate_new" id="order_manage">订单管理</a></li>
+                <li><a role="button" class="btn btn-primary btn-mine" href="operate_express_person" id="express_manage">物流管理</a>
+                </li>
+                <li id="user_mes_manage">
+                    <a role="button" class="btn btn-mine">
+                        用户信息管理
+                        <span class="caret"></span>
+                    </a>
+                    <ul role="menu" id="manage_list" class="dropdown-menu"
+                        style="min-width: 100%;background-color: #2aabd2">
+                        <li><a role="button" id="change_name" class="btn btn-primary btn-mine" href="operate_pingtai"
+                               style="font-size:15px;color: #ffffff">平台管理</a></li>
+                        <li><a role="button" id="change_name" class="btn btn-primary btn-mine" href="change_name"
+                               style="font-size:15px;color: #ffffff">修改店名</a></li>
+                        <li><a role="button" id="change_password" class="btn btn-primary btn-mine"
+                               href="change_password" style="font-size:15px;color: #ffffff">修改密码</a></li>
+                        <li><a role="button" id="login_out" class="btn btn-primary btn-mine" href="login_out"
+                               style="font-size:15px;color: #ffffff;">登出</a></li>
+                    </ul>
+                </li>
+                <li><a role="button" class="btn btn-primary btn-mine" href="printer_setting"
+                       id="printer_setting">打印设置</a></li>
+                <li><a role="button" class="btn btn-primary btn-mine" href="feed_back" id="feed_back">消息反馈</a></li>
+                {#                    <li><a role="button" class="btn btn-primary btn-mine" href="fuwei" style="color: #ffffff">数据复位(测试用)</a></li>#}
+                {#                    <li><a role="button"  id="change_name" class="btn btn-primary btn-mine" href="change_name" style="font-size:15px;color: #ffffff">修改店名</a></li>#}
+                {#                    <li><a role="button"  id="change_password" class="btn btn-primary btn-mine" href="change_password" style="font-size:15px;color: #ffffff">修改密码</a></li>#}
+            </ul>
+        </div>
+        <script>
+            if (localStorage['user_name']) {
+                $('#merchant_user_name').text("欢迎！" + localStorage['user_name']);
+            }
+        </script>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+    </div>
+    <!-- /.container-fluid -->
 </nav>
-<div class="alert alert-warning alert-dismissible" role="alert" style="text-align: center;margin-top:-20px;line-height: 0.1;">
- <p id="notice"></p>
+<div class="alert alert-warning alert-dismissible" role="alert"
+     style="text-align: center;margin-top:-20px;line-height: 0.1;">
+    <p id="notice"></p>
 </div>
 <div>
     <audio loop="-1" id="clicksound">
@@ -84,73 +94,73 @@
 {% endblock order %}
 {% block others %}
 {% endblock %}
-<object  id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0>
-       <embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0></embed>
+<object id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0>
+    <embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0></embed>
 </object>
 {% if user_name %}
     <script>
-    $(document).ready(function() {
-        localStorage['user_name'] = '{{ user_name }}';
-        $('#merchant_user_name').text("欢迎！" + localStorage['user_name']);
-    })
+        $(document).ready(function () {
+            localStorage['user_name'] = '{{ user_name }}';
+            $('#merchant_user_name').text("欢迎！" + localStorage['user_name']);
+        })
     </script>
 {% elif new_user_name %}
     <script>
-    $(document).ready(function() {
-        localStorage['user_name'] = '{{ new_name }}';
-        $('#merchant_user_name').text("欢迎！" + localStorage['user_name']);
-    })
+        $(document).ready(function () {
+            localStorage['user_name'] = '{{ new_name }}';
+            $('#merchant_user_name').text("欢迎！" + localStorage['user_name']);
+        })
     </script>
 {% endif %}
-    <script>
-        function playmusic() {
-            var music = document.getElementById("clicksound");
-            music.play();
+<script>
+    function playmusic() {
+        var music = document.getElementById("clicksound");
+        music.play();
     }
-        function stopmusic(){
-            var music = document.getElementById("clicksound");
-            music.stop();
-        }
-            function get_new_count(){
-                $.ajax({
-                        type: 'GET',
-                        url: 'get_orders_count',
-                        data: '',
-                        success: function(data){
-                            $('#order_num').text(data['order_num']);
-                            $('#total_money').text(data['total_money']);
-                            var order_count = $('#order-count');
-                            if(data['count'] != 'N') {
-                                order_count.text(data['count']);
-                                order_count.show();
-                            }else{
-                                order_count.hide();
-                            }
+    function stopmusic() {
+        var music = document.getElementById("clicksound");
+        music.stop();
+    }
+    function get_new_count() {
+        $.ajax({
+            type: 'GET',
+            url: 'get_orders_count',
+            data: '',
+            success: function (data) {
+                $('#order_num').text(data['order_num']);
+                $('#total_money').text(data['total_money']);
+                var order_count = $('#order-count');
+                if (data['count'] != 'N') {
+                    order_count.text(data['count']);
+                    order_count.show();
+                } else {
+                    order_count.hide();
+                }
 
-                            if(data['have_new_order'] == 'T') playmusic();
+                if (data['have_new_order'] == 'T') playmusic();
 
-                            if (data['status'] != 'T'){
-                                $('#platform_status').removeClass('hidden')
-                            }
-                            else{
-                                $('#platform_status').addClass('hidden')
-                            }
-                            if (data['ver'] == 'v need'){
-                                var str=prompt("随便写点儿啥吧","比如我叫啥");
-                                if(str)
-                                    {
-                                        alert("您刚输入的是："+ str);
-                                    }
-                            }
-                        },
-                        dataType: 'json'
-                    });
-                $.ajax({
-                    type: 'GET',
-                    url: 'get_orders_p',
-                    data: ''});
-            }
-    $(document).ready(function() {
+                if (data['status'] != 'T') {
+                    $('#platform_status').removeClass('hidden')
+                }
+                else {
+                    $('#platform_status').addClass('hidden')
+                }
+                if (data['ver'] == 'v need') {
+                    var str = prompt("随便写点儿啥吧", "比如我叫啥");
+                    if (str) {
+                        alert("您刚输入的是：" + str);
+                    }
+                }
+            },
+            dataType: 'json'
+        });
+        $.ajax({
+            type: 'GET',
+            url: 'get_orders_p',
+            data: ''
+        });
+    }
+    $(document).ready(function () {
         $.ajax({
             type: 'GET',
             url: 'get_orders_count',
@@ -163,33 +173,34 @@
                     order_count.text(data['count']);
                     order_count.show();
                 }
-                else{
+                else {
                     order_count.hide();
                 }
                 if (data['have_new_order'] == 'T') playmusic();
 
-                if (data['status'] != 'T'){
+                if (data['status'] != 'T') {
                     $('#platform_status').removeClass('hidden')
                 }
-                else{
+                else {
                     $('#platform_status').addClass('hidden')
                 }
-                if (data['notice_list'] != 'N'){
+                if (data['notice_list'] != 'N') {
                     var notice_num = 0;
                     var max_num = data['notice_list'].length;
                     var notice_list = data['notice_list'];
-                    $('#notice').text("1:"+notice_list[notice_num]);
+                    $('#notice').text("1:" + notice_list[notice_num]);
                     notice_num++;
                     function update_notice() {
-                        var num = notice_num+1;
-                        $('#notice').text(num+":"+notice_list[notice_num]);
-                        if(notice_num >= max_num-1){
+                        var num = notice_num + 1;
+                        $('#notice').text(num + ":" + notice_list[notice_num]);
+                        if (notice_num >= max_num - 1) {
                             notice_num = 0
                         }
-                        else{
+                        else {
                             notice_num++
                         }
                     }
+
                     var notice_countdown = setInterval(update_notice, 5000);
                 }
             },
@@ -198,20 +209,20 @@
         var count_flag = setInterval(get_new_count, 20000);
     });
 
-    </script>
-    <script>
-        var user_mes_manage = $('#user_mes_manage');
-        user_mes_manage.mouseover(function(){
-            user_mes_manage.children('a').addClass('nav-list-active');
-            user_mes_manage.children('ul').show();
-        });
-        user_mes_manage.mouseleave(function(){
-            user_mes_manage.children('a').removeClass('nav-list-active');
-            user_mes_manage.children('ul').hide();
-        });
-        $('button').click(stopmusic());
-        $('a').click(stopmusic());
-    </script>
+</script>
+<script>
+    var user_mes_manage = $('#user_mes_manage');
+    user_mes_manage.mouseover(function () {
+        user_mes_manage.children('a').addClass('nav-list-active');
+        user_mes_manage.children('ul').show();
+    });
+    user_mes_manage.mouseleave(function () {
+        user_mes_manage.children('a').removeClass('nav-list-active');
+        user_mes_manage.children('ul').hide();
+    });
+    $('button').click(stopmusic());
+    $('a').click(stopmusic());
+</script>
 {% block script %}
 {% endblock %}
 <script src="http://s11.cnzz.com/z_stat.php?id=1254496940&web_id=1254496940" language="JavaScript"></script>
