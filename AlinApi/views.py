@@ -382,7 +382,7 @@ def reg_ver(req):
         reqdata = simplejson.loads(req.body)
         phone = reqdata['phone']
         res_phone_list = PhoneVerify.objects.filter(phone = phone)
-        verreq = createverfiycode(phone)
+        verreq = createverifycode(phone)
         verjson = simplejson.loads(verreq)
         if verjson['success'] is True:
             vercode = verjson['verify_code']
@@ -569,7 +569,7 @@ def forgetpasswd(req):
         currentuserset = Sender.objects.filter(phone = phone)
         if currentuserset.count() > 0:
             currentuser = currentuserset[0]
-            res = createverfiycode(currentuser.phone)
+            res = createverifycode(currentuser.phone)
             jres = simplejson.loads(res)
             if jres['success'] is False:
                 return HttpResponse(encodejson(2, body))

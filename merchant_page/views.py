@@ -9,6 +9,8 @@ from django.core.paginator import Paginator
 from django.core.paginator import PageNotAnInteger
 from django.core.paginator import EmptyPage
 from AlinLog.models import AccountLog
+from AlinApi.method import createverifycode
+from AlinApi.models import PhoneVerify
 from merchant_page.models import *
 from CronOrder.Aaps import *
 from AlinApi.method import *
@@ -122,7 +124,7 @@ def forget_password_verify(request):
             merchant = merchant_have[0]
             if merchant.verify is False:
                 return HttpResponse(json.dumps("auth"), content_type='application/json')
-            req = createverfiycode(phone)
+            req = createverifycode(phone)
             print req
             newlog = AccountLog()
             newlog.atype = '商家'
@@ -195,7 +197,7 @@ def register_verify(request):
         merchant_have = Merchant.objects.filter(alin_account=phone)
         if merchant_have.count() > 0:
             return HttpResponse(json.dumps("false"), content_type="application/json")
-        req = createverfiycode(phone)
+        req = createverifycode(phone)
         print req
         return HttpResponse(json.dumps("true"), content_type="application/json")
     raise Http404
@@ -890,28 +892,82 @@ def operate_history(request):
         start_date = request.GET.get('start_date', '')
         end_date = request.GET.get('end_date', '')
         pagepara = '?end_date=' + start_date + '&start_date=' + end_date
-        if start_date != '' and end_date != '':
-            stime = time.strptime(start_date, "%Y-%m-%d")
-            etime = time.strptime(end_date, "%Y-%m-%d")
-            sdate = datetime.datetime(*stime[:6])
-            edate = datetime.datetime(*etime[:6])
-            total_orders = TotalOrder.objects.order_by('-order_time').filter(merchant=currentuser, order_time__range=(sdate, edate))
-            senders = currentuser.bind_sender.all()
-            paginator = Paginator(total_orders, 20)
-            try:
-                page_num = request.GET.get('page')
-                total_orders = paginator.page(page_num)
-            except PageNotAnInteger:
-                total_orders = paginator.page(1)
-            except EmptyPage:
-                total_orders = paginator.page(paginator.num_pages)
-            except:
-                pass
-            return render_to_response('merchant_operate_history.html', {'orders': total_orders, 'pagepara': pagepara})
+        search_type = request.GET.get('search_type', '')
+        page_num = request.GET.get('page')
+        if not start_date or not end_date:
+            if search_type == '2':
+                content = {'search_sender': True}
+            else:
+                content = {'search_order': True}
+            return render_to_response('merchant_operate_history.html',
+                                      content)
+
+        stime = time.strptime(start_date, "%Y-%m-%d")
+        etime = time.strptime(end_date, "%Y-%m-%d")
+        sdate = datetime.datetime(*stime[:6])
+        edate = datetime.datetime(*etime[:6])
+
+        if search_type == '2':
+            senders = search_sender(sdate, edate, currentuser)
+            return render_to_response('merchant_operate_history.html',
+                                      {'senders': senders,
+                                       'search_sender': True,
+                                       'start_date': start_date,
+                                       'end_date': end_date})
         else:
-            return render_to_response('merchant_operate_history.html')
+            orders = search_order(sdate, edate, currentuser, page_num)
+            return render_to_response('merchant_operate_history.html',
+                                      {'orders': orders,
+                                       'search_order': True,
+                                       'pagepara': pagepara,
+                                       'start_date': start_date,
+                                       'end_date': end_date})
     else:
         raise Http404
+
+
+def search_order(start_date, end_date, currentuser, page_num):
+    total_orders = TotalOrder.objects.order_by('-order_time').filter(merchant=currentuser,
+                                                                     order_time__range=(start_date, end_date))
+    print total_orders.count()
+    paginator = Paginator(total_orders, 20)
+    try:
+        total_orders = paginator.page(page_num)
+    except PageNotAnInteger:
+        total_orders = paginator.page(1)
+    except EmptyPage:
+        total_orders = paginator.page(paginator.num_pages)
+    except:
+        pass
+    return total_orders
+
+
+def search_sender(start_date, end_date, currentuser):
+    senders = currentuser.bind_sender.all()
+    senders_return = []
+    for sender in senders:
+        sender_return = Sender()
+        orders = TotalOrder.objects.filter(merchant=currentuser,
+                                           order_time__range=(start_date, end_date),
+                                           bind_sender=sender_return)
+        sender_return.nick = sender.nick
+        sender_return.phone = sender.phone
+        sender_return.offline_num = 0
+        sender_return.online_num = 0
+        sender_return.offline_money = 0.0
+        sender_return.online_money = 0.0
+        sender_return.today_sends = orders.count()
+        for order in orders:
+            if order.pay:
+                sender_return.online_num += 1
+                sender_return.online_money += order.real_price
+            else:
+                sender_return.offline_num += 1
+                sender_return.offline_money += order.real_price
+
+        senders_return.append(sender_return)
+
+    return senders_return
 
 
 def feed_back(request):

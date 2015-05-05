@@ -5,7 +5,7 @@
         <form action="feed_back" method="post">
             {% csrf_token %}
             <textarea name="content" style="width: 50%;height: 200px;" onkeyup="enable_submit(this.value)"></textarea>
-            <button class="btn btn-success disabled" id="submit" type="submit" style="width: 50%">提交</button>
+            <button class="btn btn-success btn-lg disabled" id="submit" type="submit" style="width: 50%">提交</button>
         </form>
     </div>
 {% endblock %}

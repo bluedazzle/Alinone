@@ -15,7 +15,7 @@ import string
 import time
 import xmltodict
 
-def createverfiycode(phone, count=6):
+def createverifycode(phone, count=6):
     result = {}
     vercode = string.join(random.sample('0123456789', count)).replace(" ", "")
     res = sendverifycode(vercode, phone)
