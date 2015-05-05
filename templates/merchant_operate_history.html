@@ -90,7 +90,7 @@
         <h4>nothing</h4>
     {% endif %}
 
-    {% if 1 %}
+    {% if orders.paginator.num_pages > 1 %}
         <nav>
        <ul class="pagination">
              {% if orders.has_previous %}

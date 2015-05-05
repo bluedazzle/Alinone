@@ -228,6 +228,7 @@
                  {% endfor %}
              </table>
         <nav>
+       {% if items.paginator.num_pages > 1  %}
        <ul class="pagination">
              {% if items.has_previous %}
         <li><a href="?page={{ items.previous_page_number }}">&laquo;</a></li>
@@ -243,6 +244,7 @@
         <li><a href="?page={{ items.next_page_number }}">&raquo;</a></li>
             {% endif %}
        </ul>
+       {% endif %}
      </nav>
         <script>
                          $('#all_print').click(

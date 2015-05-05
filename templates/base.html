@@ -12,7 +12,7 @@
 </head>
 <body style="font-family: Microsoft Yahei;">
 <nav class="navbar navbar-mine" role="navigation">
-    <div class="container-fluid container" style="padding: 0 8% 0 8%">
+    <div class="container-fluid container" style="padding: 0 2% 0 2%">
         <!-- Brand and toggle get grouped for better mobile display -->
 
         <div class="navbar-header">
@@ -93,6 +93,10 @@
 {% block order %}
 {% endblock order %}
 {% block others %}
+{% endblock %}
+{% block script %}
+{% endblock %}
+{% block order_script %}
 {% endblock %}
 <object id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0>
     <embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0></embed>
@@ -223,8 +227,6 @@
     $('button').click(stopmusic());
     $('a').click(stopmusic());
 </script>
-{% block script %}
-{% endblock %}
 <script src="http://s11.cnzz.com/z_stat.php?id=1254496940&web_id=1254496940" language="JavaScript"></script>
 </body>
 </html>
