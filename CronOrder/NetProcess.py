@@ -67,24 +67,3 @@ class NetProcess(object):
         self.__useheaders = True
         return True
 
-# net = NetProcess()
-# postdic = {'username': 'guaishushuliansuo', 'password': '18215605920'}
-# r = net.GetResFromRequest('POST','http://napos.ele.me/auth/doLogin', postDic=postdic)
-# c = str(net.OutPutCookie())
-# print r
-# net.SetCookie(c)
-# d = net.GetResFromRequest('GET', 'http://napos.ele.me/order/list?list=unprocessed_waimai&t=1407000000')
-# print d
-
-# net = NetProcess()
-# postdic = {'id': 8}
-# net.Proxy = '124.88.67.24:80'
-# # r = net.GetResFromRequest('GET', 'http://vote.stuhome.net/', use_proxy=True)
-# # cok = str(net.OutPutCookie())
-# # print cok
-# # net.SetCookie(cok)
-# headerdic = {'X-Requested-With': 'XMLHttpRequest',
-#              'User-Agent': 'Dalvik/1.6.0 (Linux; U; Android 4.1.1; MI 2S MIUI/4.11.7)'}
-# net.SetHeaders(headerdic)
-# r = net.GetResFromRequest('POST', 'http://vote.stuhome.net/Index/Index/loveArticle', use_proxy=True)
-# print r

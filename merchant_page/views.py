@@ -2,7 +2,7 @@
 from django.shortcuts import render_to_response
 from django.http import HttpResponse
 from django.core.context_processors import csrf
-from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.core.paginator import Paginator
@@ -11,6 +11,7 @@ from django.core.paginator import EmptyPage
 from AlinLog.models import AccountLog
 from merchant_page.models import *
 from CronOrder.Aaps import *
+from AlinApi.method import *
 from CronOrder.ALO import *
 from CronOrder.method import get_phone_belong
 import json
@@ -80,6 +81,8 @@ def login_out(request):
     del request.session['username']
     return HttpResponseRedirect("login_in")
 
+
+
 #忘记密码操作
 def forget_password(request):
     if request.method == 'GET':
@@ -107,7 +110,7 @@ def forget_password(request):
                 return render_to_response('register.html', {'phone': phone,
                                                             'fault3': '2'}, context_instance=RequestContext(request))
 
-
+@csrf_exempt
 #忘记密码获取验证码
 def forget_password_verify(request):
     if request.method == 'POST':

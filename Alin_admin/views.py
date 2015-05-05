@@ -19,6 +19,7 @@ import hashlib
 import datetime
 
 
+
 def login(request):
     if request.method == 'GET':
         return render_to_response('alin_admin/login.html',
