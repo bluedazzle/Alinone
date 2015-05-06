@@ -67,29 +67,33 @@
 {% block script %}
     <script>
             var LODOP = getLodop();
-            function select_printer(){
-                localStorage['printer'] = LODOP.SELECT_PRINTER();
-                window.location.href='printer_setting';
-            }
-            $(document).ready(function(){
-                 $('#printer_setting').addClass('nav-head-active');
-                 if(localStorage['printer']){
-                     var num = parseInt(localStorage['printer']);
-                     var printer_name = LODOP.GET_PRINTER_NAME(num);
-                 }
-                else{
-                     var printer_name = LODOP.GET_PRINTER_NAME(-1)
-                 }
-                 $("#printer").text(printer_name);
-            });
-            function change_print_pages(){
+            if(LODOP.VERSION >= "6.1.9.3") {
+                function select_printer() {
+                    localStorage['printer'] = LODOP.SELECT_PRINTER();
+                    window.location.href = 'printer_setting';
+                }
+
+                $(document).ready(function () {
+                    $('#printer_setting').addClass('nav-head-active');
+                    if (localStorage['printer']) {
+                        var num = parseInt(localStorage['printer']);
+                        var printer_name = LODOP.GET_PRINTER_NAME(num);
+                    }
+                    else {
+                        var printer_name = LODOP.GET_PRINTER_NAME(-1)
+                    }
+                    $("#printer").text(printer_name);
+                });
+                function change_print_pages() {
                     localStorage['print_pages'] = $('#print_pages').val();
                     window.location.href = 'printer_setting'
                 }
-                $(document).ready(function(){
-                    if(localStorage.getItem('print_pages')){
+
+                $(document).ready(function () {
+                    if (localStorage.getItem('print_pages')) {
                         $('#print_pages').val(localStorage['print_pages'])
                     }
                 })
+            }
         </script>
 {% endblock %}

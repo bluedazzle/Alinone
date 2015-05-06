@@ -18,7 +18,7 @@
         <div class="navbar-header">
             <a class="navbar-brand" style="font-size: 34px;color: #ffffff;">Alinone</a>
         </div>
-        <span class="navbar-brand">今日共有<span id="order_num">0</span>笔已完成订单，<span id="total_money">0.0</span>元</span>
+        <span class="navbar-brand" style="font-size: 15px;">今日共有<span id="order_num">0</span>笔已完成订单，<span id="total_money">0.0</span>元</span>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right" id="nav-top">
@@ -39,8 +39,8 @@
                                style="font-size:15px;color: #ffffff">修改店名</a></li>
                         <li><a role="button" id="change_password" class="btn btn-primary btn-mine"
                                href="change_password" style="font-size:15px;color: #ffffff">修改密码</a></li>
-                        <li><a role="button" id="login_out" class="btn btn-primary btn-mine" href="login_out"
-                               style="font-size:15px;color: #ffffff;">登出</a></li>
+{#                        <li><a role="button" id="login_out" class="btn btn-primary btn-mine" href="login_out"#}
+{#                               style="font-size:15px;color: #ffffff;">登出</a></li>#}
                     </ul>
                 </li>
                 <li><a role="button" class="btn btn-primary btn-mine" href="printer_setting"
@@ -53,7 +53,7 @@
         </div>
         <script>
             if (localStorage['user_name']) {
-                $('#merchant_user_name').text("欢迎！" + localStorage['user_name']);
+                $('#merchant_user_name').append("欢迎！" + localStorage['user_name'] + "<a href='login_out' style='color:#cc0000'>(登出)</a>");
             }
         </script>
 
@@ -61,6 +61,9 @@
     </div>
     <!-- /.container-fluid -->
 </nav>
+<div class="alert alert-danger alert-dismissible" role="alert"
+     style="text-align: center;margin-top:-20px;line-height: 0.75;display: none" id="print_notice">
+</div>
 <div class="alert alert-warning alert-dismissible" role="alert"
      style="text-align: center;margin-top:-20px;line-height: 0.1;">
     <p id="notice"></p>
@@ -94,28 +97,43 @@
 {% endblock order %}
 {% block others %}
 {% endblock %}
-{% block script %}
-{% endblock %}
-{% block order_script %}
-{% endblock %}
+{#{% block script %}#}
+{#{% endblock %}#}
+{#{% block order_script %}#}
+{#{% endblock %}#}
 <object id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0>
     <embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0></embed>
 </object>
 {% if user_name %}
     <script>
         $(document).ready(function () {
+            if(localStorage['user_name'] == '{{ user_name }}') return true;
             localStorage['user_name'] = '{{ user_name }}';
-            $('#merchant_user_name').text("欢迎！" + localStorage['user_name']);
+            $('#merchant_user_name').append("欢迎！" + localStorage['user_name'] + "<a href='login_out' style='color:#cc0000'>(登出)</a>");
         })
     </script>
 {% elif new_user_name %}
     <script>
         $(document).ready(function () {
+            if(localStorage['user_name'] == '{{ new_name }}') return true;
             localStorage['user_name'] = '{{ new_name }}';
-            $('#merchant_user_name').text("欢迎！" + localStorage['user_name']);
+            $('#merchant_user_name').append("欢迎！" + localStorage['user_name'] + "<a href='login_out' style='color:red'>(登出)</a>");
         })
     </script>
 {% endif %}
+<script>
+    var user_mes_manage = $('#user_mes_manage');
+    user_mes_manage.mouseover(function () {
+        user_mes_manage.children('a').addClass('nav-list-active');
+        user_mes_manage.children('ul').show();
+    });
+    user_mes_manage.mouseleave(function () {
+        user_mes_manage.children('a').removeClass('nav-list-active');
+        user_mes_manage.children('ul').hide();
+    });
+    $('button').click(stopmusic());
+    $('a').click(stopmusic());
+</script>
 <script>
     function playmusic() {
         var music = document.getElementById("clicksound");
@@ -214,19 +232,10 @@
     });
 
 </script>
-<script>
-    var user_mes_manage = $('#user_mes_manage');
-    user_mes_manage.mouseover(function () {
-        user_mes_manage.children('a').addClass('nav-list-active');
-        user_mes_manage.children('ul').show();
-    });
-    user_mes_manage.mouseleave(function () {
-        user_mes_manage.children('a').removeClass('nav-list-active');
-        user_mes_manage.children('ul').hide();
-    });
-    $('button').click(stopmusic());
-    $('a').click(stopmusic());
-</script>
 <script src="http://s11.cnzz.com/z_stat.php?id=1254496940&web_id=1254496940" language="JavaScript"></script>
+{% block script %}
+{% endblock %}
+{% block order_script %}
+{% endblock %}
 </body>
 </html>

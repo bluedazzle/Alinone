@@ -8,12 +8,12 @@ function getLodop(oOBJECT,oEMBED){
   如果页面没有相关对象元素，则新建一个或使用上次那个,避免重复生成。
   64位浏览器指向64位的安装程序install_lodop64.exe。
 **************************/
-        var strHtmInstall="<font color='#FF00FF'>打印控件未安装!点击这里<a href='/dayin/install_lodop32.exe' target='_self'>执行安装</a>,安装后请刷新页面或重新进入。</font>";
-        var strHtmUpdate="<font color='#FF00FF'>打印控件需要升级!点击这里<a href='/dayin/install_lodop32.exe' target='_self'>执行升级</a>,升级后请重新进入。</font>";
-        var strHtm64_Install="<font color='#FF00FF'>打印控件未安装!点击这里<a href='/dayin/install_lodop64.exe' target='_self'>执行安装</a>,安装后请刷新页面或重新进入。</font>";
-        var strHtm64_Update="<font color='#FF00FF'>打印控件需要升级!点击这里<a href='/dayin/install_lodop64.exe' target='_self'>执行升级</a>,升级后请重新进入。</font>";
-        var strHtmFireFox="<br><font color='#FF00FF'>（注意：如曾安装过Lodop旧版附件npActiveXPLugin,请在【工具】->【附加组件】->【扩展】中先卸它）</font>";
-        var strHtmChrome="<br><font color='#FF00FF'>(如果此前正常，仅因浏览器升级或重安装而出问题，需重新执行以上安装）</font>";
+        var strHtmInstall="<p color='#FF00FF'>打印控件未安装!点击这里<a href='/dayin/install_lodop32.exe' target='_self'>执行安装</a>,安装后请刷新页面或重新进入。</p>";
+        var strHtmUpdate="<p color='#FF00FF'>打印控件需要升级!点击这里<a href='/dayin/install_lodop32.exe' target='_self'>执行升级</a>,升级后请重新进入。</p>";
+        var strHtm64_Install="<p color='#FF00FF'>打印控件未安装!点击这里<a href='/dayin/install_lodop64.exe' target='_self'>执行安装</a>,安装后请刷新页面或重新进入。</p>";
+        var strHtm64_Update="<p color='#FF00FF'>打印控件需要升级!点击这里<a href='/dayin/install_lodop64.exe' target='_self'>执行升级</a>,升级后请重新进入。</p>";
+        var strHtmFireFox="<p color='#FF00FF'>（注意：如曾安装过Lodop旧版附件npActiveXPLugin,请在【工具】->【附加组件】->【扩展】中先卸它）</p>";
+        var strHtmChrome="<p color='#FF00FF'>(如果此前正常，仅因浏览器升级或重安装而出问题，需重新执行以上安装）</p>";
         var LODOP;		
 	try{	
 	     //=====判断浏览器类型:===============
@@ -41,18 +41,20 @@ function getLodop(oOBJECT,oEMBED){
 	     //=====判断Lodop插件是否安装过，没有安装或版本过低就提示下载安装:==========
 	     if ((LODOP==null)||(typeof(LODOP.VERSION)=="undefined")) {
 	             if (navigator.userAgent.indexOf('Chrome')>=0)
-	                 document.documentElement.innerHTML=strHtmChrome+document.documentElement.innerHTML;
+	                 $('#print_notice').prepend(strHtmChrome);
 	             if (navigator.userAgent.indexOf('Firefox')>=0)
-	                 document.documentElement.innerHTML=strHtmFireFox+document.documentElement.innerHTML;
+                     $('#print_notice').prepend(strHtmFireFox);
 	             if (is64IE) document.write(strHtm64_Install); else
 	             if (isIE)   document.write(strHtmInstall);    else
-	                 document.documentElement.innerHTML=strHtmInstall+document.documentElement.innerHTML;
+                     $('#print_notice').prepend(strHtmInstall);
+                 $('#print_notice').show();
 	             return LODOP;
 	     } else 
 	     if (LODOP.VERSION<"6.1.9.3") {
 	             if (is64IE) document.write(strHtm64_Update); else
 	             if (isIE) document.write(strHtmUpdate); else
-	             document.documentElement.innerHTML=strHtmUpdate+document.documentElement.innerHTML;
+                 $('#print_notice').prepend(strHtmUpdate);
+                 $('#print_notice').show();
 	    	     return LODOP;
 	     };
 	     //=====如下空白位置适合调用统一功能(如注册码、语言选择等):====	     
