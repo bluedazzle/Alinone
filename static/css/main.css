@@ -164,4 +164,6 @@ color: #000000;
     background-color:#6699cc;
     border-color: #6699cc;
 }
-
+.dropdown-menu{
+    max-width: 210px;
+}

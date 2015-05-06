@@ -12,13 +12,13 @@
 </head>
 <body style="font-family: Microsoft Yahei;">
 <nav class="navbar navbar-mine" role="navigation">
-    <div class="container-fluid container" style="padding: 0 2% 0 2%">
+    <div class="container-fluid container" style="padding: 0">
         <!-- Brand and toggle get grouped for better mobile display -->
 
         <div class="navbar-header">
             <a class="navbar-brand" style="font-size: 34px;color: #ffffff;">Alinone</a>
         </div>
-        <span class="navbar-brand" style="font-size: 15px;">今日共有<span id="order_num">0</span>笔已完成订单，<span id="total_money">0.0</span>元</span>
+        <span class="navbar-brand" style="font-size: 14px;margin-top: 4px;">今日共有<span id="order_num">0</span>笔已完成订单，<span id="total_money">0.0</span>元</span>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right" id="nav-top">
@@ -51,11 +51,6 @@
                 {#                    <li><a role="button"  id="change_password" class="btn btn-primary btn-mine" href="change_password" style="font-size:15px;color: #ffffff">修改密码</a></li>#}
             </ul>
         </div>
-        <script>
-            if (localStorage['user_name']) {
-                $('#merchant_user_name').append("欢迎！" + localStorage['user_name'] + "<a href='login_out' style='color:#cc0000'>(登出)</a>");
-            }
-        </script>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
     </div>
@@ -107,20 +102,21 @@
 {% if user_name %}
     <script>
         $(document).ready(function () {
-            if(localStorage['user_name'] == '{{ user_name }}') return true;
             localStorage['user_name'] = '{{ user_name }}';
-            $('#merchant_user_name').append("欢迎！" + localStorage['user_name'] + "<a href='login_out' style='color:#cc0000'>(登出)</a>");
         })
     </script>
 {% elif new_user_name %}
     <script>
         $(document).ready(function () {
-            if(localStorage['user_name'] == '{{ new_name }}') return true;
             localStorage['user_name'] = '{{ new_name }}';
-            $('#merchant_user_name').append("欢迎！" + localStorage['user_name'] + "<a href='login_out' style='color:red'>(登出)</a>");
         })
     </script>
 {% endif %}
+    <script>
+            if (localStorage['user_name']) {
+                $('#merchant_user_name').append("欢迎！" + localStorage['user_name'] + "<a href='login_out' style='color:#ff6666'>(登出)</a>");
+            }
+    </script>
 <script>
     var user_mes_manage = $('#user_mes_manage');
     user_mes_manage.mouseover(function () {

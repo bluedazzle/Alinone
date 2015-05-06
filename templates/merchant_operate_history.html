@@ -4,22 +4,31 @@
         <li role="presentation" id="search_order"><a href="operate_history?search_type=1">订单查询</a></li>
         <li role="presentation" id="search_sender"><a href="operate_history?search_type=2">派送员查询</a></li>
     </ul>
-    <script type="text/javascript" src="/js/mine.js" charset="UTF-8"></script>
     <form method="get" action="operate_history" id="search_mes">
         {% if search_sender %}
         <input name="search_type" value="2" style="display: none"/>
         {% endif %}
     <div class="col-md-12 col-lg-12" style="margin-top: 30px; margin-bottom: 30px;">
-      <div class="col-md-5 col-lg-5 input-group has-success" style="width: 30%;max-width: 300px;margin-right:27%;float: right">
-         <span class="input-group-addon" style="width: 80px">截止日期:</span>
-         <input id="end_date" name="end_date" value="{{ end_date }}" type="text" class="form-control" style="cursor: pointer; margin-right: 10%;" onclick="fPopCalendar(event,this,this)" onfocus="this.select()" readonly="readonly" />
-      </div>
-      <div class="col-md-5 col-lg-5 input-group has-success" style="width: 30%;max-width: 300px;margin-right: 1%;float: right">
-         <span class="input-group-addon">起始日期:</span>
-         <input id="start_date" name="start_date" value="{{ start_date }}" type="text" class="form-control" style="cursor: pointer; margin-right: 10%;" onclick="fPopCalendar(event,this,this)" onfocus="this.select()" readonly="readonly" />
-      </div>
+      <div class="form-group col-lg-5 col-md-5">
+            <label for="dtp_input1" class="col-md-3 col-lg-3 control-label" style="padding-top: 6px;">起始时间</label>
+            <div class="input-group date form_datetime col-md-8 col-lg-8" data-date="" data-link-field="start_time">
+                <input class="form-control" size="16" type="text" value="{{ start_date }}" readonly="">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+				<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+            </div>
+			<input type="hidden" id="start_time" name="start_date" value="{{ start_date }}"><br>
+        </div>
+        <div class="form-group col-lg-5 col-md-5">
+            <label for="dtp_input1" class="col-md-3 col-lg-3 control-label" style="padding-top: 6px;">结束时间</label>
+            <div class="input-group date form_datetime col-md-8 col-lg-8" data-date="" data-link-field="end_time">
+                <input class="form-control" size="16" type="text" value="{{ end_date }}" readonly="">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+				<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+            </div>
+			<input type="hidden" id="end_time" name="end_date" value="{{ end_date }}"><br>
+        </div>
     </div>
-    <div class="col-md-2 col-lg-2" style="float: right;margin-right: 7%;margin-top: -63px;">
+    <div class="col-md-2 col-lg-2" style="float: right;margin-right: 7%;margin-top: -100px;">
           <button id="search" class="btn btn-success">查询</button>
       </div>
     </form>
@@ -113,13 +122,30 @@
 </div>
 {% endblock %}
 {% block script %}
+    <script type="text/javascript" src="/js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    <style>
+        @import url(/css/bootstrap-datetimepicker.min.css);
+    </style>
     <script>
         $(document).ready(function(){
             {% if search_sender %}
-                $('#search_sender').addClass('active');
+                $('#search_sender').addClass('active').find('a').attr('href', '#');
             {% else %}
-                $('#search_order').addClass('active');
+                $('#search_order').addClass('active').find('a').attr('href', '#');
             {% endif %}
-        })
+            $('.form_datetime').datetimepicker({
+        language:  'zh-CN',
+{#        weekStart: 1,#}
+        todayBtn:  1,
+		autoclose: 1,
+{#		todayHighlight: 1,#}
+{#		startView: 2,#}
+{#		forceParse: 0,#}
+{#        showMeridian: 0,#}
+        format: 'yyyy-mm-dd hh:ii',
+        pickerPosition: 'bottom-left'
+    });
+        });
     </script>
 {% endblock %}

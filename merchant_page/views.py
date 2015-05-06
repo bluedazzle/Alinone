@@ -902,10 +902,8 @@ def operate_history(request):
             return render_to_response('merchant_operate_history.html',
                                       content)
 
-        stime = time.strptime(start_date, "%Y-%m-%d")
-        etime = time.strptime(end_date, "%Y-%m-%d")
-        sdate = datetime.datetime(*stime[:6])
-        edate = datetime.datetime(*etime[:6])
+        sdate = datetime.datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S")
+        edate = datetime.datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S")
 
         if search_type == '2':
             senders = search_sender(sdate, edate, currentuser)
