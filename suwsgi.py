@@ -14,7 +14,7 @@ from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
 
 uwsgi.register_signal(80, "", resetToken)
-uwsgi.add_timer(80, 7200)
+uwsgi.add_timer(80, 1800)
 uwsgi.register_signal(82, "", getproxy)
 uwsgi.add_cron(82, 0, 10, -1, -1, -1)
 uwsgi.register_signal(84, "", getproxy)
